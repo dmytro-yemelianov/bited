@@ -1,0 +1,45 @@
+#!/usr/bin/env python3
+"""Build the Cargo archive and check its Rust/spec/fixture source mapping."""
+import hashlib
+import json
+from pathlib import Path
+import subprocess
+import tarfile
+import tempfile
+import sys
+
+ROOT = Path(__file__).resolve().parent.parent
+subprocess.run(["cargo", "package", "--locked", "--offline", "--allow-dirty"], cwd=ROOT, check=True)
+archive = ROOT / "target/package/verified-varint-0.1.0.crate"
+paths = ["Cargo.toml", "Cargo.lock", "README.md", "docs/specification.md", "conformance/vectors.json", "rust-toolchain.toml", "verification/coverage.json", "verification/toolchain-lock.json", "verification/axioms-allowlist.json"]
+paths += [str(p.relative_to(ROOT)) for folder in ["src", "tests", "benches"]
+          for p in sorted((ROOT / folder).glob("*.rs"))]
+with tarfile.open(archive) as package:
+    contents = {p.name.partition("/")[2]: p for p in package if p.isfile()}
+    for name in paths:
+        packaged_name = "Cargo.toml.orig" if name == "Cargo.toml" else name
+        if packaged_name not in contents:
+            raise SystemExit(f"Required package input missing: {packaged_name}")
+        packaged = package.extractfile(contents[packaged_name]).read()
+        if packaged != (ROOT / name).read_bytes():
+            raise SystemExit(f"Package source mismatch: {name}")
+with tempfile.TemporaryDirectory(prefix="vvz-published-rust-", dir=ROOT / "target") as temporary:
+    temporary = Path(temporary)
+    with tarfile.open(archive) as package:
+        package.extractall(temporary, filter="data")
+    published = temporary / "verified-varint-0.1.0"
+    subprocess.run([sys.executable, str(ROOT / "scripts/regenerate-model"), "--check",
+        "--rust-source", str(published), "--report-name", "packaged-extraction.json"], cwd=ROOT, check=True)
+reports = ROOT / "verification/reports"
+reports.mkdir(parents=True, exist_ok=True)
+record = {
+    "archive": str(archive.relative_to(ROOT)),
+    "sha256": hashlib.sha256(archive.read_bytes()).hexdigest(),
+    "mapped_inputs": paths,
+    "status": "Cargo archive built, compiled, source mapped and re-extracted; generated Lean is byte-identical",
+    "rust_reextraction_checked": True,
+    "generated_model_identity_checked": True,
+    "reextraction_report": "verification/reports/packaged-extraction.json",
+}
+(reports / "package.json").write_text(json.dumps(record, indent=2) + "\n")
+print("Cargo archive source mapping and Rust-to-Lean re-extraction checked")

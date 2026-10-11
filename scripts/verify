@@ -1,0 +1,140 @@
+#!/usr/bin/env python3
+"""One verification entry point. Default mode enforces full release proof closure."""
+import argparse
+import hashlib
+import json
+from pathlib import Path
+import platform
+import shutil
+import subprocess
+import sys
+import datetime
+import tomllib
+import tarfile
+
+ROOT = Path(__file__).resolve().parent.parent
+parser = argparse.ArgumentParser(description=__doc__)
+parser.add_argument("--development", action="store_true", help="check current partial coverage without claiming release completion")
+args = parser.parse_args()
+reports = ROOT / "verification/reports"
+reports.mkdir(parents=True, exist_ok=True)
+# Remove stale success evidence before any check can fail.
+(reports / "verification.json").unlink(missing_ok=True)
+lock = json.loads((ROOT / "verification/toolchain-lock.json").read_text())
+
+
+def sha(path):
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def check(command, name):
+    print(f"Checking {name}", flush=True)
+    result = subprocess.run(command, cwd=ROOT, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    (reports / (name + ".log")).write_text(result.stdout)
+    if result.returncode:
+        print(result.stdout)
+        raise SystemExit(result.returncode)
+
+
+for path, key in [("conformance/vectors.json", "fixture_sha256"), ("docs/specification.md", "specification_sha256")]:
+    if sha(ROOT / path) != lock[key]:
+        raise SystemExit(f"Pinned contract input changed: {path}")
+coverage = json.loads((ROOT / "verification/coverage.json").read_text())
+ids = [o["id"] for o in coverage["obligations"]]
+if ids != [f"P{i:02}" for i in range(1, 19)]:
+    raise SystemExit("P01–P18 coverage inventory is incomplete or duplicated")
+lean_lock_before = sha(ROOT / "lake-manifest.json")
+check(["cargo", "fmt", "--check"], "format")
+check(["cargo", "clippy", "--locked", "--offline", "--all-targets", "--", "-D", "warnings"], "clippy")
+check(["cargo", "test", "--locked", "--offline", "--", "--nocapture"], "rust-debug")
+check(["cargo", "test", "--release", "--locked", "--offline"], "rust-release")
+check(["cargo", "check", "--locked", "--offline", "--lib", "--target", "riscv32imac-unknown-none-elf"], "rust-32-no-std")
+runner = lock["execution_32"]
+runner_path = shutil.which(runner["runner"])
+if runner_path is None or sha(Path(runner_path).resolve()) != runner["binary_sha256"]:
+    raise SystemExit("Pinned 32-bit execution runner is missing or changed")
+if subprocess.check_output([runner["runner"], "--version"], text=True).strip() != runner["version"]:
+    raise SystemExit("32-bit execution runner version changed")
+check(["env", "CARGO_TARGET_WASM32_WASIP1_RUNNER=" + runner["runner"], "cargo", "test",
+       "--locked", "--offline", "--target", runner["target"], "--", "--test-threads=1"], "rust-32-execution")
+check([sys.executable, "scripts/regenerate-model", "--check"], "extraction")
+check(["lake", "build"], "lean")
+if sha(ROOT / "lake-manifest.json") != lean_lock_before:
+    raise SystemExit("Lake dependency lock changed during verification")
+check([sys.executable, "scripts/check-proof-closure"], "proof-closure")
+check([sys.executable, "scripts/check-stored-proofs"], "stored-proofs")
+check([sys.executable, "scripts/fuzz"], "fuzz-run")
+check([sys.executable, "scripts/benchmark"], "benchmark-run")
+check([sys.executable, "scripts/check-package"], "package")
+check([sys.executable, "scripts/check-lean-package"], "lean-package")
+pending = [o["id"] for o in coverage["obligations"] if o["status"] != "proved" or o["rust_refinement"] != "proved"]
+blockers = []
+if pending:
+    blockers.append("Incomplete reference/refinement coverage: " + ", ".join(pending))
+for flag in ["m1_gate_passed", "release_ready", "publication_linkage_checked", "exact_wrapper_proved", "benchmarks_measured"]:
+    if not coverage[flag]:
+        blockers.append(f"{flag} is false")
+if coverage["conformance"]["exercised"] != 351 or coverage["conformance"]["total"] != 351:
+    blockers.append("Not all 351 conformance cases are exercised")
+if not json.loads((reports / "package.json").read_text()).get("rust_reextraction_checked"):
+    blockers.append("Packaged Rust re-extraction failed")
+if not json.loads((reports / "lean-package.json").read_text()).get("fresh_project_outputs"):
+    blockers.append("Packaged Lean fresh build failed")
+if lock["checker"] is None:
+    blockers.append("Independent stored-proof checker not configured")
+if not args.development and blockers:
+    raise SystemExit("Release verification refused:\n" + "\n".join(blockers))
+report = {
+    "schema": "verified-varint-release-verification/0.1",
+    "recorded_at_utc": datetime.datetime.now(datetime.timezone.utc).isoformat(),
+    "specification": coverage["specification"],
+    "status": "development checks passed; full release proof closure incomplete" if blockers else "release checks passed",
+    "release_ready": not blockers,
+    "milestone": coverage["milestone"],
+    "remaining_gates": blockers,
+    "host": platform.platform(),
+    "target_execution": ["aarch64-apple-darwin", runner["target"]],
+    "target_compile_checks": ["riscv32imac-unknown-none-elf"],
+    "coverage": coverage,
+    "tools": lock,
+    "evidence_sha256": {str(p.relative_to(ROOT)): sha(p) for p in sorted(reports.iterdir()) if p.is_file()},
+    "source_commit": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip() if (ROOT / ".git").exists() else None,
+    "working_tree_dirty": bool(subprocess.check_output(["git", "status", "--porcelain"], cwd=ROOT, text=True).strip()) if (ROOT / ".git").exists() else None,
+}
+report["source_inputs_sha256"] = {str(p.relative_to(ROOT)): sha(p) for folder in
+    ["src", "lean", "tests", "benches", "scripts", "fuzz", "docs", "conformance", "verification"]
+    for p in sorted((ROOT / folder).rglob("*")) if p.is_file()
+    and not any(part in ["target", "reports", "corpus", "artifacts", "__pycache__", "history"] for part in p.relative_to(ROOT).parts)}
+report["source_inputs_sha256"].update({name:sha(ROOT/name) for name in
+    ["Cargo.toml","Cargo.lock","lakefile.toml","lake-manifest.json","lean-toolchain","rust-toolchain.toml","README.md","LICENSE-MIT"]})
+package = json.loads((reports / "package.json").read_text())
+lean_package = json.loads((reports / "lean-package.json").read_text())
+audit = json.loads((reports / "axioms.json").read_text())
+replay = json.loads((reports / "stored-proofs.json").read_text())
+crate = tomllib.loads((ROOT / "Cargo.toml").read_text())["package"]
+claims = sorted(set(theorem for obligation in coverage["obligations"] for theorem in obligation["theorems"]) |
+                set(coverage["public_entrypoint_refinements"].values()))
+report["identity"] = {"crate": {"name": crate["name"], "version": crate["version"], "archive": package["archive"], "sha256": package["sha256"]},
+    "lean_package": {"name": "verifiedVarint", "version": "0.1.0", "archive": lean_package["archive"], "sha256": lean_package["archive_sha256"]}}
+report["claims"] = {name: {"statement_sha256": audit[name]["statement_sha256"], "axioms": audit[name]["axioms"]} for name in claims}
+report["compiled_proof_modules_sha256"] = replay["compiled_project_modules_sha256"]
+report["trust"] = {"formal_scope": "Rust source-level refinement under pinned extraction configuration",
+    "allowed_axioms": sorted(set(axiom for declaration in audit.values() for axiom in declaration["axioms"])),
+    "external_primitive_models": {"provider": "Aeneas pinned Lean backend", "revision": lock["aeneas"], "additional_project_models": []},
+    "resource_accounting": "declared conservative abstract Cost profiles, separated from compiler and runtime measurements",
+    "checker": replay["trust"], "assumptions": ["Lean kernel and allowed logical axioms", "Rust extraction semantics and Charon/Aeneas translation", "Aeneas primitive models", "compiler/linker/runtime/target for executable behavior"],
+    "exclusions": coverage["verification_profiles"]["exclusions"]}
+report["reproduction"] = {"command": "AENEAS_HOME=/absolute/path/to/pinned/aeneas ./scripts/verify",
+    "instructions": "docs/reproduction.md", "lean_package_environment": lean_package["environment_scope"],
+    "dependency_commits": lean_package["pinned_pristine_dependency_cache_revisions"]}
+evidence_archive = ROOT / "target/package/verified-varint-0.1.0-evidence.tar.gz"
+with tarfile.open(evidence_archive, "w:gz") as evidence:
+    for path in sorted(reports.iterdir()):
+        if path.is_file() and path.name != "verification.json":
+            evidence.add(path, arcname=str(path.relative_to(ROOT)), recursive=False)
+report["evidence_archive"] = {"path": str(evidence_archive.relative_to(ROOT)), "sha256": sha(evidence_archive),
+    "scope": "test/fuzz/benchmark/package/checker logs and inventories; excludes this self-referencing manifest"}
+(reports / "verification.json").write_text(json.dumps(report, indent=2) + "\n")
+sidecar = ROOT / "target/package/verified-varint-0.1.0-verification.json"
+sidecar.write_text(json.dumps(report, indent=2) + "\n")
+print(report["status"])

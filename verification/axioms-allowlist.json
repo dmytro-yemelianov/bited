@@ -1,0 +1,4 @@
+{
+  "allowed": ["propext", "Quot.sound", "Classical.choice"],
+  "policy": "No sorryAx, project correctness axioms, or native evaluation axioms. Audit transitive dependencies of every inventoried theorem."
+}

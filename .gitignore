@@ -1,0 +1,11 @@
+/target/
+/.lake/
+/.toolchains/
+/verification/reports/
+*.llbc
+*.olean
+*.ilean
+__pycache__/
+/fuzz/target/
+/fuzz/corpus/
+/fuzz/artifacts/

@@ -1,0 +1,1 @@
+Historical M1 evidence captured before the expanded API proof closure. It describes only the earlier source hashes and partial fixture coverage. Current release evidence is produced by scripts/verify in verification/reports and the release sidecar.

@@ -1,0 +1,3934 @@
+{
+  "schema": "verified-varint-conformance/0.1",
+  "specification": "VVZ-SPEC-0.1.0",
+  "status": "proposed contract fixtures; not evidence of a verified Rust implementation",
+  "integer_representation": "All integer values are decimal strings to avoid JSON number precision loss.",
+  "hex_representation": "Lowercase, two hex digits per byte; spaces separate bytes. Empty string means empty input.",
+  "decode_policy": [
+    "canonical",
+    "bounded_noncanonical"
+  ],
+  "error_precedence": [
+    "Overflow at the last permitted byte",
+    "TooLong at the last permitted byte",
+    "NonCanonical at a terminator",
+    "TrailingBytes after successful prefix decoding"
+  ],
+  "unsigned_encoding": [
+    {
+      "id": "u32-0",
+      "width": 32,
+      "value_decimal": "0",
+      "hex": "00",
+      "length": 1
+    },
+    {
+      "id": "u32-1",
+      "width": 32,
+      "value_decimal": "1",
+      "hex": "01",
+      "length": 1
+    },
+    {
+      "id": "u32-2",
+      "width": 32,
+      "value_decimal": "2",
+      "hex": "02",
+      "length": 1
+    },
+    {
+      "id": "u32-63",
+      "width": 32,
+      "value_decimal": "63",
+      "hex": "3f",
+      "length": 1
+    },
+    {
+      "id": "u32-64",
+      "width": 32,
+      "value_decimal": "64",
+      "hex": "40",
+      "length": 1
+    },
+    {
+      "id": "u32-127",
+      "width": 32,
+      "value_decimal": "127",
+      "hex": "7f",
+      "length": 1
+    },
+    {
+      "id": "u32-128",
+      "width": 32,
+      "value_decimal": "128",
+      "hex": "80 01",
+      "length": 2
+    },
+    {
+      "id": "u32-129",
+      "width": 32,
+      "value_decimal": "129",
+      "hex": "81 01",
+      "length": 2
+    },
+    {
+      "id": "u32-150",
+      "width": 32,
+      "value_decimal": "150",
+      "hex": "96 01",
+      "length": 2
+    },
+    {
+      "id": "u32-255",
+      "width": 32,
+      "value_decimal": "255",
+      "hex": "ff 01",
+      "length": 2
+    },
+    {
+      "id": "u32-256",
+      "width": 32,
+      "value_decimal": "256",
+      "hex": "80 02",
+      "length": 2
+    },
+    {
+      "id": "u32-300",
+      "width": 32,
+      "value_decimal": "300",
+      "hex": "ac 02",
+      "length": 2
+    },
+    {
+      "id": "u32-16383",
+      "width": 32,
+      "value_decimal": "16383",
+      "hex": "ff 7f",
+      "length": 2
+    },
+    {
+      "id": "u32-16384",
+      "width": 32,
+      "value_decimal": "16384",
+      "hex": "80 80 01",
+      "length": 3
+    },
+    {
+      "id": "u32-16385",
+      "width": 32,
+      "value_decimal": "16385",
+      "hex": "81 80 01",
+      "length": 3
+    },
+    {
+      "id": "u32-2097151",
+      "width": 32,
+      "value_decimal": "2097151",
+      "hex": "ff ff 7f",
+      "length": 3
+    },
+    {
+      "id": "u32-2097152",
+      "width": 32,
+      "value_decimal": "2097152",
+      "hex": "80 80 80 01",
+      "length": 4
+    },
+    {
+      "id": "u32-2097153",
+      "width": 32,
+      "value_decimal": "2097153",
+      "hex": "81 80 80 01",
+      "length": 4
+    },
+    {
+      "id": "u32-268435455",
+      "width": 32,
+      "value_decimal": "268435455",
+      "hex": "ff ff ff 7f",
+      "length": 4
+    },
+    {
+      "id": "u32-268435456",
+      "width": 32,
+      "value_decimal": "268435456",
+      "hex": "80 80 80 80 01",
+      "length": 5
+    },
+    {
+      "id": "u32-268435457",
+      "width": 32,
+      "value_decimal": "268435457",
+      "hex": "81 80 80 80 01",
+      "length": 5
+    },
+    {
+      "id": "u32-4294967295",
+      "width": 32,
+      "value_decimal": "4294967295",
+      "hex": "ff ff ff ff 0f",
+      "length": 5
+    },
+    {
+      "id": "u64-0",
+      "width": 64,
+      "value_decimal": "0",
+      "hex": "00",
+      "length": 1
+    },
+    {
+      "id": "u64-1",
+      "width": 64,
+      "value_decimal": "1",
+      "hex": "01",
+      "length": 1
+    },
+    {
+      "id": "u64-2",
+      "width": 64,
+      "value_decimal": "2",
+      "hex": "02",
+      "length": 1
+    },
+    {
+      "id": "u64-63",
+      "width": 64,
+      "value_decimal": "63",
+      "hex": "3f",
+      "length": 1
+    },
+    {
+      "id": "u64-64",
+      "width": 64,
+      "value_decimal": "64",
+      "hex": "40",
+      "length": 1
+    },
+    {
+      "id": "u64-127",
+      "width": 64,
+      "value_decimal": "127",
+      "hex": "7f",
+      "length": 1
+    },
+    {
+      "id": "u64-128",
+      "width": 64,
+      "value_decimal": "128",
+      "hex": "80 01",
+      "length": 2
+    },
+    {
+      "id": "u64-129",
+      "width": 64,
+      "value_decimal": "129",
+      "hex": "81 01",
+      "length": 2
+    },
+    {
+      "id": "u64-150",
+      "width": 64,
+      "value_decimal": "150",
+      "hex": "96 01",
+      "length": 2
+    },
+    {
+      "id": "u64-255",
+      "width": 64,
+      "value_decimal": "255",
+      "hex": "ff 01",
+      "length": 2
+    },
+    {
+      "id": "u64-256",
+      "width": 64,
+      "value_decimal": "256",
+      "hex": "80 02",
+      "length": 2
+    },
+    {
+      "id": "u64-300",
+      "width": 64,
+      "value_decimal": "300",
+      "hex": "ac 02",
+      "length": 2
+    },
+    {
+      "id": "u64-16383",
+      "width": 64,
+      "value_decimal": "16383",
+      "hex": "ff 7f",
+      "length": 2
+    },
+    {
+      "id": "u64-16384",
+      "width": 64,
+      "value_decimal": "16384",
+      "hex": "80 80 01",
+      "length": 3
+    },
+    {
+      "id": "u64-16385",
+      "width": 64,
+      "value_decimal": "16385",
+      "hex": "81 80 01",
+      "length": 3
+    },
+    {
+      "id": "u64-2097151",
+      "width": 64,
+      "value_decimal": "2097151",
+      "hex": "ff ff 7f",
+      "length": 3
+    },
+    {
+      "id": "u64-2097152",
+      "width": 64,
+      "value_decimal": "2097152",
+      "hex": "80 80 80 01",
+      "length": 4
+    },
+    {
+      "id": "u64-2097153",
+      "width": 64,
+      "value_decimal": "2097153",
+      "hex": "81 80 80 01",
+      "length": 4
+    },
+    {
+      "id": "u64-268435455",
+      "width": 64,
+      "value_decimal": "268435455",
+      "hex": "ff ff ff 7f",
+      "length": 4
+    },
+    {
+      "id": "u64-268435456",
+      "width": 64,
+      "value_decimal": "268435456",
+      "hex": "80 80 80 80 01",
+      "length": 5
+    },
+    {
+      "id": "u64-268435457",
+      "width": 64,
+      "value_decimal": "268435457",
+      "hex": "81 80 80 80 01",
+      "length": 5
+    },
+    {
+      "id": "u64-34359738367",
+      "width": 64,
+      "value_decimal": "34359738367",
+      "hex": "ff ff ff ff 7f",
+      "length": 5
+    },
+    {
+      "id": "u64-34359738368",
+      "width": 64,
+      "value_decimal": "34359738368",
+      "hex": "80 80 80 80 80 01",
+      "length": 6
+    },
+    {
+      "id": "u64-34359738369",
+      "width": 64,
+      "value_decimal": "34359738369",
+      "hex": "81 80 80 80 80 01",
+      "length": 6
+    },
+    {
+      "id": "u64-4398046511103",
+      "width": 64,
+      "value_decimal": "4398046511103",
+      "hex": "ff ff ff ff ff 7f",
+      "length": 6
+    },
+    {
+      "id": "u64-4398046511104",
+      "width": 64,
+      "value_decimal": "4398046511104",
+      "hex": "80 80 80 80 80 80 01",
+      "length": 7
+    },
+    {
+      "id": "u64-4398046511105",
+      "width": 64,
+      "value_decimal": "4398046511105",
+      "hex": "81 80 80 80 80 80 01",
+      "length": 7
+    },
+    {
+      "id": "u64-562949953421311",
+      "width": 64,
+      "value_decimal": "562949953421311",
+      "hex": "ff ff ff ff ff ff 7f",
+      "length": 7
+    },
+    {
+      "id": "u64-562949953421312",
+      "width": 64,
+      "value_decimal": "562949953421312",
+      "hex": "80 80 80 80 80 80 80 01",
+      "length": 8
+    },
+    {
+      "id": "u64-562949953421313",
+      "width": 64,
+      "value_decimal": "562949953421313",
+      "hex": "81 80 80 80 80 80 80 01",
+      "length": 8
+    },
+    {
+      "id": "u64-72057594037927935",
+      "width": 64,
+      "value_decimal": "72057594037927935",
+      "hex": "ff ff ff ff ff ff ff 7f",
+      "length": 8
+    },
+    {
+      "id": "u64-72057594037927936",
+      "width": 64,
+      "value_decimal": "72057594037927936",
+      "hex": "80 80 80 80 80 80 80 80 01",
+      "length": 9
+    },
+    {
+      "id": "u64-72057594037927937",
+      "width": 64,
+      "value_decimal": "72057594037927937",
+      "hex": "81 80 80 80 80 80 80 80 01",
+      "length": 9
+    },
+    {
+      "id": "u64-9223372036854775807",
+      "width": 64,
+      "value_decimal": "9223372036854775807",
+      "hex": "ff ff ff ff ff ff ff ff 7f",
+      "length": 9
+    },
+    {
+      "id": "u64-9223372036854775808",
+      "width": 64,
+      "value_decimal": "9223372036854775808",
+      "hex": "80 80 80 80 80 80 80 80 80 01",
+      "length": 10
+    },
+    {
+      "id": "u64-9223372036854775809",
+      "width": 64,
+      "value_decimal": "9223372036854775809",
+      "hex": "81 80 80 80 80 80 80 80 80 01",
+      "length": 10
+    },
+    {
+      "id": "u64-18446744073709551615",
+      "width": 64,
+      "value_decimal": "18446744073709551615",
+      "hex": "ff ff ff ff ff ff ff ff ff 01",
+      "length": 10
+    }
+  ],
+  "signed_zigzag_encoding": [
+    {
+      "id": "i32--2147483648",
+      "width": 32,
+      "value_decimal": "-2147483648",
+      "zigzag_decimal": "4294967295",
+      "hex": "ff ff ff ff 0f",
+      "length": 5
+    },
+    {
+      "id": "i32--129",
+      "width": 32,
+      "value_decimal": "-129",
+      "zigzag_decimal": "257",
+      "hex": "81 02",
+      "length": 2
+    },
+    {
+      "id": "i32--128",
+      "width": 32,
+      "value_decimal": "-128",
+      "zigzag_decimal": "255",
+      "hex": "ff 01",
+      "length": 2
+    },
+    {
+      "id": "i32--65",
+      "width": 32,
+      "value_decimal": "-65",
+      "zigzag_decimal": "129",
+      "hex": "81 01",
+      "length": 2
+    },
+    {
+      "id": "i32--64",
+      "width": 32,
+      "value_decimal": "-64",
+      "zigzag_decimal": "127",
+      "hex": "7f",
+      "length": 1
+    },
+    {
+      "id": "i32--2",
+      "width": 32,
+      "value_decimal": "-2",
+      "zigzag_decimal": "3",
+      "hex": "03",
+      "length": 1
+    },
+    {
+      "id": "i32--1",
+      "width": 32,
+      "value_decimal": "-1",
+      "zigzag_decimal": "1",
+      "hex": "01",
+      "length": 1
+    },
+    {
+      "id": "i32-0",
+      "width": 32,
+      "value_decimal": "0",
+      "zigzag_decimal": "0",
+      "hex": "00",
+      "length": 1
+    },
+    {
+      "id": "i32-1",
+      "width": 32,
+      "value_decimal": "1",
+      "zigzag_decimal": "2",
+      "hex": "02",
+      "length": 1
+    },
+    {
+      "id": "i32-2",
+      "width": 32,
+      "value_decimal": "2",
+      "zigzag_decimal": "4",
+      "hex": "04",
+      "length": 1
+    },
+    {
+      "id": "i32-63",
+      "width": 32,
+      "value_decimal": "63",
+      "zigzag_decimal": "126",
+      "hex": "7e",
+      "length": 1
+    },
+    {
+      "id": "i32-64",
+      "width": 32,
+      "value_decimal": "64",
+      "zigzag_decimal": "128",
+      "hex": "80 01",
+      "length": 2
+    },
+    {
+      "id": "i32-127",
+      "width": 32,
+      "value_decimal": "127",
+      "zigzag_decimal": "254",
+      "hex": "fe 01",
+      "length": 2
+    },
+    {
+      "id": "i32-128",
+      "width": 32,
+      "value_decimal": "128",
+      "zigzag_decimal": "256",
+      "hex": "80 02",
+      "length": 2
+    },
+    {
+      "id": "i32-2147483647",
+      "width": 32,
+      "value_decimal": "2147483647",
+      "zigzag_decimal": "4294967294",
+      "hex": "fe ff ff ff 0f",
+      "length": 5
+    },
+    {
+      "id": "i64--9223372036854775808",
+      "width": 64,
+      "value_decimal": "-9223372036854775808",
+      "zigzag_decimal": "18446744073709551615",
+      "hex": "ff ff ff ff ff ff ff ff ff 01",
+      "length": 10
+    },
+    {
+      "id": "i64--129",
+      "width": 64,
+      "value_decimal": "-129",
+      "zigzag_decimal": "257",
+      "hex": "81 02",
+      "length": 2
+    },
+    {
+      "id": "i64--128",
+      "width": 64,
+      "value_decimal": "-128",
+      "zigzag_decimal": "255",
+      "hex": "ff 01",
+      "length": 2
+    },
+    {
+      "id": "i64--65",
+      "width": 64,
+      "value_decimal": "-65",
+      "zigzag_decimal": "129",
+      "hex": "81 01",
+      "length": 2
+    },
+    {
+      "id": "i64--64",
+      "width": 64,
+      "value_decimal": "-64",
+      "zigzag_decimal": "127",
+      "hex": "7f",
+      "length": 1
+    },
+    {
+      "id": "i64--2",
+      "width": 64,
+      "value_decimal": "-2",
+      "zigzag_decimal": "3",
+      "hex": "03",
+      "length": 1
+    },
+    {
+      "id": "i64--1",
+      "width": 64,
+      "value_decimal": "-1",
+      "zigzag_decimal": "1",
+      "hex": "01",
+      "length": 1
+    },
+    {
+      "id": "i64-0",
+      "width": 64,
+      "value_decimal": "0",
+      "zigzag_decimal": "0",
+      "hex": "00",
+      "length": 1
+    },
+    {
+      "id": "i64-1",
+      "width": 64,
+      "value_decimal": "1",
+      "zigzag_decimal": "2",
+      "hex": "02",
+      "length": 1
+    },
+    {
+      "id": "i64-2",
+      "width": 64,
+      "value_decimal": "2",
+      "zigzag_decimal": "4",
+      "hex": "04",
+      "length": 1
+    },
+    {
+      "id": "i64-63",
+      "width": 64,
+      "value_decimal": "63",
+      "zigzag_decimal": "126",
+      "hex": "7e",
+      "length": 1
+    },
+    {
+      "id": "i64-64",
+      "width": 64,
+      "value_decimal": "64",
+      "zigzag_decimal": "128",
+      "hex": "80 01",
+      "length": 2
+    },
+    {
+      "id": "i64-127",
+      "width": 64,
+      "value_decimal": "127",
+      "zigzag_decimal": "254",
+      "hex": "fe 01",
+      "length": 2
+    },
+    {
+      "id": "i64-128",
+      "width": 64,
+      "value_decimal": "128",
+      "zigzag_decimal": "256",
+      "hex": "80 02",
+      "length": 2
+    },
+    {
+      "id": "i64-9223372036854775807",
+      "width": 64,
+      "value_decimal": "9223372036854775807",
+      "zigzag_decimal": "18446744073709551614",
+      "hex": "fe ff ff ff ff ff ff ff ff 01",
+      "length": 10
+    }
+  ],
+  "decoding": [
+    {
+      "id": "decode-u32-0-canonical-prefix",
+      "width": 32,
+      "policy": "canonical",
+      "api": "prefix",
+      "hex": "",
+      "expected": {
+        "status": "error",
+        "error": "Truncated",
+        "consumed": 0
+      }
+    },
+    {
+      "id": "decode-u32-0-canonical-exact",
+      "width": 32,
+      "policy": "canonical",
+      "api": "exact",
+      "hex": "",
+      "expected": {
+        "status": "error",
+        "error": "Truncated",
+        "consumed": 0
+      }
+    },
+    {
+      "id": "decode-u32-0-bounded_noncanonical-prefix",
+      "width": 32,
+      "policy": "bounded_noncanonical",
+      "api": "prefix",
+      "hex": "",
+      "expected": {
+        "status": "error",
+        "error": "Truncated",
+        "consumed": 0
+      }
+    },
+    {
+      "id": "decode-u32-0-bounded_noncanonical-exact",
+      "width": 32,
+      "policy": "bounded_noncanonical",
+      "api": "exact",
+      "hex": "",
+      "expected": {
+        "status": "error",
+        "error": "Truncated",
+        "consumed": 0
+      }
+    },
+    {
+      "id": "decode-u32-1-canonical-prefix",
+      "width": 32,
+      "policy": "canonical",
+      "api": "prefix",
+      "hex": "00",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "0",
+        "consumed": 1,
+        "canonical": true
+      }
+    },
+    {
+      "id": "decode-u32-1-canonical-exact",
+      "width": 32,
+      "policy": "canonical",
+      "api": "exact",
+      "hex": "00",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "0",
+        "consumed": 1,
+        "canonical": true
+      }
+    },
+    {
+      "id": "decode-u32-1-bounded_noncanonical-prefix",
+      "width": 32,
+      "policy": "bounded_noncanonical",
+      "api": "prefix",
+      "hex": "00",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "0",
+        "consumed": 1,
+        "canonical": true
+      }
+    },
+    {
+      "id": "decode-u32-1-bounded_noncanonical-exact",
+      "width": 32,
+      "policy": "bounded_noncanonical",
+      "api": "exact",
+      "hex": "00",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "0",
+        "consumed": 1,
+        "canonical": true
+      }
+    },
+    {
+      "id": "decode-u32-2-canonical-prefix",
+      "width": 32,
+      "policy": "canonical",
+      "api": "prefix",
+      "hex": "7f",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "127",
+        "consumed": 1,
+        "canonical": true
+      }
+    },
+    {
+      "id": "decode-u32-2-canonical-exact",
+      "width": 32,
+      "policy": "canonical",
+      "api": "exact",
+      "hex": "7f",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "127",
+        "consumed": 1,
+        "canonical": true
+      }
+    },
+    {
+      "id": "decode-u32-2-bounded_noncanonical-prefix",
+      "width": 32,
+      "policy": "bounded_noncanonical",
+      "api": "prefix",
+      "hex": "7f",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "127",
+        "consumed": 1,
+        "canonical": true
+      }
+    },
+    {
+      "id": "decode-u32-2-bounded_noncanonical-exact",
+      "width": 32,
+      "policy": "bounded_noncanonical",
+      "api": "exact",
+      "hex": "7f",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "127",
+        "consumed": 1,
+        "canonical": true
+      }
+    },
+    {
+      "id": "decode-u32-3-canonical-prefix",
+      "width": 32,
+      "policy": "canonical",
+      "api": "prefix",
+      "hex": "80",
+      "expected": {
+        "status": "error",
+        "error": "Truncated",
+        "consumed": 1
+      }
+    },
+    {
+      "id": "decode-u32-3-canonical-exact",
+      "width": 32,
+      "policy": "canonical",
+      "api": "exact",
+      "hex": "80",
+      "expected": {
+        "status": "error",
+        "error": "Truncated",
+        "consumed": 1
+      }
+    },
+    {
+      "id": "decode-u32-3-bounded_noncanonical-prefix",
+      "width": 32,
+      "policy": "bounded_noncanonical",
+      "api": "prefix",
+      "hex": "80",
+      "expected": {
+        "status": "error",
+        "error": "Truncated",
+        "consumed": 1
+      }
+    },
+    {
+      "id": "decode-u32-3-bounded_noncanonical-exact",
+      "width": 32,
+      "policy": "bounded_noncanonical",
+      "api": "exact",
+      "hex": "80",
+      "expected": {
+        "status": "error",
+        "error": "Truncated",
+        "consumed": 1
+      }
+    },
+    {
+      "id": "decode-u32-4-canonical-prefix",
+      "width": 32,
+      "policy": "canonical",
+      "api": "prefix",
+      "hex": "ff",
+      "expected": {
+        "status": "error",
+        "error": "Truncated",
+        "consumed": 1
+      }
+    },
+    {
+      "id": "decode-u32-4-canonical-exact",
+      "width": 32,
+      "policy": "canonical",
+      "api": "exact",
+      "hex": "ff",
+      "expected": {
+        "status": "error",
+        "error": "Truncated",
+        "consumed": 1
+      }
+    },
+    {
+      "id": "decode-u32-4-bounded_noncanonical-prefix",
+      "width": 32,
+      "policy": "bounded_noncanonical",
+      "api": "prefix",
+      "hex": "ff",
+      "expected": {
+        "status": "error",
+        "error": "Truncated",
+        "consumed": 1
+      }
+    },
+    {
+      "id": "decode-u32-4-bounded_noncanonical-exact",
+      "width": 32,
+      "policy": "bounded_noncanonical",
+      "api": "exact",
+      "hex": "ff",
+      "expected": {
+        "status": "error",
+        "error": "Truncated",
+        "consumed": 1
+      }
+    },
+    {
+      "id": "decode-u32-5-canonical-prefix",
+      "width": 32,
+      "policy": "canonical",
+      "api": "prefix",
+      "hex": "80 00",
+      "expected": {
+        "status": "error",
+        "error": "NonCanonical",
+        "consumed": 2
+      }
+    },
+    {
+      "id": "decode-u32-5-canonical-exact",
+      "width": 32,
+      "policy": "canonical",
+      "api": "exact",
+      "hex": "80 00",
+      "expected": {
+        "status": "error",
+        "error": "NonCanonical",
+        "consumed": 2
+      }
+    },
+    {
+      "id": "decode-u32-5-bounded_noncanonical-prefix",
+      "width": 32,
+      "policy": "bounded_noncanonical",
+      "api": "prefix",
+      "hex": "80 00",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "0",
+        "consumed": 2,
+        "canonical": false
+      }
+    },
+    {
+      "id": "decode-u32-5-bounded_noncanonical-exact",
+      "width": 32,
+      "policy": "bounded_noncanonical",
+      "api": "exact",
+      "hex": "80 00",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "0",
+        "consumed": 2,
+        "canonical": false
+      }
+    },
+    {
+      "id": "decode-u32-6-canonical-prefix",
+      "width": 32,
+      "policy": "canonical",
+      "api": "prefix",
+      "hex": "81 00",
+      "expected": {
+        "status": "error",
+        "error": "NonCanonical",
+        "consumed": 2
+      }
+    },
+    {
+      "id": "decode-u32-6-canonical-exact",
+      "width": 32,
+      "policy": "canonical",
+      "api": "exact",
+      "hex": "81 00",
+      "expected": {
+        "status": "error",
+        "error": "NonCanonical",
+        "consumed": 2
+      }
+    },
+    {
+      "id": "decode-u32-6-bounded_noncanonical-prefix",
+      "width": 32,
+      "policy": "bounded_noncanonical",
+      "api": "prefix",
+      "hex": "81 00",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "1",
+        "consumed": 2,
+        "canonical": false
+      }
+    },
+    {
+      "id": "decode-u32-6-bounded_noncanonical-exact",
+      "width": 32,
+      "policy": "bounded_noncanonical",
+      "api": "exact",
+      "hex": "81 00",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "1",
+        "consumed": 2,
+        "canonical": false
+      }
+    },
+    {
+      "id": "decode-u32-7-canonical-prefix",
+      "width": 32,
+      "policy": "canonical",
+      "api": "prefix",
+      "hex": "ff 00",
+      "expected": {
+        "status": "error",
+        "error": "NonCanonical",
+        "consumed": 2
+      }
+    },
+    {
+      "id": "decode-u32-7-canonical-exact",
+      "width": 32,
+      "policy": "canonical",
+      "api": "exact",
+      "hex": "ff 00",
+      "expected": {
+        "status": "error",
+        "error": "NonCanonical",
+        "consumed": 2
+      }
+    },
+    {
+      "id": "decode-u32-7-bounded_noncanonical-prefix",
+      "width": 32,
+      "policy": "bounded_noncanonical",
+      "api": "prefix",
+      "hex": "ff 00",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "127",
+        "consumed": 2,
+        "canonical": false
+      }
+    },
+    {
+      "id": "decode-u32-7-bounded_noncanonical-exact",
+      "width": 32,
+      "policy": "bounded_noncanonical",
+      "api": "exact",
+      "hex": "ff 00",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "127",
+        "consumed": 2,
+        "canonical": false
+      }
+    },
+    {
+      "id": "decode-u32-8-canonical-prefix",
+      "width": 32,
+      "policy": "canonical",
+      "api": "prefix",
+      "hex": "80 01",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "128",
+        "consumed": 2,
+        "canonical": true
+      }
+    },
+    {
+      "id": "decode-u32-8-canonical-exact",
+      "width": 32,
+      "policy": "canonical",
+      "api": "exact",
+      "hex": "80 01",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "128",
+        "consumed": 2,
+        "canonical": true
+      }
+    },
+    {
+      "id": "decode-u32-8-bounded_noncanonical-prefix",
+      "width": 32,
+      "policy": "bounded_noncanonical",
+      "api": "prefix",
+      "hex": "80 01",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "128",
+        "consumed": 2,
+        "canonical": true
+      }
+    },
+    {
+      "id": "decode-u32-8-bounded_noncanonical-exact",
+      "width": 32,
+      "policy": "bounded_noncanonical",
+      "api": "exact",
+      "hex": "80 01",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "128",
+        "consumed": 2,
+        "canonical": true
+      }
+    },
+    {
+      "id": "decode-u32-9-canonical-prefix",
+      "width": 32,
+      "policy": "canonical",
+      "api": "prefix",
+      "hex": "96 01",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "150",
+        "consumed": 2,
+        "canonical": true
+      }
+    },
+    {
+      "id": "decode-u32-9-canonical-exact",
+      "width": 32,
+      "policy": "canonical",
+      "api": "exact",
+      "hex": "96 01",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "150",
+        "consumed": 2,
+        "canonical": true
+      }
+    },
+    {
+      "id": "decode-u32-9-bounded_noncanonical-prefix",
+      "width": 32,
+      "policy": "bounded_noncanonical",
+      "api": "prefix",
+      "hex": "96 01",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "150",
+        "consumed": 2,
+        "canonical": true
+      }
+    },
+    {
+      "id": "decode-u32-9-bounded_noncanonical-exact",
+      "width": 32,
+      "policy": "bounded_noncanonical",
+      "api": "exact",
+      "hex": "96 01",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "150",
+        "consumed": 2,
+        "canonical": true
+      }
+    },
+    {
+      "id": "decode-u32-10-canonical-prefix",
+      "width": 32,
+      "policy": "canonical",
+      "api": "prefix",
+      "hex": "ac 02",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "300",
+        "consumed": 2,
+        "canonical": true
+      }
+    },
+    {
+      "id": "decode-u32-10-canonical-exact",
+      "width": 32,
+      "policy": "canonical",
+      "api": "exact",
+      "hex": "ac 02",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "300",
+        "consumed": 2,
+        "canonical": true
+      }
+    },
+    {
+      "id": "decode-u32-10-bounded_noncanonical-prefix",
+      "width": 32,
+      "policy": "bounded_noncanonical",
+      "api": "prefix",
+      "hex": "ac 02",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "300",
+        "consumed": 2,
+        "canonical": true
+      }
+    },
+    {
+      "id": "decode-u32-10-bounded_noncanonical-exact",
+      "width": 32,
+      "policy": "bounded_noncanonical",
+      "api": "exact",
+      "hex": "ac 02",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "300",
+        "consumed": 2,
+        "canonical": true
+      }
+    },
+    {
+      "id": "decode-u32-11-canonical-prefix",
+      "width": 32,
+      "policy": "canonical",
+      "api": "prefix",
+      "hex": "00 80",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "0",
+        "consumed": 1,
+        "canonical": true
+      }
+    },
+    {
+      "id": "decode-u32-11-canonical-exact",
+      "width": 32,
+      "policy": "canonical",
+      "api": "exact",
+      "hex": "00 80",
+      "expected": {
+        "status": "error",
+        "error": "TrailingBytes",
+        "consumed": 1
+      }
+    },
+    {
+      "id": "decode-u32-11-bounded_noncanonical-prefix",
+      "width": 32,
+      "policy": "bounded_noncanonical",
+      "api": "prefix",
+      "hex": "00 80",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "0",
+        "consumed": 1,
+        "canonical": true
+      }
+    },
+    {
+      "id": "decode-u32-11-bounded_noncanonical-exact",
+      "width": 32,
+      "policy": "bounded_noncanonical",
+      "api": "exact",
+      "hex": "00 80",
+      "expected": {
+        "status": "error",
+        "error": "TrailingBytes",
+        "consumed": 1
+      }
+    },
+    {
+      "id": "decode-u32-12-canonical-prefix",
+      "width": 32,
+      "policy": "canonical",
+      "api": "prefix",
+      "hex": "80 00 01",
+      "expected": {
+        "status": "error",
+        "error": "NonCanonical",
+        "consumed": 2
+      }
+    },
+    {
+      "id": "decode-u32-12-canonical-exact",
+      "width": 32,
+      "policy": "canonical",
+      "api": "exact",
+      "hex": "80 00 01",
+      "expected": {
+        "status": "error",
+        "error": "NonCanonical",
+        "consumed": 2
+      }
+    },
+    {
+      "id": "decode-u32-12-bounded_noncanonical-prefix",
+      "width": 32,
+      "policy": "bounded_noncanonical",
+      "api": "prefix",
+      "hex": "80 00 01",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "0",
+        "consumed": 2,
+        "canonical": false
+      }
+    },
+    {
+      "id": "decode-u32-12-bounded_noncanonical-exact",
+      "width": 32,
+      "policy": "bounded_noncanonical",
+      "api": "exact",
+      "hex": "80 00 01",
+      "expected": {
+        "status": "error",
+        "error": "TrailingBytes",
+        "consumed": 2
+      }
+    },
+    {
+      "id": "decode-u32-13-canonical-prefix",
+      "width": 32,
+      "policy": "canonical",
+      "api": "prefix",
+      "hex": "ff ff ff ff 0f",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "4294967295",
+        "consumed": 5,
+        "canonical": true
+      }
+    },
+    {
+      "id": "decode-u32-13-canonical-exact",
+      "width": 32,
+      "policy": "canonical",
+      "api": "exact",
+      "hex": "ff ff ff ff 0f",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "4294967295",
+        "consumed": 5,
+        "canonical": true
+      }
+    },
+    {
+      "id": "decode-u32-13-bounded_noncanonical-prefix",
+      "width": 32,
+      "policy": "bounded_noncanonical",
+      "api": "prefix",
+      "hex": "ff ff ff ff 0f",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "4294967295",
+        "consumed": 5,
+        "canonical": true
+      }
+    },
+    {
+      "id": "decode-u32-13-bounded_noncanonical-exact",
+      "width": 32,
+      "policy": "bounded_noncanonical",
+      "api": "exact",
+      "hex": "ff ff ff ff 0f",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "4294967295",
+        "consumed": 5,
+        "canonical": true
+      }
+    },
+    {
+      "id": "decode-u32-14-canonical-prefix",
+      "width": 32,
+      "policy": "canonical",
+      "api": "prefix",
+      "hex": "80 80 80 80 10",
+      "expected": {
+        "status": "error",
+        "error": "Overflow",
+        "consumed": 5
+      }
+    },
+    {
+      "id": "decode-u32-14-canonical-exact",
+      "width": 32,
+      "policy": "canonical",
+      "api": "exact",
+      "hex": "80 80 80 80 10",
+      "expected": {
+        "status": "error",
+        "error": "Overflow",
+        "consumed": 5
+      }
+    },
+    {
+      "id": "decode-u32-14-bounded_noncanonical-prefix",
+      "width": 32,
+      "policy": "bounded_noncanonical",
+      "api": "prefix",
+      "hex": "80 80 80 80 10",
+      "expected": {
+        "status": "error",
+        "error": "Overflow",
+        "consumed": 5
+      }
+    },
+    {
+      "id": "decode-u32-14-bounded_noncanonical-exact",
+      "width": 32,
+      "policy": "bounded_noncanonical",
+      "api": "exact",
+      "hex": "80 80 80 80 10",
+      "expected": {
+        "status": "error",
+        "error": "Overflow",
+        "consumed": 5
+      }
+    },
+    {
+      "id": "decode-u32-15-canonical-prefix",
+      "width": 32,
+      "policy": "canonical",
+      "api": "prefix",
+      "hex": "ff ff ff ff 10",
+      "expected": {
+        "status": "error",
+        "error": "Overflow",
+        "consumed": 5
+      }
+    },
+    {
+      "id": "decode-u32-15-canonical-exact",
+      "width": 32,
+      "policy": "canonical",
+      "api": "exact",
+      "hex": "ff ff ff ff 10",
+      "expected": {
+        "status": "error",
+        "error": "Overflow",
+        "consumed": 5
+      }
+    },
+    {
+      "id": "decode-u32-15-bounded_noncanonical-prefix",
+      "width": 32,
+      "policy": "bounded_noncanonical",
+      "api": "prefix",
+      "hex": "ff ff ff ff 10",
+      "expected": {
+        "status": "error",
+        "error": "Overflow",
+        "consumed": 5
+      }
+    },
+    {
+      "id": "decode-u32-15-bounded_noncanonical-exact",
+      "width": 32,
+      "policy": "bounded_noncanonical",
+      "api": "exact",
+      "hex": "ff ff ff ff 10",
+      "expected": {
+        "status": "error",
+        "error": "Overflow",
+        "consumed": 5
+      }
+    },
+    {
+      "id": "decode-u32-16-canonical-prefix",
+      "width": 32,
+      "policy": "canonical",
+      "api": "prefix",
+      "hex": "80 80 80 80 80 00",
+      "expected": {
+        "status": "error",
+        "error": "TooLong",
+        "consumed": 5
+      }
+    },
+    {
+      "id": "decode-u32-16-canonical-exact",
+      "width": 32,
+      "policy": "canonical",
+      "api": "exact",
+      "hex": "80 80 80 80 80 00",
+      "expected": {
+        "status": "error",
+        "error": "TooLong",
+        "consumed": 5
+      }
+    },
+    {
+      "id": "decode-u32-16-bounded_noncanonical-prefix",
+      "width": 32,
+      "policy": "bounded_noncanonical",
+      "api": "prefix",
+      "hex": "80 80 80 80 80 00",
+      "expected": {
+        "status": "error",
+        "error": "TooLong",
+        "consumed": 5
+      }
+    },
+    {
+      "id": "decode-u32-16-bounded_noncanonical-exact",
+      "width": 32,
+      "policy": "bounded_noncanonical",
+      "api": "exact",
+      "hex": "80 80 80 80 80 00",
+      "expected": {
+        "status": "error",
+        "error": "TooLong",
+        "consumed": 5
+      }
+    },
+    {
+      "id": "decode-u32-17-canonical-prefix",
+      "width": 32,
+      "policy": "canonical",
+      "api": "prefix",
+      "hex": "80 80 80 80 90",
+      "expected": {
+        "status": "error",
+        "error": "Overflow",
+        "consumed": 5
+      }
+    },
+    {
+      "id": "decode-u32-17-canonical-exact",
+      "width": 32,
+      "policy": "canonical",
+      "api": "exact",
+      "hex": "80 80 80 80 90",
+      "expected": {
+        "status": "error",
+        "error": "Overflow",
+        "consumed": 5
+      }
+    },
+    {
+      "id": "decode-u32-17-bounded_noncanonical-prefix",
+      "width": 32,
+      "policy": "bounded_noncanonical",
+      "api": "prefix",
+      "hex": "80 80 80 80 90",
+      "expected": {
+        "status": "error",
+        "error": "Overflow",
+        "consumed": 5
+      }
+    },
+    {
+      "id": "decode-u32-17-bounded_noncanonical-exact",
+      "width": 32,
+      "policy": "bounded_noncanonical",
+      "api": "exact",
+      "hex": "80 80 80 80 90",
+      "expected": {
+        "status": "error",
+        "error": "Overflow",
+        "consumed": 5
+      }
+    },
+    {
+      "id": "decode-u32-18-canonical-prefix",
+      "width": 32,
+      "policy": "canonical",
+      "api": "prefix",
+      "hex": "ff ff ff ff ff ff ff ff ff 01",
+      "expected": {
+        "status": "error",
+        "error": "Overflow",
+        "consumed": 5
+      }
+    },
+    {
+      "id": "decode-u32-18-canonical-exact",
+      "width": 32,
+      "policy": "canonical",
+      "api": "exact",
+      "hex": "ff ff ff ff ff ff ff ff ff 01",
+      "expected": {
+        "status": "error",
+        "error": "Overflow",
+        "consumed": 5
+      }
+    },
+    {
+      "id": "decode-u32-18-bounded_noncanonical-prefix",
+      "width": 32,
+      "policy": "bounded_noncanonical",
+      "api": "prefix",
+      "hex": "ff ff ff ff ff ff ff ff ff 01",
+      "expected": {
+        "status": "error",
+        "error": "Overflow",
+        "consumed": 5
+      }
+    },
+    {
+      "id": "decode-u32-18-bounded_noncanonical-exact",
+      "width": 32,
+      "policy": "bounded_noncanonical",
+      "api": "exact",
+      "hex": "ff ff ff ff ff ff ff ff ff 01",
+      "expected": {
+        "status": "error",
+        "error": "Overflow",
+        "consumed": 5
+      }
+    },
+    {
+      "id": "decode-u32-19-canonical-prefix",
+      "width": 32,
+      "policy": "canonical",
+      "api": "prefix",
+      "hex": "ff ff ff ff ff ff ff ff ff 00",
+      "expected": {
+        "status": "error",
+        "error": "Overflow",
+        "consumed": 5
+      }
+    },
+    {
+      "id": "decode-u32-19-canonical-exact",
+      "width": 32,
+      "policy": "canonical",
+      "api": "exact",
+      "hex": "ff ff ff ff ff ff ff ff ff 00",
+      "expected": {
+        "status": "error",
+        "error": "Overflow",
+        "consumed": 5
+      }
+    },
+    {
+      "id": "decode-u32-19-bounded_noncanonical-prefix",
+      "width": 32,
+      "policy": "bounded_noncanonical",
+      "api": "prefix",
+      "hex": "ff ff ff ff ff ff ff ff ff 00",
+      "expected": {
+        "status": "error",
+        "error": "Overflow",
+        "consumed": 5
+      }
+    },
+    {
+      "id": "decode-u32-19-bounded_noncanonical-exact",
+      "width": 32,
+      "policy": "bounded_noncanonical",
+      "api": "exact",
+      "hex": "ff ff ff ff ff ff ff ff ff 00",
+      "expected": {
+        "status": "error",
+        "error": "Overflow",
+        "consumed": 5
+      }
+    },
+    {
+      "id": "decode-u32-20-canonical-prefix",
+      "width": 32,
+      "policy": "canonical",
+      "api": "prefix",
+      "hex": "80 80 80 80 80 80 80 80 80 02",
+      "expected": {
+        "status": "error",
+        "error": "TooLong",
+        "consumed": 5
+      }
+    },
+    {
+      "id": "decode-u32-20-canonical-exact",
+      "width": 32,
+      "policy": "canonical",
+      "api": "exact",
+      "hex": "80 80 80 80 80 80 80 80 80 02",
+      "expected": {
+        "status": "error",
+        "error": "TooLong",
+        "consumed": 5
+      }
+    },
+    {
+      "id": "decode-u32-20-bounded_noncanonical-prefix",
+      "width": 32,
+      "policy": "bounded_noncanonical",
+      "api": "prefix",
+      "hex": "80 80 80 80 80 80 80 80 80 02",
+      "expected": {
+        "status": "error",
+        "error": "TooLong",
+        "consumed": 5
+      }
+    },
+    {
+      "id": "decode-u32-20-bounded_noncanonical-exact",
+      "width": 32,
+      "policy": "bounded_noncanonical",
+      "api": "exact",
+      "hex": "80 80 80 80 80 80 80 80 80 02",
+      "expected": {
+        "status": "error",
+        "error": "TooLong",
+        "consumed": 5
+      }
+    },
+    {
+      "id": "decode-u32-21-canonical-prefix",
+      "width": 32,
+      "policy": "canonical",
+      "api": "prefix",
+      "hex": "80 80 80 80 80 80 80 80 80 80",
+      "expected": {
+        "status": "error",
+        "error": "TooLong",
+        "consumed": 5
+      }
+    },
+    {
+      "id": "decode-u32-21-canonical-exact",
+      "width": 32,
+      "policy": "canonical",
+      "api": "exact",
+      "hex": "80 80 80 80 80 80 80 80 80 80",
+      "expected": {
+        "status": "error",
+        "error": "TooLong",
+        "consumed": 5
+      }
+    },
+    {
+      "id": "decode-u32-21-bounded_noncanonical-prefix",
+      "width": 32,
+      "policy": "bounded_noncanonical",
+      "api": "prefix",
+      "hex": "80 80 80 80 80 80 80 80 80 80",
+      "expected": {
+        "status": "error",
+        "error": "TooLong",
+        "consumed": 5
+      }
+    },
+    {
+      "id": "decode-u32-21-bounded_noncanonical-exact",
+      "width": 32,
+      "policy": "bounded_noncanonical",
+      "api": "exact",
+      "hex": "80 80 80 80 80 80 80 80 80 80",
+      "expected": {
+        "status": "error",
+        "error": "TooLong",
+        "consumed": 5
+      }
+    },
+    {
+      "id": "decode-u32-22-canonical-prefix",
+      "width": 32,
+      "policy": "canonical",
+      "api": "prefix",
+      "hex": "80 80 80 80 80 80 80 80 80 82",
+      "expected": {
+        "status": "error",
+        "error": "TooLong",
+        "consumed": 5
+      }
+    },
+    {
+      "id": "decode-u32-22-canonical-exact",
+      "width": 32,
+      "policy": "canonical",
+      "api": "exact",
+      "hex": "80 80 80 80 80 80 80 80 80 82",
+      "expected": {
+        "status": "error",
+        "error": "TooLong",
+        "consumed": 5
+      }
+    },
+    {
+      "id": "decode-u32-22-bounded_noncanonical-prefix",
+      "width": 32,
+      "policy": "bounded_noncanonical",
+      "api": "prefix",
+      "hex": "80 80 80 80 80 80 80 80 80 82",
+      "expected": {
+        "status": "error",
+        "error": "TooLong",
+        "consumed": 5
+      }
+    },
+    {
+      "id": "decode-u32-22-bounded_noncanonical-exact",
+      "width": 32,
+      "policy": "bounded_noncanonical",
+      "api": "exact",
+      "hex": "80 80 80 80 80 80 80 80 80 82",
+      "expected": {
+        "status": "error",
+        "error": "TooLong",
+        "consumed": 5
+      }
+    },
+    {
+      "id": "decode-u32-23-canonical-prefix",
+      "width": 32,
+      "policy": "canonical",
+      "api": "prefix",
+      "hex": "80 80 80 80 80 80 80 80 80 80 00",
+      "expected": {
+        "status": "error",
+        "error": "TooLong",
+        "consumed": 5
+      }
+    },
+    {
+      "id": "decode-u32-23-canonical-exact",
+      "width": 32,
+      "policy": "canonical",
+      "api": "exact",
+      "hex": "80 80 80 80 80 80 80 80 80 80 00",
+      "expected": {
+        "status": "error",
+        "error": "TooLong",
+        "consumed": 5
+      }
+    },
+    {
+      "id": "decode-u32-23-bounded_noncanonical-prefix",
+      "width": 32,
+      "policy": "bounded_noncanonical",
+      "api": "prefix",
+      "hex": "80 80 80 80 80 80 80 80 80 80 00",
+      "expected": {
+        "status": "error",
+        "error": "TooLong",
+        "consumed": 5
+      }
+    },
+    {
+      "id": "decode-u32-23-bounded_noncanonical-exact",
+      "width": 32,
+      "policy": "bounded_noncanonical",
+      "api": "exact",
+      "hex": "80 80 80 80 80 80 80 80 80 80 00",
+      "expected": {
+        "status": "error",
+        "error": "TooLong",
+        "consumed": 5
+      }
+    },
+    {
+      "id": "decode-u32-24-canonical-prefix",
+      "width": 32,
+      "policy": "canonical",
+      "api": "prefix",
+      "hex": "80 80 80 80",
+      "expected": {
+        "status": "error",
+        "error": "Truncated",
+        "consumed": 4
+      }
+    },
+    {
+      "id": "decode-u32-24-canonical-exact",
+      "width": 32,
+      "policy": "canonical",
+      "api": "exact",
+      "hex": "80 80 80 80",
+      "expected": {
+        "status": "error",
+        "error": "Truncated",
+        "consumed": 4
+      }
+    },
+    {
+      "id": "decode-u32-24-bounded_noncanonical-prefix",
+      "width": 32,
+      "policy": "bounded_noncanonical",
+      "api": "prefix",
+      "hex": "80 80 80 80",
+      "expected": {
+        "status": "error",
+        "error": "Truncated",
+        "consumed": 4
+      }
+    },
+    {
+      "id": "decode-u32-24-bounded_noncanonical-exact",
+      "width": 32,
+      "policy": "bounded_noncanonical",
+      "api": "exact",
+      "hex": "80 80 80 80",
+      "expected": {
+        "status": "error",
+        "error": "Truncated",
+        "consumed": 4
+      }
+    },
+    {
+      "id": "decode-u32-25-canonical-prefix",
+      "width": 32,
+      "policy": "canonical",
+      "api": "prefix",
+      "hex": "80 80 80 80 00",
+      "expected": {
+        "status": "error",
+        "error": "NonCanonical",
+        "consumed": 5
+      }
+    },
+    {
+      "id": "decode-u32-25-canonical-exact",
+      "width": 32,
+      "policy": "canonical",
+      "api": "exact",
+      "hex": "80 80 80 80 00",
+      "expected": {
+        "status": "error",
+        "error": "NonCanonical",
+        "consumed": 5
+      }
+    },
+    {
+      "id": "decode-u32-25-bounded_noncanonical-prefix",
+      "width": 32,
+      "policy": "bounded_noncanonical",
+      "api": "prefix",
+      "hex": "80 80 80 80 00",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "0",
+        "consumed": 5,
+        "canonical": false
+      }
+    },
+    {
+      "id": "decode-u32-25-bounded_noncanonical-exact",
+      "width": 32,
+      "policy": "bounded_noncanonical",
+      "api": "exact",
+      "hex": "80 80 80 80 00",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "0",
+        "consumed": 5,
+        "canonical": false
+      }
+    },
+    {
+      "id": "decode-u32-26-canonical-prefix",
+      "width": 32,
+      "policy": "canonical",
+      "api": "prefix",
+      "hex": "80 80 80 80 80",
+      "expected": {
+        "status": "error",
+        "error": "TooLong",
+        "consumed": 5
+      }
+    },
+    {
+      "id": "decode-u32-26-canonical-exact",
+      "width": 32,
+      "policy": "canonical",
+      "api": "exact",
+      "hex": "80 80 80 80 80",
+      "expected": {
+        "status": "error",
+        "error": "TooLong",
+        "consumed": 5
+      }
+    },
+    {
+      "id": "decode-u32-26-bounded_noncanonical-prefix",
+      "width": 32,
+      "policy": "bounded_noncanonical",
+      "api": "prefix",
+      "hex": "80 80 80 80 80",
+      "expected": {
+        "status": "error",
+        "error": "TooLong",
+        "consumed": 5
+      }
+    },
+    {
+      "id": "decode-u32-26-bounded_noncanonical-exact",
+      "width": 32,
+      "policy": "bounded_noncanonical",
+      "api": "exact",
+      "hex": "80 80 80 80 80",
+      "expected": {
+        "status": "error",
+        "error": "TooLong",
+        "consumed": 5
+      }
+    },
+    {
+      "id": "decode-u32-27-canonical-prefix",
+      "width": 32,
+      "policy": "canonical",
+      "api": "prefix",
+      "hex": "ff ff ff ff ff",
+      "expected": {
+        "status": "error",
+        "error": "Overflow",
+        "consumed": 5
+      }
+    },
+    {
+      "id": "decode-u32-27-canonical-exact",
+      "width": 32,
+      "policy": "canonical",
+      "api": "exact",
+      "hex": "ff ff ff ff ff",
+      "expected": {
+        "status": "error",
+        "error": "Overflow",
+        "consumed": 5
+      }
+    },
+    {
+      "id": "decode-u32-27-bounded_noncanonical-prefix",
+      "width": 32,
+      "policy": "bounded_noncanonical",
+      "api": "prefix",
+      "hex": "ff ff ff ff ff",
+      "expected": {
+        "status": "error",
+        "error": "Overflow",
+        "consumed": 5
+      }
+    },
+    {
+      "id": "decode-u32-27-bounded_noncanonical-exact",
+      "width": 32,
+      "policy": "bounded_noncanonical",
+      "api": "exact",
+      "hex": "ff ff ff ff ff",
+      "expected": {
+        "status": "error",
+        "error": "Overflow",
+        "consumed": 5
+      }
+    },
+    {
+      "id": "decode-u64-0-canonical-prefix",
+      "width": 64,
+      "policy": "canonical",
+      "api": "prefix",
+      "hex": "",
+      "expected": {
+        "status": "error",
+        "error": "Truncated",
+        "consumed": 0
+      }
+    },
+    {
+      "id": "decode-u64-0-canonical-exact",
+      "width": 64,
+      "policy": "canonical",
+      "api": "exact",
+      "hex": "",
+      "expected": {
+        "status": "error",
+        "error": "Truncated",
+        "consumed": 0
+      }
+    },
+    {
+      "id": "decode-u64-0-bounded_noncanonical-prefix",
+      "width": 64,
+      "policy": "bounded_noncanonical",
+      "api": "prefix",
+      "hex": "",
+      "expected": {
+        "status": "error",
+        "error": "Truncated",
+        "consumed": 0
+      }
+    },
+    {
+      "id": "decode-u64-0-bounded_noncanonical-exact",
+      "width": 64,
+      "policy": "bounded_noncanonical",
+      "api": "exact",
+      "hex": "",
+      "expected": {
+        "status": "error",
+        "error": "Truncated",
+        "consumed": 0
+      }
+    },
+    {
+      "id": "decode-u64-1-canonical-prefix",
+      "width": 64,
+      "policy": "canonical",
+      "api": "prefix",
+      "hex": "00",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "0",
+        "consumed": 1,
+        "canonical": true
+      }
+    },
+    {
+      "id": "decode-u64-1-canonical-exact",
+      "width": 64,
+      "policy": "canonical",
+      "api": "exact",
+      "hex": "00",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "0",
+        "consumed": 1,
+        "canonical": true
+      }
+    },
+    {
+      "id": "decode-u64-1-bounded_noncanonical-prefix",
+      "width": 64,
+      "policy": "bounded_noncanonical",
+      "api": "prefix",
+      "hex": "00",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "0",
+        "consumed": 1,
+        "canonical": true
+      }
+    },
+    {
+      "id": "decode-u64-1-bounded_noncanonical-exact",
+      "width": 64,
+      "policy": "bounded_noncanonical",
+      "api": "exact",
+      "hex": "00",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "0",
+        "consumed": 1,
+        "canonical": true
+      }
+    },
+    {
+      "id": "decode-u64-2-canonical-prefix",
+      "width": 64,
+      "policy": "canonical",
+      "api": "prefix",
+      "hex": "7f",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "127",
+        "consumed": 1,
+        "canonical": true
+      }
+    },
+    {
+      "id": "decode-u64-2-canonical-exact",
+      "width": 64,
+      "policy": "canonical",
+      "api": "exact",
+      "hex": "7f",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "127",
+        "consumed": 1,
+        "canonical": true
+      }
+    },
+    {
+      "id": "decode-u64-2-bounded_noncanonical-prefix",
+      "width": 64,
+      "policy": "bounded_noncanonical",
+      "api": "prefix",
+      "hex": "7f",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "127",
+        "consumed": 1,
+        "canonical": true
+      }
+    },
+    {
+      "id": "decode-u64-2-bounded_noncanonical-exact",
+      "width": 64,
+      "policy": "bounded_noncanonical",
+      "api": "exact",
+      "hex": "7f",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "127",
+        "consumed": 1,
+        "canonical": true
+      }
+    },
+    {
+      "id": "decode-u64-3-canonical-prefix",
+      "width": 64,
+      "policy": "canonical",
+      "api": "prefix",
+      "hex": "80",
+      "expected": {
+        "status": "error",
+        "error": "Truncated",
+        "consumed": 1
+      }
+    },
+    {
+      "id": "decode-u64-3-canonical-exact",
+      "width": 64,
+      "policy": "canonical",
+      "api": "exact",
+      "hex": "80",
+      "expected": {
+        "status": "error",
+        "error": "Truncated",
+        "consumed": 1
+      }
+    },
+    {
+      "id": "decode-u64-3-bounded_noncanonical-prefix",
+      "width": 64,
+      "policy": "bounded_noncanonical",
+      "api": "prefix",
+      "hex": "80",
+      "expected": {
+        "status": "error",
+        "error": "Truncated",
+        "consumed": 1
+      }
+    },
+    {
+      "id": "decode-u64-3-bounded_noncanonical-exact",
+      "width": 64,
+      "policy": "bounded_noncanonical",
+      "api": "exact",
+      "hex": "80",
+      "expected": {
+        "status": "error",
+        "error": "Truncated",
+        "consumed": 1
+      }
+    },
+    {
+      "id": "decode-u64-4-canonical-prefix",
+      "width": 64,
+      "policy": "canonical",
+      "api": "prefix",
+      "hex": "ff",
+      "expected": {
+        "status": "error",
+        "error": "Truncated",
+        "consumed": 1
+      }
+    },
+    {
+      "id": "decode-u64-4-canonical-exact",
+      "width": 64,
+      "policy": "canonical",
+      "api": "exact",
+      "hex": "ff",
+      "expected": {
+        "status": "error",
+        "error": "Truncated",
+        "consumed": 1
+      }
+    },
+    {
+      "id": "decode-u64-4-bounded_noncanonical-prefix",
+      "width": 64,
+      "policy": "bounded_noncanonical",
+      "api": "prefix",
+      "hex": "ff",
+      "expected": {
+        "status": "error",
+        "error": "Truncated",
+        "consumed": 1
+      }
+    },
+    {
+      "id": "decode-u64-4-bounded_noncanonical-exact",
+      "width": 64,
+      "policy": "bounded_noncanonical",
+      "api": "exact",
+      "hex": "ff",
+      "expected": {
+        "status": "error",
+        "error": "Truncated",
+        "consumed": 1
+      }
+    },
+    {
+      "id": "decode-u64-5-canonical-prefix",
+      "width": 64,
+      "policy": "canonical",
+      "api": "prefix",
+      "hex": "80 00",
+      "expected": {
+        "status": "error",
+        "error": "NonCanonical",
+        "consumed": 2
+      }
+    },
+    {
+      "id": "decode-u64-5-canonical-exact",
+      "width": 64,
+      "policy": "canonical",
+      "api": "exact",
+      "hex": "80 00",
+      "expected": {
+        "status": "error",
+        "error": "NonCanonical",
+        "consumed": 2
+      }
+    },
+    {
+      "id": "decode-u64-5-bounded_noncanonical-prefix",
+      "width": 64,
+      "policy": "bounded_noncanonical",
+      "api": "prefix",
+      "hex": "80 00",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "0",
+        "consumed": 2,
+        "canonical": false
+      }
+    },
+    {
+      "id": "decode-u64-5-bounded_noncanonical-exact",
+      "width": 64,
+      "policy": "bounded_noncanonical",
+      "api": "exact",
+      "hex": "80 00",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "0",
+        "consumed": 2,
+        "canonical": false
+      }
+    },
+    {
+      "id": "decode-u64-6-canonical-prefix",
+      "width": 64,
+      "policy": "canonical",
+      "api": "prefix",
+      "hex": "81 00",
+      "expected": {
+        "status": "error",
+        "error": "NonCanonical",
+        "consumed": 2
+      }
+    },
+    {
+      "id": "decode-u64-6-canonical-exact",
+      "width": 64,
+      "policy": "canonical",
+      "api": "exact",
+      "hex": "81 00",
+      "expected": {
+        "status": "error",
+        "error": "NonCanonical",
+        "consumed": 2
+      }
+    },
+    {
+      "id": "decode-u64-6-bounded_noncanonical-prefix",
+      "width": 64,
+      "policy": "bounded_noncanonical",
+      "api": "prefix",
+      "hex": "81 00",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "1",
+        "consumed": 2,
+        "canonical": false
+      }
+    },
+    {
+      "id": "decode-u64-6-bounded_noncanonical-exact",
+      "width": 64,
+      "policy": "bounded_noncanonical",
+      "api": "exact",
+      "hex": "81 00",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "1",
+        "consumed": 2,
+        "canonical": false
+      }
+    },
+    {
+      "id": "decode-u64-7-canonical-prefix",
+      "width": 64,
+      "policy": "canonical",
+      "api": "prefix",
+      "hex": "ff 00",
+      "expected": {
+        "status": "error",
+        "error": "NonCanonical",
+        "consumed": 2
+      }
+    },
+    {
+      "id": "decode-u64-7-canonical-exact",
+      "width": 64,
+      "policy": "canonical",
+      "api": "exact",
+      "hex": "ff 00",
+      "expected": {
+        "status": "error",
+        "error": "NonCanonical",
+        "consumed": 2
+      }
+    },
+    {
+      "id": "decode-u64-7-bounded_noncanonical-prefix",
+      "width": 64,
+      "policy": "bounded_noncanonical",
+      "api": "prefix",
+      "hex": "ff 00",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "127",
+        "consumed": 2,
+        "canonical": false
+      }
+    },
+    {
+      "id": "decode-u64-7-bounded_noncanonical-exact",
+      "width": 64,
+      "policy": "bounded_noncanonical",
+      "api": "exact",
+      "hex": "ff 00",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "127",
+        "consumed": 2,
+        "canonical": false
+      }
+    },
+    {
+      "id": "decode-u64-8-canonical-prefix",
+      "width": 64,
+      "policy": "canonical",
+      "api": "prefix",
+      "hex": "80 01",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "128",
+        "consumed": 2,
+        "canonical": true
+      }
+    },
+    {
+      "id": "decode-u64-8-canonical-exact",
+      "width": 64,
+      "policy": "canonical",
+      "api": "exact",
+      "hex": "80 01",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "128",
+        "consumed": 2,
+        "canonical": true
+      }
+    },
+    {
+      "id": "decode-u64-8-bounded_noncanonical-prefix",
+      "width": 64,
+      "policy": "bounded_noncanonical",
+      "api": "prefix",
+      "hex": "80 01",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "128",
+        "consumed": 2,
+        "canonical": true
+      }
+    },
+    {
+      "id": "decode-u64-8-bounded_noncanonical-exact",
+      "width": 64,
+      "policy": "bounded_noncanonical",
+      "api": "exact",
+      "hex": "80 01",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "128",
+        "consumed": 2,
+        "canonical": true
+      }
+    },
+    {
+      "id": "decode-u64-9-canonical-prefix",
+      "width": 64,
+      "policy": "canonical",
+      "api": "prefix",
+      "hex": "96 01",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "150",
+        "consumed": 2,
+        "canonical": true
+      }
+    },
+    {
+      "id": "decode-u64-9-canonical-exact",
+      "width": 64,
+      "policy": "canonical",
+      "api": "exact",
+      "hex": "96 01",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "150",
+        "consumed": 2,
+        "canonical": true
+      }
+    },
+    {
+      "id": "decode-u64-9-bounded_noncanonical-prefix",
+      "width": 64,
+      "policy": "bounded_noncanonical",
+      "api": "prefix",
+      "hex": "96 01",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "150",
+        "consumed": 2,
+        "canonical": true
+      }
+    },
+    {
+      "id": "decode-u64-9-bounded_noncanonical-exact",
+      "width": 64,
+      "policy": "bounded_noncanonical",
+      "api": "exact",
+      "hex": "96 01",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "150",
+        "consumed": 2,
+        "canonical": true
+      }
+    },
+    {
+      "id": "decode-u64-10-canonical-prefix",
+      "width": 64,
+      "policy": "canonical",
+      "api": "prefix",
+      "hex": "ac 02",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "300",
+        "consumed": 2,
+        "canonical": true
+      }
+    },
+    {
+      "id": "decode-u64-10-canonical-exact",
+      "width": 64,
+      "policy": "canonical",
+      "api": "exact",
+      "hex": "ac 02",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "300",
+        "consumed": 2,
+        "canonical": true
+      }
+    },
+    {
+      "id": "decode-u64-10-bounded_noncanonical-prefix",
+      "width": 64,
+      "policy": "bounded_noncanonical",
+      "api": "prefix",
+      "hex": "ac 02",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "300",
+        "consumed": 2,
+        "canonical": true
+      }
+    },
+    {
+      "id": "decode-u64-10-bounded_noncanonical-exact",
+      "width": 64,
+      "policy": "bounded_noncanonical",
+      "api": "exact",
+      "hex": "ac 02",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "300",
+        "consumed": 2,
+        "canonical": true
+      }
+    },
+    {
+      "id": "decode-u64-11-canonical-prefix",
+      "width": 64,
+      "policy": "canonical",
+      "api": "prefix",
+      "hex": "00 80",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "0",
+        "consumed": 1,
+        "canonical": true
+      }
+    },
+    {
+      "id": "decode-u64-11-canonical-exact",
+      "width": 64,
+      "policy": "canonical",
+      "api": "exact",
+      "hex": "00 80",
+      "expected": {
+        "status": "error",
+        "error": "TrailingBytes",
+        "consumed": 1
+      }
+    },
+    {
+      "id": "decode-u64-11-bounded_noncanonical-prefix",
+      "width": 64,
+      "policy": "bounded_noncanonical",
+      "api": "prefix",
+      "hex": "00 80",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "0",
+        "consumed": 1,
+        "canonical": true
+      }
+    },
+    {
+      "id": "decode-u64-11-bounded_noncanonical-exact",
+      "width": 64,
+      "policy": "bounded_noncanonical",
+      "api": "exact",
+      "hex": "00 80",
+      "expected": {
+        "status": "error",
+        "error": "TrailingBytes",
+        "consumed": 1
+      }
+    },
+    {
+      "id": "decode-u64-12-canonical-prefix",
+      "width": 64,
+      "policy": "canonical",
+      "api": "prefix",
+      "hex": "80 00 01",
+      "expected": {
+        "status": "error",
+        "error": "NonCanonical",
+        "consumed": 2
+      }
+    },
+    {
+      "id": "decode-u64-12-canonical-exact",
+      "width": 64,
+      "policy": "canonical",
+      "api": "exact",
+      "hex": "80 00 01",
+      "expected": {
+        "status": "error",
+        "error": "NonCanonical",
+        "consumed": 2
+      }
+    },
+    {
+      "id": "decode-u64-12-bounded_noncanonical-prefix",
+      "width": 64,
+      "policy": "bounded_noncanonical",
+      "api": "prefix",
+      "hex": "80 00 01",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "0",
+        "consumed": 2,
+        "canonical": false
+      }
+    },
+    {
+      "id": "decode-u64-12-bounded_noncanonical-exact",
+      "width": 64,
+      "policy": "bounded_noncanonical",
+      "api": "exact",
+      "hex": "80 00 01",
+      "expected": {
+        "status": "error",
+        "error": "TrailingBytes",
+        "consumed": 2
+      }
+    },
+    {
+      "id": "decode-u64-13-canonical-prefix",
+      "width": 64,
+      "policy": "canonical",
+      "api": "prefix",
+      "hex": "ff ff ff ff 0f",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "4294967295",
+        "consumed": 5,
+        "canonical": true
+      }
+    },
+    {
+      "id": "decode-u64-13-canonical-exact",
+      "width": 64,
+      "policy": "canonical",
+      "api": "exact",
+      "hex": "ff ff ff ff 0f",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "4294967295",
+        "consumed": 5,
+        "canonical": true
+      }
+    },
+    {
+      "id": "decode-u64-13-bounded_noncanonical-prefix",
+      "width": 64,
+      "policy": "bounded_noncanonical",
+      "api": "prefix",
+      "hex": "ff ff ff ff 0f",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "4294967295",
+        "consumed": 5,
+        "canonical": true
+      }
+    },
+    {
+      "id": "decode-u64-13-bounded_noncanonical-exact",
+      "width": 64,
+      "policy": "bounded_noncanonical",
+      "api": "exact",
+      "hex": "ff ff ff ff 0f",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "4294967295",
+        "consumed": 5,
+        "canonical": true
+      }
+    },
+    {
+      "id": "decode-u64-14-canonical-prefix",
+      "width": 64,
+      "policy": "canonical",
+      "api": "prefix",
+      "hex": "80 80 80 80 10",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "4294967296",
+        "consumed": 5,
+        "canonical": true
+      }
+    },
+    {
+      "id": "decode-u64-14-canonical-exact",
+      "width": 64,
+      "policy": "canonical",
+      "api": "exact",
+      "hex": "80 80 80 80 10",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "4294967296",
+        "consumed": 5,
+        "canonical": true
+      }
+    },
+    {
+      "id": "decode-u64-14-bounded_noncanonical-prefix",
+      "width": 64,
+      "policy": "bounded_noncanonical",
+      "api": "prefix",
+      "hex": "80 80 80 80 10",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "4294967296",
+        "consumed": 5,
+        "canonical": true
+      }
+    },
+    {
+      "id": "decode-u64-14-bounded_noncanonical-exact",
+      "width": 64,
+      "policy": "bounded_noncanonical",
+      "api": "exact",
+      "hex": "80 80 80 80 10",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "4294967296",
+        "consumed": 5,
+        "canonical": true
+      }
+    },
+    {
+      "id": "decode-u64-15-canonical-prefix",
+      "width": 64,
+      "policy": "canonical",
+      "api": "prefix",
+      "hex": "ff ff ff ff 10",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "4563402751",
+        "consumed": 5,
+        "canonical": true
+      }
+    },
+    {
+      "id": "decode-u64-15-canonical-exact",
+      "width": 64,
+      "policy": "canonical",
+      "api": "exact",
+      "hex": "ff ff ff ff 10",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "4563402751",
+        "consumed": 5,
+        "canonical": true
+      }
+    },
+    {
+      "id": "decode-u64-15-bounded_noncanonical-prefix",
+      "width": 64,
+      "policy": "bounded_noncanonical",
+      "api": "prefix",
+      "hex": "ff ff ff ff 10",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "4563402751",
+        "consumed": 5,
+        "canonical": true
+      }
+    },
+    {
+      "id": "decode-u64-15-bounded_noncanonical-exact",
+      "width": 64,
+      "policy": "bounded_noncanonical",
+      "api": "exact",
+      "hex": "ff ff ff ff 10",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "4563402751",
+        "consumed": 5,
+        "canonical": true
+      }
+    },
+    {
+      "id": "decode-u64-16-canonical-prefix",
+      "width": 64,
+      "policy": "canonical",
+      "api": "prefix",
+      "hex": "80 80 80 80 80 00",
+      "expected": {
+        "status": "error",
+        "error": "NonCanonical",
+        "consumed": 6
+      }
+    },
+    {
+      "id": "decode-u64-16-canonical-exact",
+      "width": 64,
+      "policy": "canonical",
+      "api": "exact",
+      "hex": "80 80 80 80 80 00",
+      "expected": {
+        "status": "error",
+        "error": "NonCanonical",
+        "consumed": 6
+      }
+    },
+    {
+      "id": "decode-u64-16-bounded_noncanonical-prefix",
+      "width": 64,
+      "policy": "bounded_noncanonical",
+      "api": "prefix",
+      "hex": "80 80 80 80 80 00",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "0",
+        "consumed": 6,
+        "canonical": false
+      }
+    },
+    {
+      "id": "decode-u64-16-bounded_noncanonical-exact",
+      "width": 64,
+      "policy": "bounded_noncanonical",
+      "api": "exact",
+      "hex": "80 80 80 80 80 00",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "0",
+        "consumed": 6,
+        "canonical": false
+      }
+    },
+    {
+      "id": "decode-u64-17-canonical-prefix",
+      "width": 64,
+      "policy": "canonical",
+      "api": "prefix",
+      "hex": "80 80 80 80 90",
+      "expected": {
+        "status": "error",
+        "error": "Truncated",
+        "consumed": 5
+      }
+    },
+    {
+      "id": "decode-u64-17-canonical-exact",
+      "width": 64,
+      "policy": "canonical",
+      "api": "exact",
+      "hex": "80 80 80 80 90",
+      "expected": {
+        "status": "error",
+        "error": "Truncated",
+        "consumed": 5
+      }
+    },
+    {
+      "id": "decode-u64-17-bounded_noncanonical-prefix",
+      "width": 64,
+      "policy": "bounded_noncanonical",
+      "api": "prefix",
+      "hex": "80 80 80 80 90",
+      "expected": {
+        "status": "error",
+        "error": "Truncated",
+        "consumed": 5
+      }
+    },
+    {
+      "id": "decode-u64-17-bounded_noncanonical-exact",
+      "width": 64,
+      "policy": "bounded_noncanonical",
+      "api": "exact",
+      "hex": "80 80 80 80 90",
+      "expected": {
+        "status": "error",
+        "error": "Truncated",
+        "consumed": 5
+      }
+    },
+    {
+      "id": "decode-u64-18-canonical-prefix",
+      "width": 64,
+      "policy": "canonical",
+      "api": "prefix",
+      "hex": "ff ff ff ff ff ff ff ff ff 01",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "18446744073709551615",
+        "consumed": 10,
+        "canonical": true
+      }
+    },
+    {
+      "id": "decode-u64-18-canonical-exact",
+      "width": 64,
+      "policy": "canonical",
+      "api": "exact",
+      "hex": "ff ff ff ff ff ff ff ff ff 01",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "18446744073709551615",
+        "consumed": 10,
+        "canonical": true
+      }
+    },
+    {
+      "id": "decode-u64-18-bounded_noncanonical-prefix",
+      "width": 64,
+      "policy": "bounded_noncanonical",
+      "api": "prefix",
+      "hex": "ff ff ff ff ff ff ff ff ff 01",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "18446744073709551615",
+        "consumed": 10,
+        "canonical": true
+      }
+    },
+    {
+      "id": "decode-u64-18-bounded_noncanonical-exact",
+      "width": 64,
+      "policy": "bounded_noncanonical",
+      "api": "exact",
+      "hex": "ff ff ff ff ff ff ff ff ff 01",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "18446744073709551615",
+        "consumed": 10,
+        "canonical": true
+      }
+    },
+    {
+      "id": "decode-u64-19-canonical-prefix",
+      "width": 64,
+      "policy": "canonical",
+      "api": "prefix",
+      "hex": "ff ff ff ff ff ff ff ff ff 00",
+      "expected": {
+        "status": "error",
+        "error": "NonCanonical",
+        "consumed": 10
+      }
+    },
+    {
+      "id": "decode-u64-19-canonical-exact",
+      "width": 64,
+      "policy": "canonical",
+      "api": "exact",
+      "hex": "ff ff ff ff ff ff ff ff ff 00",
+      "expected": {
+        "status": "error",
+        "error": "NonCanonical",
+        "consumed": 10
+      }
+    },
+    {
+      "id": "decode-u64-19-bounded_noncanonical-prefix",
+      "width": 64,
+      "policy": "bounded_noncanonical",
+      "api": "prefix",
+      "hex": "ff ff ff ff ff ff ff ff ff 00",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "9223372036854775807",
+        "consumed": 10,
+        "canonical": false
+      }
+    },
+    {
+      "id": "decode-u64-19-bounded_noncanonical-exact",
+      "width": 64,
+      "policy": "bounded_noncanonical",
+      "api": "exact",
+      "hex": "ff ff ff ff ff ff ff ff ff 00",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "9223372036854775807",
+        "consumed": 10,
+        "canonical": false
+      }
+    },
+    {
+      "id": "decode-u64-20-canonical-prefix",
+      "width": 64,
+      "policy": "canonical",
+      "api": "prefix",
+      "hex": "80 80 80 80 80 80 80 80 80 02",
+      "expected": {
+        "status": "error",
+        "error": "Overflow",
+        "consumed": 10
+      }
+    },
+    {
+      "id": "decode-u64-20-canonical-exact",
+      "width": 64,
+      "policy": "canonical",
+      "api": "exact",
+      "hex": "80 80 80 80 80 80 80 80 80 02",
+      "expected": {
+        "status": "error",
+        "error": "Overflow",
+        "consumed": 10
+      }
+    },
+    {
+      "id": "decode-u64-20-bounded_noncanonical-prefix",
+      "width": 64,
+      "policy": "bounded_noncanonical",
+      "api": "prefix",
+      "hex": "80 80 80 80 80 80 80 80 80 02",
+      "expected": {
+        "status": "error",
+        "error": "Overflow",
+        "consumed": 10
+      }
+    },
+    {
+      "id": "decode-u64-20-bounded_noncanonical-exact",
+      "width": 64,
+      "policy": "bounded_noncanonical",
+      "api": "exact",
+      "hex": "80 80 80 80 80 80 80 80 80 02",
+      "expected": {
+        "status": "error",
+        "error": "Overflow",
+        "consumed": 10
+      }
+    },
+    {
+      "id": "decode-u64-21-canonical-prefix",
+      "width": 64,
+      "policy": "canonical",
+      "api": "prefix",
+      "hex": "80 80 80 80 80 80 80 80 80 80",
+      "expected": {
+        "status": "error",
+        "error": "TooLong",
+        "consumed": 10
+      }
+    },
+    {
+      "id": "decode-u64-21-canonical-exact",
+      "width": 64,
+      "policy": "canonical",
+      "api": "exact",
+      "hex": "80 80 80 80 80 80 80 80 80 80",
+      "expected": {
+        "status": "error",
+        "error": "TooLong",
+        "consumed": 10
+      }
+    },
+    {
+      "id": "decode-u64-21-bounded_noncanonical-prefix",
+      "width": 64,
+      "policy": "bounded_noncanonical",
+      "api": "prefix",
+      "hex": "80 80 80 80 80 80 80 80 80 80",
+      "expected": {
+        "status": "error",
+        "error": "TooLong",
+        "consumed": 10
+      }
+    },
+    {
+      "id": "decode-u64-21-bounded_noncanonical-exact",
+      "width": 64,
+      "policy": "bounded_noncanonical",
+      "api": "exact",
+      "hex": "80 80 80 80 80 80 80 80 80 80",
+      "expected": {
+        "status": "error",
+        "error": "TooLong",
+        "consumed": 10
+      }
+    },
+    {
+      "id": "decode-u64-22-canonical-prefix",
+      "width": 64,
+      "policy": "canonical",
+      "api": "prefix",
+      "hex": "80 80 80 80 80 80 80 80 80 82",
+      "expected": {
+        "status": "error",
+        "error": "Overflow",
+        "consumed": 10
+      }
+    },
+    {
+      "id": "decode-u64-22-canonical-exact",
+      "width": 64,
+      "policy": "canonical",
+      "api": "exact",
+      "hex": "80 80 80 80 80 80 80 80 80 82",
+      "expected": {
+        "status": "error",
+        "error": "Overflow",
+        "consumed": 10
+      }
+    },
+    {
+      "id": "decode-u64-22-bounded_noncanonical-prefix",
+      "width": 64,
+      "policy": "bounded_noncanonical",
+      "api": "prefix",
+      "hex": "80 80 80 80 80 80 80 80 80 82",
+      "expected": {
+        "status": "error",
+        "error": "Overflow",
+        "consumed": 10
+      }
+    },
+    {
+      "id": "decode-u64-22-bounded_noncanonical-exact",
+      "width": 64,
+      "policy": "bounded_noncanonical",
+      "api": "exact",
+      "hex": "80 80 80 80 80 80 80 80 80 82",
+      "expected": {
+        "status": "error",
+        "error": "Overflow",
+        "consumed": 10
+      }
+    },
+    {
+      "id": "decode-u64-23-canonical-prefix",
+      "width": 64,
+      "policy": "canonical",
+      "api": "prefix",
+      "hex": "80 80 80 80 80 80 80 80 80 80 00",
+      "expected": {
+        "status": "error",
+        "error": "TooLong",
+        "consumed": 10
+      }
+    },
+    {
+      "id": "decode-u64-23-canonical-exact",
+      "width": 64,
+      "policy": "canonical",
+      "api": "exact",
+      "hex": "80 80 80 80 80 80 80 80 80 80 00",
+      "expected": {
+        "status": "error",
+        "error": "TooLong",
+        "consumed": 10
+      }
+    },
+    {
+      "id": "decode-u64-23-bounded_noncanonical-prefix",
+      "width": 64,
+      "policy": "bounded_noncanonical",
+      "api": "prefix",
+      "hex": "80 80 80 80 80 80 80 80 80 80 00",
+      "expected": {
+        "status": "error",
+        "error": "TooLong",
+        "consumed": 10
+      }
+    },
+    {
+      "id": "decode-u64-23-bounded_noncanonical-exact",
+      "width": 64,
+      "policy": "bounded_noncanonical",
+      "api": "exact",
+      "hex": "80 80 80 80 80 80 80 80 80 80 00",
+      "expected": {
+        "status": "error",
+        "error": "TooLong",
+        "consumed": 10
+      }
+    },
+    {
+      "id": "decode-u64-24-canonical-prefix",
+      "width": 64,
+      "policy": "canonical",
+      "api": "prefix",
+      "hex": "80 80 80 80 80 80 80 80 80",
+      "expected": {
+        "status": "error",
+        "error": "Truncated",
+        "consumed": 9
+      }
+    },
+    {
+      "id": "decode-u64-24-canonical-exact",
+      "width": 64,
+      "policy": "canonical",
+      "api": "exact",
+      "hex": "80 80 80 80 80 80 80 80 80",
+      "expected": {
+        "status": "error",
+        "error": "Truncated",
+        "consumed": 9
+      }
+    },
+    {
+      "id": "decode-u64-24-bounded_noncanonical-prefix",
+      "width": 64,
+      "policy": "bounded_noncanonical",
+      "api": "prefix",
+      "hex": "80 80 80 80 80 80 80 80 80",
+      "expected": {
+        "status": "error",
+        "error": "Truncated",
+        "consumed": 9
+      }
+    },
+    {
+      "id": "decode-u64-24-bounded_noncanonical-exact",
+      "width": 64,
+      "policy": "bounded_noncanonical",
+      "api": "exact",
+      "hex": "80 80 80 80 80 80 80 80 80",
+      "expected": {
+        "status": "error",
+        "error": "Truncated",
+        "consumed": 9
+      }
+    },
+    {
+      "id": "decode-u64-25-canonical-prefix",
+      "width": 64,
+      "policy": "canonical",
+      "api": "prefix",
+      "hex": "80 80 80 80 80 80 80 80 80 00",
+      "expected": {
+        "status": "error",
+        "error": "NonCanonical",
+        "consumed": 10
+      }
+    },
+    {
+      "id": "decode-u64-25-canonical-exact",
+      "width": 64,
+      "policy": "canonical",
+      "api": "exact",
+      "hex": "80 80 80 80 80 80 80 80 80 00",
+      "expected": {
+        "status": "error",
+        "error": "NonCanonical",
+        "consumed": 10
+      }
+    },
+    {
+      "id": "decode-u64-25-bounded_noncanonical-prefix",
+      "width": 64,
+      "policy": "bounded_noncanonical",
+      "api": "prefix",
+      "hex": "80 80 80 80 80 80 80 80 80 00",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "0",
+        "consumed": 10,
+        "canonical": false
+      }
+    },
+    {
+      "id": "decode-u64-25-bounded_noncanonical-exact",
+      "width": 64,
+      "policy": "bounded_noncanonical",
+      "api": "exact",
+      "hex": "80 80 80 80 80 80 80 80 80 00",
+      "expected": {
+        "status": "ok",
+        "value_decimal": "0",
+        "consumed": 10,
+        "canonical": false
+      }
+    },
+    {
+      "id": "decode-u64-26-canonical-prefix",
+      "width": 64,
+      "policy": "canonical",
+      "api": "prefix",
+      "hex": "ff ff ff ff ff ff ff ff ff ff",
+      "expected": {
+        "status": "error",
+        "error": "Overflow",
+        "consumed": 10
+      }
+    },
+    {
+      "id": "decode-u64-26-canonical-exact",
+      "width": 64,
+      "policy": "canonical",
+      "api": "exact",
+      "hex": "ff ff ff ff ff ff ff ff ff ff",
+      "expected": {
+        "status": "error",
+        "error": "Overflow",
+        "consumed": 10
+      }
+    },
+    {
+      "id": "decode-u64-26-bounded_noncanonical-prefix",
+      "width": 64,
+      "policy": "bounded_noncanonical",
+      "api": "prefix",
+      "hex": "ff ff ff ff ff ff ff ff ff ff",
+      "expected": {
+        "status": "error",
+        "error": "Overflow",
+        "consumed": 10
+      }
+    },
+    {
+      "id": "decode-u64-26-bounded_noncanonical-exact",
+      "width": 64,
+      "policy": "bounded_noncanonical",
+      "api": "exact",
+      "hex": "ff ff ff ff ff ff ff ff ff ff",
+      "expected": {
+        "status": "error",
+        "error": "Overflow",
+        "consumed": 10
+      }
+    }
+  ],
+  "streaming": [
+    {
+      "id": "u64-split-300",
+      "width": 64,
+      "policy": "canonical",
+      "chunks_hex": [
+        "ac",
+        "",
+        "02 7f"
+      ],
+      "expected": {
+        "status": "ok",
+        "value_decimal": "300",
+        "consumed": 2,
+        "canonical": true
+      },
+      "unconsumed_hex": "7f",
+      "finish_at_end": true
+    },
+    {
+      "id": "u32-split-overlong-zero-strict",
+      "width": 32,
+      "policy": "canonical",
+      "chunks_hex": [
+        "80",
+        "00"
+      ],
+      "expected": {
+        "status": "error",
+        "error": "NonCanonical",
+        "consumed": 2
+      },
+      "unconsumed_hex": "",
+      "finish_at_end": true
+    },
+    {
+      "id": "u32-split-overlong-zero-bounded",
+      "width": 32,
+      "policy": "bounded_noncanonical",
+      "chunks_hex": [
+        "80",
+        "00"
+      ],
+      "expected": {
+        "status": "ok",
+        "value_decimal": "0",
+        "consumed": 2,
+        "canonical": false
+      },
+      "unconsumed_hex": "",
+      "finish_at_end": true
+    },
+    {
+      "id": "u64-truncated-on-finish",
+      "width": 64,
+      "policy": "canonical",
+      "chunks_hex": [
+        "80",
+        "",
+        "80"
+      ],
+      "expected": {
+        "status": "error",
+        "error": "Truncated",
+        "consumed": 2
+      },
+      "unconsumed_hex": "",
+      "finish_at_end": true
+    },
+    {
+      "id": "u64-empty-on-finish",
+      "width": 64,
+      "policy": "canonical",
+      "chunks_hex": [
+        "",
+        ""
+      ],
+      "expected": {
+        "status": "error",
+        "error": "Truncated",
+        "consumed": 0
+      },
+      "unconsumed_hex": "",
+      "finish_at_end": true
+    },
+    {
+      "id": "u64-limit-does-not-consume-eleventh-byte",
+      "width": 64,
+      "policy": "canonical",
+      "chunks_hex": [
+        "80 80 80 80 80",
+        "80 80 80 80 80 00"
+      ],
+      "expected": {
+        "status": "error",
+        "error": "TooLong",
+        "consumed": 10
+      },
+      "unconsumed_hex": "00",
+      "finish_at_end": true
+    }
+  ],
+  "encode_into": [
+    {
+      "id": "encode-into-u32-0-capacity-0",
+      "width": 32,
+      "value_decimal": "0",
+      "initial_buffer_hex": "",
+      "expected": {
+        "status": "error",
+        "error": "OutputTooSmall",
+        "required": 1,
+        "available": 0,
+        "buffer_hex": ""
+      }
+    },
+    {
+      "id": "encode-into-u32-0-capacity-1",
+      "width": 32,
+      "value_decimal": "0",
+      "initial_buffer_hex": "a5",
+      "expected": {
+        "status": "ok",
+        "written": 1,
+        "buffer_hex": "00"
+      }
+    },
+    {
+      "id": "encode-into-u32-0-capacity-3",
+      "width": 32,
+      "value_decimal": "0",
+      "initial_buffer_hex": "a5 a5 a5",
+      "expected": {
+        "status": "ok",
+        "written": 1,
+        "buffer_hex": "00 a5 a5"
+      }
+    },
+    {
+      "id": "encode-into-u32-127-capacity-0",
+      "width": 32,
+      "value_decimal": "127",
+      "initial_buffer_hex": "",
+      "expected": {
+        "status": "error",
+        "error": "OutputTooSmall",
+        "required": 1,
+        "available": 0,
+        "buffer_hex": ""
+      }
+    },
+    {
+      "id": "encode-into-u32-127-capacity-1",
+      "width": 32,
+      "value_decimal": "127",
+      "initial_buffer_hex": "a5",
+      "expected": {
+        "status": "ok",
+        "written": 1,
+        "buffer_hex": "7f"
+      }
+    },
+    {
+      "id": "encode-into-u32-127-capacity-3",
+      "width": 32,
+      "value_decimal": "127",
+      "initial_buffer_hex": "a5 a5 a5",
+      "expected": {
+        "status": "ok",
+        "written": 1,
+        "buffer_hex": "7f a5 a5"
+      }
+    },
+    {
+      "id": "encode-into-u32-128-capacity-0",
+      "width": 32,
+      "value_decimal": "128",
+      "initial_buffer_hex": "",
+      "expected": {
+        "status": "error",
+        "error": "OutputTooSmall",
+        "required": 2,
+        "available": 0,
+        "buffer_hex": ""
+      }
+    },
+    {
+      "id": "encode-into-u32-128-capacity-1",
+      "width": 32,
+      "value_decimal": "128",
+      "initial_buffer_hex": "a5",
+      "expected": {
+        "status": "error",
+        "error": "OutputTooSmall",
+        "required": 2,
+        "available": 1,
+        "buffer_hex": "a5"
+      }
+    },
+    {
+      "id": "encode-into-u32-128-capacity-2",
+      "width": 32,
+      "value_decimal": "128",
+      "initial_buffer_hex": "a5 a5",
+      "expected": {
+        "status": "ok",
+        "written": 2,
+        "buffer_hex": "80 01"
+      }
+    },
+    {
+      "id": "encode-into-u32-128-capacity-4",
+      "width": 32,
+      "value_decimal": "128",
+      "initial_buffer_hex": "a5 a5 a5 a5",
+      "expected": {
+        "status": "ok",
+        "written": 2,
+        "buffer_hex": "80 01 a5 a5"
+      }
+    },
+    {
+      "id": "encode-into-u32-300-capacity-0",
+      "width": 32,
+      "value_decimal": "300",
+      "initial_buffer_hex": "",
+      "expected": {
+        "status": "error",
+        "error": "OutputTooSmall",
+        "required": 2,
+        "available": 0,
+        "buffer_hex": ""
+      }
+    },
+    {
+      "id": "encode-into-u32-300-capacity-1",
+      "width": 32,
+      "value_decimal": "300",
+      "initial_buffer_hex": "a5",
+      "expected": {
+        "status": "error",
+        "error": "OutputTooSmall",
+        "required": 2,
+        "available": 1,
+        "buffer_hex": "a5"
+      }
+    },
+    {
+      "id": "encode-into-u32-300-capacity-2",
+      "width": 32,
+      "value_decimal": "300",
+      "initial_buffer_hex": "a5 a5",
+      "expected": {
+        "status": "ok",
+        "written": 2,
+        "buffer_hex": "ac 02"
+      }
+    },
+    {
+      "id": "encode-into-u32-300-capacity-4",
+      "width": 32,
+      "value_decimal": "300",
+      "initial_buffer_hex": "a5 a5 a5 a5",
+      "expected": {
+        "status": "ok",
+        "written": 2,
+        "buffer_hex": "ac 02 a5 a5"
+      }
+    },
+    {
+      "id": "encode-into-u32-4294967295-capacity-0",
+      "width": 32,
+      "value_decimal": "4294967295",
+      "initial_buffer_hex": "",
+      "expected": {
+        "status": "error",
+        "error": "OutputTooSmall",
+        "required": 5,
+        "available": 0,
+        "buffer_hex": ""
+      }
+    },
+    {
+      "id": "encode-into-u32-4294967295-capacity-4",
+      "width": 32,
+      "value_decimal": "4294967295",
+      "initial_buffer_hex": "a5 a5 a5 a5",
+      "expected": {
+        "status": "error",
+        "error": "OutputTooSmall",
+        "required": 5,
+        "available": 4,
+        "buffer_hex": "a5 a5 a5 a5"
+      }
+    },
+    {
+      "id": "encode-into-u32-4294967295-capacity-5",
+      "width": 32,
+      "value_decimal": "4294967295",
+      "initial_buffer_hex": "a5 a5 a5 a5 a5",
+      "expected": {
+        "status": "ok",
+        "written": 5,
+        "buffer_hex": "ff ff ff ff 0f"
+      }
+    },
+    {
+      "id": "encode-into-u32-4294967295-capacity-7",
+      "width": 32,
+      "value_decimal": "4294967295",
+      "initial_buffer_hex": "a5 a5 a5 a5 a5 a5 a5",
+      "expected": {
+        "status": "ok",
+        "written": 5,
+        "buffer_hex": "ff ff ff ff 0f a5 a5"
+      }
+    },
+    {
+      "id": "encode-into-u64-0-capacity-0",
+      "width": 64,
+      "value_decimal": "0",
+      "initial_buffer_hex": "",
+      "expected": {
+        "status": "error",
+        "error": "OutputTooSmall",
+        "required": 1,
+        "available": 0,
+        "buffer_hex": ""
+      }
+    },
+    {
+      "id": "encode-into-u64-0-capacity-1",
+      "width": 64,
+      "value_decimal": "0",
+      "initial_buffer_hex": "a5",
+      "expected": {
+        "status": "ok",
+        "written": 1,
+        "buffer_hex": "00"
+      }
+    },
+    {
+      "id": "encode-into-u64-0-capacity-3",
+      "width": 64,
+      "value_decimal": "0",
+      "initial_buffer_hex": "a5 a5 a5",
+      "expected": {
+        "status": "ok",
+        "written": 1,
+        "buffer_hex": "00 a5 a5"
+      }
+    },
+    {
+      "id": "encode-into-u64-127-capacity-0",
+      "width": 64,
+      "value_decimal": "127",
+      "initial_buffer_hex": "",
+      "expected": {
+        "status": "error",
+        "error": "OutputTooSmall",
+        "required": 1,
+        "available": 0,
+        "buffer_hex": ""
+      }
+    },
+    {
+      "id": "encode-into-u64-127-capacity-1",
+      "width": 64,
+      "value_decimal": "127",
+      "initial_buffer_hex": "a5",
+      "expected": {
+        "status": "ok",
+        "written": 1,
+        "buffer_hex": "7f"
+      }
+    },
+    {
+      "id": "encode-into-u64-127-capacity-3",
+      "width": 64,
+      "value_decimal": "127",
+      "initial_buffer_hex": "a5 a5 a5",
+      "expected": {
+        "status": "ok",
+        "written": 1,
+        "buffer_hex": "7f a5 a5"
+      }
+    },
+    {
+      "id": "encode-into-u64-128-capacity-0",
+      "width": 64,
+      "value_decimal": "128",
+      "initial_buffer_hex": "",
+      "expected": {
+        "status": "error",
+        "error": "OutputTooSmall",
+        "required": 2,
+        "available": 0,
+        "buffer_hex": ""
+      }
+    },
+    {
+      "id": "encode-into-u64-128-capacity-1",
+      "width": 64,
+      "value_decimal": "128",
+      "initial_buffer_hex": "a5",
+      "expected": {
+        "status": "error",
+        "error": "OutputTooSmall",
+        "required": 2,
+        "available": 1,
+        "buffer_hex": "a5"
+      }
+    },
+    {
+      "id": "encode-into-u64-128-capacity-2",
+      "width": 64,
+      "value_decimal": "128",
+      "initial_buffer_hex": "a5 a5",
+      "expected": {
+        "status": "ok",
+        "written": 2,
+        "buffer_hex": "80 01"
+      }
+    },
+    {
+      "id": "encode-into-u64-128-capacity-4",
+      "width": 64,
+      "value_decimal": "128",
+      "initial_buffer_hex": "a5 a5 a5 a5",
+      "expected": {
+        "status": "ok",
+        "written": 2,
+        "buffer_hex": "80 01 a5 a5"
+      }
+    },
+    {
+      "id": "encode-into-u64-300-capacity-0",
+      "width": 64,
+      "value_decimal": "300",
+      "initial_buffer_hex": "",
+      "expected": {
+        "status": "error",
+        "error": "OutputTooSmall",
+        "required": 2,
+        "available": 0,
+        "buffer_hex": ""
+      }
+    },
+    {
+      "id": "encode-into-u64-300-capacity-1",
+      "width": 64,
+      "value_decimal": "300",
+      "initial_buffer_hex": "a5",
+      "expected": {
+        "status": "error",
+        "error": "OutputTooSmall",
+        "required": 2,
+        "available": 1,
+        "buffer_hex": "a5"
+      }
+    },
+    {
+      "id": "encode-into-u64-300-capacity-2",
+      "width": 64,
+      "value_decimal": "300",
+      "initial_buffer_hex": "a5 a5",
+      "expected": {
+        "status": "ok",
+        "written": 2,
+        "buffer_hex": "ac 02"
+      }
+    },
+    {
+      "id": "encode-into-u64-300-capacity-4",
+      "width": 64,
+      "value_decimal": "300",
+      "initial_buffer_hex": "a5 a5 a5 a5",
+      "expected": {
+        "status": "ok",
+        "written": 2,
+        "buffer_hex": "ac 02 a5 a5"
+      }
+    },
+    {
+      "id": "encode-into-u64-18446744073709551615-capacity-0",
+      "width": 64,
+      "value_decimal": "18446744073709551615",
+      "initial_buffer_hex": "",
+      "expected": {
+        "status": "error",
+        "error": "OutputTooSmall",
+        "required": 10,
+        "available": 0,
+        "buffer_hex": ""
+      }
+    },
+    {
+      "id": "encode-into-u64-18446744073709551615-capacity-9",
+      "width": 64,
+      "value_decimal": "18446744073709551615",
+      "initial_buffer_hex": "a5 a5 a5 a5 a5 a5 a5 a5 a5",
+      "expected": {
+        "status": "error",
+        "error": "OutputTooSmall",
+        "required": 10,
+        "available": 9,
+        "buffer_hex": "a5 a5 a5 a5 a5 a5 a5 a5 a5"
+      }
+    },
+    {
+      "id": "encode-into-u64-18446744073709551615-capacity-10",
+      "width": 64,
+      "value_decimal": "18446744073709551615",
+      "initial_buffer_hex": "a5 a5 a5 a5 a5 a5 a5 a5 a5 a5",
+      "expected": {
+        "status": "ok",
+        "written": 10,
+        "buffer_hex": "ff ff ff ff ff ff ff ff ff 01"
+      }
+    },
+    {
+      "id": "encode-into-u64-18446744073709551615-capacity-12",
+      "width": 64,
+      "value_decimal": "18446744073709551615",
+      "initial_buffer_hex": "a5 a5 a5 a5 a5 a5 a5 a5 a5 a5 a5 a5",
+      "expected": {
+        "status": "ok",
+        "written": 10,
+        "buffer_hex": "ff ff ff ff ff ff ff ff ff 01 a5 a5"
+      }
+    }
+  ]
+}

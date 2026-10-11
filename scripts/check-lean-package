@@ -1,0 +1,59 @@
+#!/usr/bin/env python3
+"""Rebuild the archived Lean package in a fresh workspace with pinned dependency cache."""
+import hashlib
+import json
+from pathlib import Path
+import subprocess
+import tarfile
+import tempfile
+
+ROOT = Path(__file__).resolve().parent.parent
+REPORTS = ROOT / "verification/reports"
+REPORTS.mkdir(parents=True,exist_ok=True)
+archive = ROOT / "target/package/verified-varint-lean-0.1.0.tar.gz"
+archive.parent.mkdir(parents=True,exist_ok=True)
+paths = [ROOT/"lakefile.toml", ROOT/"lake-manifest.json", ROOT/"lean-toolchain", ROOT/"rust-toolchain.toml", ROOT/"README.md", ROOT/"LICENSE-MIT"]
+paths += sorted((ROOT/"lean").rglob("*.lean"))
+paths += [p for folder in ["docs","verification","scripts","fuzz"] for p in sorted((ROOT/folder).rglob("*"))
+          if p.is_file() and not any(part in ["reports","__pycache__","history","target","corpus","artifacts"] for part in p.relative_to(ROOT).parts)]
+with tarfile.open(archive,"w:gz") as package:
+    for path in paths:
+        package.add(path,arcname="verified-varint-lean-0.1.0/"+str(path.relative_to(ROOT)),recursive=False)
+lock = json.loads((ROOT/"lake-manifest.json").read_text())
+cache_revisions = {}
+for dependency in lock["packages"]:
+    path = ROOT/".lake/packages"/dependency["name"]
+    revision = subprocess.check_output(["git","-C",str(path),"rev-parse","HEAD"],text=True).strip()
+    dirty = subprocess.check_output(["git","-C",str(path),"status","--porcelain","--untracked-files=no"],text=True).strip()
+    if revision != dependency["rev"] or dirty:
+        raise SystemExit(f"Pinned dependency cache differs: {dependency['name']}")
+    cache_revisions[dependency["name"]]=revision
+commands = [["lake","build"], ["python3","scripts/check-proof-closure"], ["python3","scripts/check-stored-proofs"]]
+with tempfile.TemporaryDirectory(prefix="vvz-clean-lean-",dir=ROOT/"target") as temporary:
+    temporary = Path(temporary)
+    with tarfile.open(archive) as package:
+        package.extractall(temporary,filter="data")
+    fresh = temporary/"verified-varint-lean-0.1.0"
+    (fresh/".lake").mkdir()
+    # Dependencies are reused, but no project .olean or Lake build cache is copied.
+    (fresh/".lake/packages").symlink_to(ROOT/".lake/packages",target_is_directory=True)
+    for index, command in enumerate(commands):
+        result = subprocess.run(command,cwd=fresh,text=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+        (REPORTS/f"lean-package-{index}.log").write_text(result.stdout)
+        if result.returncode:
+            print(result.stdout)
+            raise SystemExit(result.returncode)
+    clean_axioms=json.loads((fresh/"verification/reports/axioms.json").read_text())
+    original_axioms=json.loads((REPORTS/"axioms.json").read_text())
+    if clean_axioms != original_axioms:
+        raise SystemExit("Archived proof declaration/statement/axiom inventory differs")
+    clean_replay=json.loads((fresh/"verification/reports/stored-proofs.json").read_text())
+    (REPORTS/"lean-package-stored-proofs.json").write_text(json.dumps(clean_replay,indent=2)+"\n")
+record={"schema":"verified-varint-lean-package/0.1","status":"fresh project build, transitive axiom audit and stored-proof replay passed",
+    "archive":str(archive.relative_to(ROOT)),"archive_sha256":hashlib.sha256(archive.read_bytes()).hexdigest(),
+    "source_sha256":{str(path.relative_to(ROOT)):hashlib.sha256(path.read_bytes()).hexdigest() for path in paths},
+    "commands":commands,"declarations_match_workspace":True,"fresh_project_outputs":True,
+    "pinned_pristine_dependency_cache_revisions":cache_revisions,
+    "environment_scope":"new project workspace and outputs; shared pristine locked dependency sources/build cache; same host and pinned tools"}
+(REPORTS/"lean-package.json").write_text(json.dumps(record,indent=2)+"\n")
+print("Archived Lean package freshly rebuilt, audited and replayed")

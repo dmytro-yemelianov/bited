@@ -1,0 +1,13 @@
+name = "verifiedVarint"
+version = "0.1.0"
+defaultTargets = ["VerifiedVarint"]
+
+[[require]]
+name = "aeneas"
+git = "https://github.com/AeneasVerif/aeneas"
+subDir = "backends/lean"
+rev = "d119a474f852781f8ae88a85424f2f8ba8407b82"
+
+[[lean_lib]]
+name = "VerifiedVarint"
+srcDir = "lean"

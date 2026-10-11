@@ -1,0 +1,437 @@
+{
+  "schema": "verified-varint-coverage/0.1",
+  "specification": "VVZ-SPEC-0.1.0",
+  "milestone": "M4-ready, measured scalar M5 baseline",
+  "m1_gate_passed": true,
+  "release_ready": true,
+  "obligations": [
+    {
+      "id": "P01",
+      "status": "proved",
+      "rust_refinement": "proved",
+      "theorems": [
+        "VerifiedVarint.Spec.zigzag_bounds",
+        "VerifiedVarint.Refinement.zigzag64_refines",
+        "VerifiedVarint.Refinement.unzigzag64_refines",
+        "VerifiedVarint.Refinement.zigzag32_refines",
+        "VerifiedVarint.Refinement.unzigzag32_refines"
+      ],
+      "scope": "Portable scalar Rust API; source refinement under pinned aarch64-apple-darwin extraction configuration",
+      "remaining": ""
+    },
+    {
+      "id": "P02",
+      "status": "proved",
+      "rust_refinement": "proved",
+      "theorems": [
+        "VerifiedVarint.Spec.zigzag_left_inverse",
+        "VerifiedVarint.Refinement.zigzag64_rust_left_inverse",
+        "VerifiedVarint.Refinement.zigzag32_rust_left_inverse"
+      ],
+      "scope": "Portable scalar Rust API; source refinement under pinned aarch64-apple-darwin extraction configuration",
+      "remaining": ""
+    },
+    {
+      "id": "P03",
+      "status": "proved",
+      "rust_refinement": "proved",
+      "theorems": [
+        "VerifiedVarint.Spec.zigzag_right_inverse",
+        "VerifiedVarint.Refinement.zigzag64_rust_right_inverse",
+        "VerifiedVarint.Refinement.zigzag32_rust_right_inverse"
+      ],
+      "scope": "Portable scalar Rust API; source refinement under pinned aarch64-apple-darwin extraction configuration",
+      "remaining": ""
+    },
+    {
+      "id": "P04",
+      "status": "proved",
+      "rust_refinement": "proved",
+      "theorems": [
+        "VerifiedVarint.Spec.encode_represents",
+        "VerifiedVarint.Refinement.encode_u32_contract",
+        "VerifiedVarint.Refinement.encode_u64_contract",
+        "VerifiedVarint.Refinement.encode_i32_refines",
+        "VerifiedVarint.Refinement.encode_i64_refines"
+      ],
+      "scope": "Portable scalar Rust API; source refinement under pinned aarch64-apple-darwin extraction configuration",
+      "remaining": ""
+    },
+    {
+      "id": "P05",
+      "status": "proved",
+      "rust_refinement": "proved",
+      "theorems": [
+        "VerifiedVarint.Spec.encode_canonical",
+        "VerifiedVarint.Refinement.encode_u32_contract",
+        "VerifiedVarint.Refinement.encode_u64_contract"
+      ],
+      "scope": "Portable scalar Rust API; source refinement under pinned aarch64-apple-darwin extraction configuration",
+      "remaining": ""
+    },
+    {
+      "id": "P06",
+      "status": "proved",
+      "rust_refinement": "proved",
+      "theorems": [
+        "VerifiedVarint.Spec.encode_length_formula",
+        "VerifiedVarint.Refinement.encoded_len_u32_refines",
+        "VerifiedVarint.Refinement.encoded_len_u64_refines",
+        "VerifiedVarint.Refinement.encoded_len_i32_refines",
+        "VerifiedVarint.Refinement.encoded_len_i64_refines",
+        "VerifiedVarint.Refinement.encoded_len_u32_formula",
+        "VerifiedVarint.Refinement.encoded_len_u64_formula",
+        "VerifiedVarint.Refinement.encoded_len_i32_formula",
+        "VerifiedVarint.Refinement.encoded_len_i64_formula"
+      ],
+      "scope": "Portable scalar Rust API; source refinement under pinned aarch64-apple-darwin extraction configuration",
+      "remaining": ""
+    },
+    {
+      "id": "P07",
+      "status": "proved",
+      "rust_refinement": "proved",
+      "theorems": [
+        "VerifiedVarint.Spec.encode_length_minimal",
+        "VerifiedVarint.Refinement.encode_u32_contract",
+        "VerifiedVarint.Refinement.encode_u64_contract"
+      ],
+      "scope": "Portable scalar Rust API; source refinement under pinned aarch64-apple-darwin extraction configuration",
+      "remaining": ""
+    },
+    {
+      "id": "P08",
+      "status": "proved",
+      "rust_refinement": "proved",
+      "theorems": [
+        "VerifiedVarint.Spec.canonical_eq_encode",
+        "VerifiedVarint.Spec.canonical_unique",
+        "VerifiedVarint.Refinement.decode_u32_sound",
+        "VerifiedVarint.Refinement.decode_u64_sound"
+      ],
+      "scope": "Portable scalar Rust API; source refinement under pinned aarch64-apple-darwin extraction configuration",
+      "remaining": ""
+    },
+    {
+      "id": "P09",
+      "status": "proved",
+      "rust_refinement": "proved",
+      "theorems": [
+        "VerifiedVarint.Reference.decode_success_shape",
+        "VerifiedVarint.Refinement.decode_u32_sound",
+        "VerifiedVarint.Refinement.decode_u64_sound"
+      ],
+      "scope": "Portable scalar Rust API; source refinement under pinned aarch64-apple-darwin extraction configuration",
+      "remaining": ""
+    },
+    {
+      "id": "P10",
+      "status": "proved",
+      "rust_refinement": "proved",
+      "theorems": [
+        "VerifiedVarint.Reference.decode_complete",
+        "VerifiedVarint.Refinement.decode_u32_complete",
+        "VerifiedVarint.Refinement.decode_u64_complete"
+      ],
+      "remaining": "",
+      "scope": "Portable scalar Rust API; source refinement under pinned aarch64-apple-darwin extraction configuration"
+    },
+    {
+      "id": "P11",
+      "status": "proved",
+      "rust_refinement": "proved",
+      "theorems": [
+        "VerifiedVarint.Refinement.decode_encode_u32",
+        "VerifiedVarint.Refinement.decode_encode_u64",
+        "VerifiedVarint.Refinement.decode_encode_i32",
+        "VerifiedVarint.Refinement.decode_encode_i64"
+      ],
+      "remaining": "",
+      "scope": "Portable scalar Rust API; source refinement under pinned aarch64-apple-darwin extraction configuration"
+    },
+    {
+      "id": "P12",
+      "status": "proved",
+      "rust_refinement": "proved",
+      "theorems": [
+        "VerifiedVarint.Reference.reencode_preserves_canonical",
+        "VerifiedVarint.Refinement.decode_u32_normalize",
+        "VerifiedVarint.Refinement.decode_u64_normalize",
+        "VerifiedVarint.Refinement.decode_i32_normalize",
+        "VerifiedVarint.Refinement.decode_i64_normalize"
+      ],
+      "remaining": "",
+      "scope": "Portable scalar Rust API; source refinement under pinned aarch64-apple-darwin extraction configuration"
+    },
+    {
+      "id": "P13",
+      "status": "proved",
+      "rust_refinement": "proved",
+      "theorems": [
+        "VerifiedVarint.Refinement.decode_u32_refines",
+        "VerifiedVarint.Refinement.decode_u64_refines",
+        "VerifiedVarint.Refinement.decode_i32_refines",
+        "VerifiedVarint.Refinement.decode_i64_refines",
+        "VerifiedVarint.Refinement.decode_u32_exact_refines",
+        "VerifiedVarint.Refinement.decode_u64_exact_refines",
+        "VerifiedVarint.Refinement.decode_i32_exact_refines",
+        "VerifiedVarint.Refinement.decode_i64_exact_refines"
+      ],
+      "remaining": "",
+      "scope": "Portable scalar Rust API; source refinement under pinned aarch64-apple-darwin extraction configuration"
+    },
+    {
+      "id": "P14",
+      "status": "proved",
+      "rust_refinement": "proved",
+      "theorems": [
+        "VerifiedVarint.Refinement.encode_u32_into_contract",
+        "VerifiedVarint.Refinement.encode_u64_into_contract",
+        "VerifiedVarint.Refinement.encode_i32_into_refines",
+        "VerifiedVarint.Refinement.encode_i64_into_refines"
+      ],
+      "scope": "Portable scalar Rust API; source refinement under pinned aarch64-apple-darwin extraction configuration",
+      "remaining": ""
+    },
+    {
+      "id": "P15",
+      "status": "proved",
+      "rust_refinement": "proved",
+      "theorems": [
+        "VerifiedVarint.Reference.stream_partition_invariant",
+        "VerifiedVarint.Reference.streaming_chunks_equivalence",
+        "VerifiedVarint.Refinement.rust_chunk_session32_refines",
+        "VerifiedVarint.Refinement.rust_chunk_session64_refines"
+      ],
+      "remaining": "",
+      "scope": "Portable scalar Rust API; source refinement under pinned aarch64-apple-darwin extraction configuration"
+    },
+    {
+      "id": "P16",
+      "status": "proved",
+      "rust_refinement": "proved",
+      "theorems": [
+        "VerifiedVarint.Refinement.reachable_stream_invariant",
+        "VerifiedVarint.Refinement.stream_u32_push_refines",
+        "VerifiedVarint.Refinement.stream_u64_push_refines",
+        "VerifiedVarint.Refinement.stream_u32_finish_refines",
+        "VerifiedVarint.Refinement.stream_u64_finish_contract",
+        "VerifiedVarint.Refinement.stream_u32_push_closed",
+        "VerifiedVarint.Refinement.stream_u64_push_closed",
+        "VerifiedVarint.Refinement.stream_u32_finish_idempotent",
+        "VerifiedVarint.Refinement.stream_u64_finish_idempotent",
+        "VerifiedVarint.Refinement.stream_u32_reset_refines",
+        "VerifiedVarint.Refinement.stream_u64_reset_refines"
+      ],
+      "remaining": "",
+      "scope": "Portable scalar Rust API; source refinement under pinned aarch64-apple-darwin extraction configuration"
+    },
+    {
+      "id": "P17",
+      "status": "proved",
+      "rust_refinement": "proved",
+      "theorems": [
+        "VerifiedVarint.Reference.decodeTrace_contract",
+        "VerifiedVarint.Reference.decoder_cost_bounded",
+        "VerifiedVarint.Reference.push_cost_bounded",
+        "VerifiedVarint.Refinement.decode_u32_resource_contract",
+        "VerifiedVarint.Refinement.decode_u64_resource_contract",
+        "VerifiedVarint.Refinement.encode_u32_resource_contract",
+        "VerifiedVarint.Refinement.encode_u64_resource_contract",
+        "VerifiedVarint.Refinement.decode_u32_consumption_bounded",
+        "VerifiedVarint.Refinement.decode_u64_consumption_bounded",
+        "VerifiedVarint.Refinement.reachable_stream_invariant"
+      ],
+      "remaining": "",
+      "scope": "Byte transitions, emitted bytes, checked byte-buffer accesses and conservative abstract operation charges; fixed-array initialization/copies charged separately. No CPU-cycle or compiler-stack theorem. Allocation/layout/stack observations are separate execution/compiler evidence."
+    },
+    {
+      "id": "P18",
+      "status": "proved",
+      "rust_refinement": "proved",
+      "theorems": [
+        "VerifiedVarint.Refinement.zigzag32_refines",
+        "VerifiedVarint.Refinement.unzigzag32_refines",
+        "VerifiedVarint.Refinement.zigzag64_refines",
+        "VerifiedVarint.Refinement.unzigzag64_refines",
+        "VerifiedVarint.Refinement.encode_u32_public_refines",
+        "VerifiedVarint.Refinement.encode_u64_public_refines",
+        "VerifiedVarint.Refinement.decode_u32_refines",
+        "VerifiedVarint.Refinement.decode_u64_refines",
+        "VerifiedVarint.Refinement.decode_i32_exact_refines",
+        "VerifiedVarint.Refinement.decode_i64_exact_refines",
+        "VerifiedVarint.Refinement.rust_chunk_session32_refines",
+        "VerifiedVarint.Refinement.rust_chunk_session64_refines"
+      ],
+      "remaining": "",
+      "scope": "Portable scalar Rust API; source refinement under pinned aarch64-apple-darwin extraction configuration"
+    }
+  ],
+  "partial_theorems": [
+    "VerifiedVarint.Spec.encode_nonempty",
+    "VerifiedVarint.Spec.encode_value",
+    "VerifiedVarint.Spec.encode_shape",
+    "VerifiedVarint.Refinement.zigzag64_to_bit_model",
+    "VerifiedVarint.Refinement.zigzag64_signed_min",
+    "VerifiedVarint.Refinement.unzigzag64_unsigned_max",
+    "VerifiedVarint.Refinement.decode_policy_eq_spec",
+    "VerifiedVarint.Refinement.decode_u64_body_total",
+    "VerifiedVarint.Refinement.decode_u64_total",
+    "VerifiedVarint.Refinement.decode_u64_last_overflow",
+    "VerifiedVarint.Refinement.zigzag64_sign_split",
+    "VerifiedVarint.Refinement.zigzag64_bit_model_value",
+    "VerifiedVarint.Refinement.zigzag64_bit_model_left_inverse",
+    "VerifiedVarint.Refinement.zigzag64_bit_model_right_inverse",
+    "VerifiedVarint.Refinement.unzigzag64_bit_model_value",
+    "VerifiedVarint.Refinement.unzigzag64_to_bit_model",
+    "VerifiedVarint.Refinement.unzigzag64_parity_split",
+    "VerifiedVarint.Refinement.unzigzag64_mask_cases",
+    "VerifiedVarint.Spec.encode_length_pos",
+    "VerifiedVarint.Spec.encode_length_small",
+    "VerifiedVarint.Spec.encode_length_step",
+    "VerifiedVarint.Spec.encode_length_le",
+    "VerifiedVarint.Spec.wireValue_lt_pow",
+    "VerifiedVarint.Refinement.encode_length_u64_bounds",
+    "VerifiedVarint.Refinement.encoded_len_u64_body_refines",
+    "VerifiedVarint.Refinement.encode_u64_into_short",
+    "VerifiedVarint.Refinement.suffixFrame_set",
+    "VerifiedVarint.Refinement.encode_u64_into_body_frame",
+    "VerifiedVarint.Refinement.encode_u64_into_loop_frame",
+    "VerifiedVarint.Refinement.encode_u64_into_success_frame",
+    "VerifiedVarint.Spec.encode_last_nonzero",
+    "VerifiedVarint.Refinement.referenceBytes_step",
+    "VerifiedVarint.Refinement.referenceBytes_small",
+    "VerifiedVarint.Refinement.continuation_byte_value",
+    "VerifiedVarint.Refinement.output_prefix_set",
+    "VerifiedVarint.Refinement.encode_u64_into_body_content",
+    "VerifiedVarint.Refinement.encode_u64_into_loop_content",
+    "VerifiedVarint.Refinement.encode_u64_into_success_content",
+    "VerifiedVarint.Refinement.output_bytes_eq_reference",
+    "VerifiedVarint.Refinement.encode_u64_into_success_refines",
+    "VerifiedVarint.Refinement.array_prefix_set",
+    "VerifiedVarint.Refinement.encode_u64_body_content",
+    "VerifiedVarint.Refinement.encode_u64_loop_content",
+    "VerifiedVarint.Refinement.arraySuffixFrame_set",
+    "VerifiedVarint.Refinement.encode_u64_body_frame",
+    "VerifiedVarint.Refinement.encode_u64_loop_frame",
+    "VerifiedVarint.Refinement.encode_u64_zero_suffix",
+    "VerifiedVarint.Refinement.encoded64_as_bytes_refines",
+    "VerifiedVarint.Refinement.encoded64_len_refines",
+    "VerifiedVarint.Refinement.encoded64_is_empty_refines",
+    "VerifiedVarint.Refinement.decode_payload_value",
+    "VerifiedVarint.Refinement.decode_or_eq_add",
+    "VerifiedVarint.Refinement.decode_digit_bounds",
+    "VerifiedVarint.Refinement.decode_accumulate_refines",
+    "VerifiedVarint.Refinement.decode_u64_body_value",
+    "VerifiedVarint.Refinement.wireValue_append",
+    "VerifiedVarint.Refinement.wirePrefix_succ",
+    "VerifiedVarint.Refinement.decode_continuation_mask",
+    "VerifiedVarint.Refinement.scalar_bne_val",
+    "VerifiedVarint.Refinement.decode_u64_body_decision",
+    "VerifiedVarint.Refinement.decode_u64_body_refines",
+    "VerifiedVarint.Refinement.decodeAux64_step",
+    "VerifiedVarint.Refinement.i32_widen_value",
+    "VerifiedVarint.Refinement.u32_widen_value",
+    "VerifiedVarint.Spec.wireValue_positive_of_last",
+    "VerifiedVarint.Spec.canonical_tail",
+    "VerifiedVarint.Spec.canonical_tail_value_pos",
+    "VerifiedVarint.Spec.encodedLength_zero"
+  ],
+  "extracted_entry_points": [
+    "zigzag",
+    "api",
+    "encode::encoded_len_u32",
+    "encode::encoded_len_u64",
+    "encode::encode_u32",
+    "encode::encode_u64",
+    "encode::encode_u32_into",
+    "encode::encode_u64_into",
+    "encode::Encoded32::as_bytes",
+    "encode::Encoded32::len",
+    "encode::Encoded32::is_empty",
+    "encode::Encoded64::as_bytes",
+    "encode::Encoded64::len",
+    "encode::Encoded64::is_empty",
+    "decode::decode_u32",
+    "decode::decode_u64",
+    "decode::transition",
+    "stream::DecoderU32::new",
+    "stream::DecoderU32::push",
+    "stream::DecoderU32::finish",
+    "stream::DecoderU32::reset",
+    "stream::DecoderU32::bytes_seen",
+    "stream::DecoderU64::new",
+    "stream::DecoderU64::push",
+    "stream::DecoderU64::finish",
+    "stream::DecoderU64::reset",
+    "stream::DecoderU64::bytes_seen"
+  ],
+  "unextracted_public_methods": [],
+  "unimplemented_api": [],
+  "conformance": {
+    "total": 351,
+    "exercised": 351,
+    "scope": "all supplied unsigned, signed, prefix/exact, streaming and output-buffer fixtures"
+  },
+  "unresolved": [],
+  "publication_linkage_checked": true,
+  "benchmarks_measured": true,
+  "exact_wrapper_proved": true,
+  "source_level_only": true,
+  "verification_profiles": {
+    "formal": "aarch64-apple-darwin, 64-bit usize, scalar, no features",
+    "execution": [
+      "aarch64-apple-darwin",
+      "wasm32-wasip1"
+    ],
+    "no_std_compile": "riscv32imac-unknown-none-elf",
+    "exclusions": [
+      "machine-code correctness",
+      "formal cross-target refinement",
+      "SIMD and protocol adapters",
+      "formal compiler stack bounds"
+    ]
+  },
+  "public_entrypoint_refinements": {
+    "DecoderU32::bytes_seen": "VerifiedVarint.Refinement.stream_u32_bytes_seen_refines",
+    "DecoderU32::finish": "VerifiedVarint.Refinement.stream_u32_finish_refines",
+    "DecoderU32::new": "VerifiedVarint.Refinement.stream_u32_new_refines",
+    "DecoderU32::push": "VerifiedVarint.Refinement.stream_u32_push_refines",
+    "DecoderU32::reset": "VerifiedVarint.Refinement.stream_u32_reset_refines",
+    "DecoderU64::bytes_seen": "VerifiedVarint.Refinement.stream_u64_bytes_seen_refines",
+    "DecoderU64::finish": "VerifiedVarint.Refinement.stream_u64_finish_refines",
+    "DecoderU64::new": "VerifiedVarint.Refinement.stream_u64_new_refines",
+    "DecoderU64::push": "VerifiedVarint.Refinement.stream_u64_push_refines",
+    "DecoderU64::reset": "VerifiedVarint.Refinement.stream_u64_reset_refines",
+    "Encoded32::as_bytes": "VerifiedVarint.Refinement.encoded32_as_bytes_refines",
+    "Encoded32::is_empty": "VerifiedVarint.Refinement.encoded32_is_empty_refines",
+    "Encoded32::len": "VerifiedVarint.Refinement.encoded32_len_refines",
+    "Encoded64::as_bytes": "VerifiedVarint.Refinement.encoded64_as_bytes_refines",
+    "Encoded64::is_empty": "VerifiedVarint.Refinement.encoded64_is_empty_refines",
+    "Encoded64::len": "VerifiedVarint.Refinement.encoded64_len_refines",
+    "decode_i32": "VerifiedVarint.Refinement.decode_i32_refines",
+    "decode_i32_exact": "VerifiedVarint.Refinement.decode_i32_exact_refines",
+    "decode_i64": "VerifiedVarint.Refinement.decode_i64_refines",
+    "decode_i64_exact": "VerifiedVarint.Refinement.decode_i64_exact_refines",
+    "decode_u32": "VerifiedVarint.Refinement.decode_u32_refines",
+    "decode_u32_exact": "VerifiedVarint.Refinement.decode_u32_exact_refines",
+    "decode_u64": "VerifiedVarint.Refinement.decode_u64_refines",
+    "decode_u64_exact": "VerifiedVarint.Refinement.decode_u64_exact_refines",
+    "encode_i32": "VerifiedVarint.Refinement.encode_i32_refines",
+    "encode_i32_into": "VerifiedVarint.Refinement.encode_i32_into_refines",
+    "encode_i64": "VerifiedVarint.Refinement.encode_i64_refines",
+    "encode_i64_into": "VerifiedVarint.Refinement.encode_i64_into_refines",
+    "encode_u32": "VerifiedVarint.Refinement.encode_u32_contract",
+    "encode_u32_into": "VerifiedVarint.Refinement.encode_u32_into_contract",
+    "encode_u64": "VerifiedVarint.Refinement.encode_u64_contract",
+    "encode_u64_into": "VerifiedVarint.Refinement.encode_u64_into_contract",
+    "encoded_len_i32": "VerifiedVarint.Refinement.encoded_len_i32_refines",
+    "encoded_len_i64": "VerifiedVarint.Refinement.encoded_len_i64_refines",
+    "encoded_len_u32": "VerifiedVarint.Refinement.encoded_len_u32_refines",
+    "encoded_len_u64": "VerifiedVarint.Refinement.encoded_len_u64_refines",
+    "zigzag_i32_to_u32": "VerifiedVarint.Refinement.zigzag32_refines",
+    "zigzag_i64_to_u64": "VerifiedVarint.Refinement.zigzag64_refines",
+    "zigzag_u32_to_i32": "VerifiedVarint.Refinement.unzigzag32_refines",
+    "zigzag_u64_to_i64": "VerifiedVarint.Refinement.unzigzag64_refines"
+  }
+}

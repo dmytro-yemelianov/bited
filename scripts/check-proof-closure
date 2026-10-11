@@ -1,0 +1,43 @@
+#!/usr/bin/env python3
+"""Inspect transitive axioms of all declarations imported from the public package."""
+import hashlib
+import json
+from pathlib import Path
+import re
+import subprocess
+
+ROOT = Path(__file__).resolve().parent.parent
+allowed = set(json.loads((ROOT / "verification/axioms-allowlist.json").read_text())["allowed"])
+result = subprocess.run(["lake", "env", "lean", "lean/VerifiedVarint/Audit.lean"],
+                        cwd=ROOT, text=True, capture_output=True)
+if result.returncode:
+    print(result.stdout + result.stderr)
+    raise SystemExit(result.returncode)
+match = re.search(r"^VVZ_AUDIT (.+)$", result.stdout, re.MULTILINE)
+if not match:
+    raise SystemExit("Missing Lean axiom inventory; refusing to accept proof closure")
+records = json.loads(match.group(1))
+if not records:
+    raise SystemExit("Empty proof closure")
+inventory = {}
+for r in records:
+    extra = set(r["axioms"]) - allowed
+    if extra:
+        raise SystemExit(f"Disallowed transitive axioms in {r['name']}: {sorted(extra)}")
+    r["statement_sha256"] = hashlib.sha256(r["statement"].encode()).hexdigest()
+    inventory[r["name"]] = r
+coverage = json.loads((ROOT / "verification/coverage.json").read_text())
+for obligation in coverage["obligations"]:
+    for theorem in obligation["theorems"]:
+        if theorem not in inventory or inventory[theorem]["kind"] != "theorem":
+            raise SystemExit(f"Missing inventoried theorem: {theorem}")
+for theorem in coverage["partial_theorems"]:
+    if theorem not in inventory or inventory[theorem]["kind"] != "theorem":
+        raise SystemExit(f"Missing partial theorem: {theorem}")
+for entrypoint, theorem in coverage.get("public_entrypoint_refinements", {}).items():
+    if theorem not in inventory or inventory[theorem]["kind"] != "theorem":
+        raise SystemExit(f"Missing public-entrypoint refinement: {entrypoint}: {theorem}")
+reports = ROOT / "verification/reports"
+reports.mkdir(parents=True, exist_ok=True)
+(reports / "axioms.json").write_text(json.dumps(inventory, indent=2, sort_keys=True) + "\n")
+print(f"Transitive axiom audit passed for {len(inventory)} public-package declarations")

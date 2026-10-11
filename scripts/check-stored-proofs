@@ -1,0 +1,36 @@
+#!/usr/bin/env python3
+"""Replay the compiled public import closure in a fresh Lean kernel environment."""
+import hashlib
+import json
+from pathlib import Path
+import subprocess
+
+ROOT = Path(__file__).resolve().parent.parent
+lock = json.loads((ROOT / "verification/toolchain-lock.json").read_text())
+checker = lock["checker"]
+if checker is None or checker["name"] != "leanchecker":
+    raise SystemExit("Stored-proof checker is not configured")
+binary = Path(subprocess.check_output(["lake", "env", "which", "leanchecker"],
+                                    cwd=ROOT, text=True).strip()).resolve()
+digest = hashlib.sha256(binary.read_bytes()).hexdigest()
+if digest != checker["binary_sha256"]:
+    raise SystemExit("Pinned leanchecker binary digest differs")
+version = subprocess.check_output(["lean", "--version"], cwd=ROOT, text=True).strip()
+if checker["lean_commit"] not in version:
+    raise SystemExit("Pinned Lean checker/kernel revision differs")
+command = ["lake", "env", "leanchecker", "--fresh", "--verbose", "VerifiedVarint"]
+subprocess.run(command, cwd=ROOT, check=True)
+reports = ROOT / "verification/reports"
+inputs = {str(path.relative_to(ROOT)): hashlib.sha256(path.read_bytes()).hexdigest()
+          for path in sorted((ROOT / ".lake/build/lib/lean").rglob("*.olean"))
+          if path.name == "VerifiedVarint.olean" or "VerifiedVarint" in path.parts}
+(reports / "stored-proofs.json").write_text(json.dumps({
+    "schema": "verified-varint-stored-proof-recheck/0.1",
+    "command": command,
+    "checker": checker,
+    "lean_version": version,
+    "status": "fresh-environment replay passed",
+    "compiled_project_modules_sha256": inputs,
+    "trust": "A separate process rechecks stored terms with the same pinned Lean kernel; this is not a second kernel implementation",
+}, indent=2) + "\n")
+print("Fresh-environment stored-proof replay passed")

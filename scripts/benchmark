@@ -1,0 +1,96 @@
+#!/usr/bin/env python3
+"""Measure the checked scalar baseline and record compiler resource observations."""
+import datetime
+import hashlib
+import json
+import os
+from pathlib import Path
+import platform
+import re
+import subprocess
+
+ROOT = Path(__file__).resolve().parent.parent
+REPORTS = ROOT / "verification/reports"
+REPORTS.mkdir(parents=True, exist_ok=True)
+
+
+def run(command):
+    return subprocess.check_output(command, cwd=ROOT, text=True)
+
+
+def sha(path):
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+# Do not silently accept environment overrides that make two baselines incomparable.
+for key in ["RUSTFLAGS", "CARGO_ENCODED_RUSTFLAGS", "CARGO_PROFILE_RELEASE_OPT_LEVEL",
+            "CARGO_PROFILE_BENCH_OPT_LEVEL", "CARGO_PROFILE_RELEASE_LTO"]:
+    if os.environ.get(key):
+        raise SystemExit(f"Unset {key} to run the pinned baseline")
+raw = run(["cargo", "bench", "--locked", "--offline", "--bench", "baseline"])
+report = json.loads(raw)
+report["timestamp_utc"] = datetime.datetime.now(datetime.timezone.utc).isoformat()
+report["host"] = platform.platform()
+report["cpu"] = run(["sysctl", "-n", "machdep.cpu.brand_string"]).strip()
+report["rustc"] = run(["rustc", "-Vv"]).strip()
+report["flags"] = {"optimization": 3, "overflow_checks": True, "target_cpu": "compiler default",
+                   "lto": False, "features": [], "debug_assertions": False}
+report["source_sha256"] = {str(path.relative_to(ROOT)): sha(path) for path in
+                           [ROOT / "Cargo.toml", ROOT / "Cargo.lock", ROOT / "benches/baseline.rs"]
+                           + sorted((ROOT / "src").glob("*.rs"))}
+observations = {}
+for target in ["aarch64-apple-darwin", "wasm32-wasip1", "riscv32imac-unknown-none-elf"]:
+    run(["cargo", "rustc", "--locked", "--offline", "--release", "--lib", "--target", target, "--", "--emit=asm"])
+    folder = ROOT / "target" / target / "release"
+    assemblies = list((folder / "deps").glob("verified_varint-*.s"))
+    if len(assemblies) != 1:
+        raise SystemExit(f"Ambiguous assembly outputs for {target}: {assemblies}")
+    asm = assemblies[0]
+    text = asm.read_text()
+    functions = list(re.finditer(r"(?m)^(_+ZN15verified_varint[^:\n]+):$", text))
+    frames = {}
+    calls = {}
+    for index, match in enumerate(functions):
+        body = text[match.end():functions[index + 1].start() if index+1<len(functions) else len(text)]
+        name = match.group(1)
+        if target.startswith("aarch64"):
+            sizes = re.findall(r"\.cfi_def_cfa_offset (\d+)", body)
+            calls[name] = re.findall(r"(?m)^\s*bl\s+(_+ZN15verified_varint\S+)", body)
+        elif target.startswith("wasm"):
+            sizes = re.findall(r"global.get\s+__stack_pointer\s*\n\s*i32.const\s+(\d+)\s*\n\s*i32.sub", body)
+            calls[name] = re.findall(r"(?m)^\s*call\s+(_+ZN15verified_varint\S+)", body)
+        else:
+            sizes = re.findall(r"addi\s+sp,\s*sp,\s*-(\d+)", body)
+            calls[name] = re.findall(r"(?m)^\s*call\s+(_+ZN15verified_varint\S+)", body)
+        frames[name] = max(map(int, sizes), default=0)
+    if not frames:
+        raise SystemExit(f"No function frames found for {target}")
+
+    def path_stack(name, active=()):
+        if name in active:
+            raise SystemExit(f"Unexpected recursive code path: {name}")
+        return frames.get(name, 0) + max((path_stack(callee, active+(name,))
+            for callee in calls.get(name, []) if callee in frames), default=0)
+
+    size_output = run(["xcrun", "llvm-size", "-A", str(folder / "libverified_varint.rlib")])
+    code_sections = [int(v) for v in re.findall(r"(?m)^\s*(?:__text|CODE|\.text(?:\.\S+)?)\s+(\d+)\s", size_output)]
+    ir = REPORTS / ("layout-" + target + ".ll")
+    run(["rustc", "--edition=2021", "--crate-type=lib", "--crate-name=vvz_layout", "--target", target,
+         "--extern", "verified_varint=" + str(folder / "libverified_varint.rlib"),
+         "--emit=llvm-ir", "-o", str(ir), "verification/layout-probe.rs"])
+    layout = {name: int(size) for name, size in re.findall(
+        r"define[^@]*@(vvz_\w+_size)\([^)]*\)[^{]*\{.*?ret i(?:32|64) (\d+)", ir.read_text(), re.S)}
+    if len(layout) != 4 or layout["vvz_decoder_u32_size"] > 64 or layout["vvz_decoder_u64_size"] > 64:
+        raise SystemExit(f"Incomplete or oversized layout measurement for {target}: {layout}")
+    observations[target] = {"code_section_bytes": sum(code_sections), "archive_bytes": (folder/"libverified_varint.rlib").stat().st_size,
+        "layout_bytes": layout, "per_function_static_frame_bytes": frames,
+        "maximum_static_library_call_path_bytes": max(path_stack(name) for name in frames),
+        "stack_scope": "compiler assembly observation; library-only static frames; excludes panic paths, OS/runtime, Wasm operand stack, caller and linker changes; not a formal stack theorem",
+        "assembly_sha256": sha(asm), "layout_ir_sha256": sha(ir)}
+    (REPORTS / ("code-size-"+target+".log")).write_text(size_output)
+    (REPORTS / ("assembly-"+target+".s")).write_bytes(asm.read_bytes())
+report["compiler_resource_observations"] = observations
+report["allocations"] = {"count": 0, "evidence": "rust-debug.log and rust-32-execution.log allocation test",
+                         "scope": "calling-thread GlobalAlloc instrumentation over all public API families"}
+(REPORTS / "benchmark.json").write_text(json.dumps(report, indent=2)+"\n")
+print(f"Measured {len(report['results'])} workloads; resource observations for {len(observations)} targets")
