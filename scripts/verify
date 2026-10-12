@@ -65,7 +65,7 @@ check([sys.executable, "scripts/check-proof-closure"], "proof-closure")
 check([sys.executable, "scripts/check-stored-proofs"], "stored-proofs")
 check([sys.executable, "scripts/fuzz"], "fuzz-run")
 check([sys.executable, "scripts/benchmark"], "benchmark-run")
-check([sys.executable, "scripts/check-package"], "package")
+check([sys.executable, "scripts/check-package"] + (["--allow-dirty"] if args.development else []), "package")
 check([sys.executable, "scripts/check-lean-package"], "lean-package")
 pending = [o["id"] for o in coverage["obligations"] if o["status"] != "proved" or o["rust_refinement"] != "proved"]
 blockers = []
@@ -78,6 +78,8 @@ if coverage["conformance"]["exercised"] != 351 or coverage["conformance"]["total
     blockers.append("Not all 351 conformance cases are exercised")
 if not json.loads((reports / "package.json").read_text()).get("rust_reextraction_checked"):
     blockers.append("Packaged Rust re-extraction failed")
+if not json.loads((reports / "package.json").read_text()).get("unexpected_file_inventory_checked"):
+    blockers.append("Unexpected Cargo file inventory unchecked")
 if not json.loads((reports / "lean-package.json").read_text()).get("fresh_project_outputs"):
     blockers.append("Packaged Lean fresh build failed")
 if lock["checker"] is None:

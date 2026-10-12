@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Build the Cargo archive and check its Rust/spec/fixture source mapping."""
+import argparse
 import hashlib
 import json
 from pathlib import Path
@@ -9,13 +10,28 @@ import tempfile
 import sys
 
 ROOT = Path(__file__).resolve().parent.parent
-subprocess.run(["cargo", "package", "--locked", "--offline", "--allow-dirty"], cwd=ROOT, check=True)
+parser = argparse.ArgumentParser(description=__doc__)
+parser.add_argument("--allow-dirty", action="store_true", help="development packaging only")
+args = parser.parse_args()
+command = ["cargo", "package", "--locked", "--offline"]
+if args.allow_dirty:
+    command.append("--allow-dirty")
+subprocess.run(command, cwd=ROOT, check=True)
 archive = ROOT / "target/package/verified-varint-0.1.0.crate"
-paths = ["Cargo.toml", "Cargo.lock", "README.md", "docs/specification.md", "conformance/vectors.json", "rust-toolchain.toml", "verification/coverage.json", "verification/toolchain-lock.json", "verification/axioms-allowlist.json"]
+paths = ["Cargo.toml", "Cargo.lock", "README.md", "LICENSE-MIT", "conformance/vectors.json", "rust-toolchain.toml", "verification/coverage.json", "verification/toolchain-lock.json", "verification/axioms-allowlist.json"]
 paths += [str(p.relative_to(ROOT)) for folder in ["src", "tests", "benches"]
           for p in sorted((ROOT / folder).glob("*.rs"))]
+paths += [str(p.relative_to(ROOT)) for p in sorted((ROOT / "docs").glob("*.md"))]
 with tarfile.open(archive) as package:
     contents = {p.name.partition("/")[2]: p for p in package if p.isfile()}
+    allowed = set(paths) | {"Cargo.toml.orig", ".cargo_vcs_info.json"}
+    if set(contents) - allowed:
+        raise SystemExit(f"Unexpected packaged files: {sorted(set(contents) - allowed)}")
+    vcs_info = json.load(package.extractfile(contents[".cargo_vcs_info.json"])) if ".cargo_vcs_info.json" in contents else None
+    if (ROOT / ".git").exists() and not args.allow_dirty:
+        commit = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
+        if vcs_info is None or vcs_info["git"]["sha1"] != commit or vcs_info["git"].get("dirty", False):
+            raise SystemExit("Cargo archive Git identity does not match the clean source commit")
     for name in paths:
         packaged_name = "Cargo.toml.orig" if name == "Cargo.toml" else name
         if packaged_name not in contents:
@@ -36,6 +52,8 @@ record = {
     "archive": str(archive.relative_to(ROOT)),
     "sha256": hashlib.sha256(archive.read_bytes()).hexdigest(),
     "mapped_inputs": paths,
+    "unexpected_file_inventory_checked": True,
+    "cargo_vcs_info": vcs_info,
     "status": "Cargo archive built, compiled, source mapped and re-extracted; generated Lean is byte-identical",
     "rust_reextraction_checked": True,
     "generated_model_identity_checked": True,

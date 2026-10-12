@@ -5,7 +5,7 @@ edition = "2021"
 rust-version = "1.88"
 description = "Allocation-free base-128 varints and ZigZag with Lean 4 source refinement"
 license = "MIT"
-include = ["src/**", "Cargo.toml", "Cargo.lock", "README.md", "LICENSE-*", "docs/**", "conformance/**", "tests/**", "benches/**", "rust-toolchain.toml", "verification/coverage.json", "verification/toolchain-lock.json", "verification/axioms-allowlist.json"]
+include = ["/src/**", "/Cargo.toml", "/Cargo.lock", "/README.md", "/LICENSE-*", "/docs/**", "/conformance/**", "/tests/**", "/benches/**", "/rust-toolchain.toml", "/verification/coverage.json", "/verification/toolchain-lock.json", "/verification/axioms-allowlist.json"]
 
 [dependencies]
 
