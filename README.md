@@ -1,4 +1,4 @@
-# bitet
+# bited
 
 Rust Varint + ZigZag with a companion Lean 4 proof package. Version 0.1.0 is being prepared for its first public release.
 
@@ -13,7 +13,7 @@ atomic caller-buffer output, prefix/exact decoders, and incremental decoders.
 Both canonical and explicitly selected bounded-noncanonical policies are supported.
 
 ```rust
-use bitet::{decode_u64, encode_u64, DecodePolicy};
+use bited::{decode_u64, encode_u64, DecodePolicy};
 
 let encoded = encode_u64(300);
 assert_eq!(encoded.as_bytes(), &[0xac, 0x02]);
@@ -30,7 +30,7 @@ cargo test --locked --release
 cargo check --locked --lib --target riscv32imac-unknown-none-elf
 ```
 
-The Lean package exports `Bitet.Public`. It includes mathematical
+The Lean package exports `Bited.Public`. It includes mathematical
 contracts, independent reference semantics, and Rust-derived refinement theorems
 for every explicit core entry point. See [proof coverage](verification/coverage.json),
 [proof status](docs/proof-status.md), [resource model](docs/resources.md), and the
@@ -92,7 +92,7 @@ short-input/code-size tradeoffs.
 
 ## Installation and examples
 
-After registry publication, add `bitet = "0.1"` to your Cargo dependencies.
+After registry publication, add `bited = "0.1"` to your Cargo dependencies.
 For the prepared source checkout, use a path dependency on this directory.
 
 ```sh

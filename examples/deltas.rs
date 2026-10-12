@@ -1,5 +1,5 @@
 //! Encode small signed changes instead of repeatedly storing large positions.
-use bitet::{decode_i64, encode_i64_into, DecodePolicy};
+use bited::{decode_i64, encode_i64_into, DecodePolicy};
 
 fn main() {
     let positions = [1_000i64, 1_002, 999, 1_003];

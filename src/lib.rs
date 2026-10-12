@@ -5,7 +5,7 @@
 //! when capacity is insufficient. The library is `no_std` and forbids unsafe code.
 //!
 //! ```
-//! use bitet::{decode_i64_exact, encode_i64_into, DecodePolicy};
+//! use bited::{decode_i64_exact, encode_i64_into, DecodePolicy};
 //!
 //! let mut buffer = [0u8; 10];
 //! let used = encode_i64_into(-150, &mut buffer).unwrap();

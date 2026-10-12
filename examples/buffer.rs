@@ -1,5 +1,5 @@
 //! Write one signed value without allocating, preserving the caller's suffix.
-use bitet::{decode_i64_exact, encode_i64_into, DecodePolicy};
+use bited::{decode_i64_exact, encode_i64_into, DecodePolicy};
 
 fn main() {
     let mut output = [0xa5; 16];

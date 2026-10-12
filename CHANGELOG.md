@@ -10,11 +10,11 @@
 - Eighteen Lean 4 proof obligations, including source-level Rust correspondence,
   canonical uniqueness, shortest encoded length and streaming equivalence.
 - Bounded-capacity encoder specialization; the recorded Apple M5 comparison reduces
-  full-width u64 encoding time by about 52% and large traversal time by about 41%.
+  full-width u64 encoding time by about 53% and large traversal time by about 40%.
   Short-input results and other-CPU performance are separate measured questions.
 - Rust 1.88 MSRV, no runtime dependencies, no_std and forbidden unsafe library code.
 
-The working package name was verified-varint. The first public name is bitet;
+The working package name was verified-varint. The first public name is bited;
 historical specifications and measurement records retain their original identities.
 
 Publication date and registry status are recorded when the release is published.

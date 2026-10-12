@@ -42,12 +42,12 @@ observations = {}
 for target in ["aarch64-apple-darwin", "wasm32-wasip1", "riscv32imac-unknown-none-elf"]:
     run(["cargo", "rustc", "--locked", "--offline", "--release", "--lib", "--target", target, "--", "--emit=asm"])
     folder = ROOT / "target" / target / "release"
-    assemblies = list((folder / "deps").glob("bitet-*.s"))
+    assemblies = list((folder / "deps").glob("bited-*.s"))
     if len(assemblies) != 1:
         raise SystemExit(f"Ambiguous assembly outputs for {target}: {assemblies}")
     asm = assemblies[0]
     text = asm.read_text()
-    functions = list(re.finditer(r"(?m)^(_+ZN5bitet[^:\n]+):$", text))
+    functions = list(re.finditer(r"(?m)^(_+ZN5bited[^:\n]+):$", text))
     frames = {}
     calls = {}
     for index, match in enumerate(functions):
@@ -55,13 +55,13 @@ for target in ["aarch64-apple-darwin", "wasm32-wasip1", "riscv32imac-unknown-non
         name = match.group(1)
         if target.startswith("aarch64"):
             sizes = re.findall(r"\.cfi_def_cfa_offset (\d+)", body)
-            calls[name] = re.findall(r"(?m)^\s*bl\s+(_+ZN5bitet\S+)", body)
+            calls[name] = re.findall(r"(?m)^\s*bl\s+(_+ZN5bited\S+)", body)
         elif target.startswith("wasm"):
             sizes = re.findall(r"global.get\s+__stack_pointer\s*\n\s*i32.const\s+(\d+)\s*\n\s*i32.sub", body)
-            calls[name] = re.findall(r"(?m)^\s*call\s+(_+ZN5bitet\S+)", body)
+            calls[name] = re.findall(r"(?m)^\s*call\s+(_+ZN5bited\S+)", body)
         else:
             sizes = re.findall(r"addi\s+sp,\s*sp,\s*-(\d+)", body)
-            calls[name] = re.findall(r"(?m)^\s*call\s+(_+ZN5bitet\S+)", body)
+            calls[name] = re.findall(r"(?m)^\s*call\s+(_+ZN5bited\S+)", body)
         frames[name] = max(map(int, sizes), default=0)
     if not frames:
         raise SystemExit(f"No function frames found for {target}")
@@ -72,17 +72,17 @@ for target in ["aarch64-apple-darwin", "wasm32-wasip1", "riscv32imac-unknown-non
         return frames.get(name, 0) + max((path_stack(callee, active+(name,))
             for callee in calls.get(name, []) if callee in frames), default=0)
 
-    size_output = run(["xcrun", "llvm-size", "-A", str(folder / "libbitet.rlib")])
+    size_output = run(["xcrun", "llvm-size", "-A", str(folder / "libbited.rlib")])
     code_sections = [int(v) for v in re.findall(r"(?m)^\s*(?:__text|CODE|\.text(?:\.\S+)?)\s+(\d+)\s", size_output)]
     ir = REPORTS / ("layout-" + target + ".ll")
     run(["rustc", "--edition=2021", "--crate-type=lib", "--crate-name=vvz_layout", "--target", target,
-         "--extern", "bitet=" + str(folder / "libbitet.rlib"),
+         "--extern", "bited=" + str(folder / "libbited.rlib"),
          "--emit=llvm-ir", "-o", str(ir), "verification/layout-probe.rs"])
     layout = {name: int(size) for name, size in re.findall(
         r"define[^@]*@(vvz_\w+_size)\([^)]*\)[^{]*\{.*?ret i(?:32|64) (\d+)", ir.read_text(), re.S)}
     if len(layout) != 4 or layout["vvz_decoder_u32_size"] > 64 or layout["vvz_decoder_u64_size"] > 64:
         raise SystemExit(f"Incomplete or oversized layout measurement for {target}: {layout}")
-    observations[target] = {"code_section_bytes": sum(code_sections), "archive_bytes": (folder/"libbitet.rlib").stat().st_size,
+    observations[target] = {"code_section_bytes": sum(code_sections), "archive_bytes": (folder/"libbited.rlib").stat().st_size,
         "layout_bytes": layout, "per_function_static_frame_bytes": frames,
         "maximum_static_library_call_path_bytes": max(path_stack(name) for name in frames),
         "stack_scope": "compiler assembly observation; library-only static frames; excludes panic paths, OS/runtime, Wasm operand stack, caller and linker changes; not a formal stack theorem",

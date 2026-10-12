@@ -1,4 +1,4 @@
-use bitet::{decode_u64, encode_u64_into, DecodePolicy};
+use bited::{decode_u64, encode_u64_into, DecodePolicy};
 use integer_encoding::VarInt;
 use serde_json::json;
 use std::{hint::black_box, time::Instant};

@@ -65,7 +65,7 @@ result = subprocess.run(["cargo", "publish", "--dry-run", "--locked", "--offline
 require(result.returncode == 0, "Cargo publication dry-run failed:\n" + result.stdout)
 require(sha(ROOT / crate["archive"]) == crate["sha256"],
         "Cargo dry-run changed the verified crate; rerun ./scripts/verify")
-with tempfile.TemporaryDirectory(prefix=".bitet-stage-", dir=releases) as temporary:
+with tempfile.TemporaryDirectory(prefix=".bited-stage-", dir=releases) as temporary:
     staged = Path(temporary) / "bundle"
     staged.mkdir()
     for path in [*artifacts, sidecar, ROOT / "CHANGELOG.md"]:

@@ -89,7 +89,7 @@ if lock["checker"] is None:
 if not args.development and blockers:
     raise SystemExit("Release verification refused:\n" + "\n".join(blockers))
 report = {
-    "schema": "bitet-release-verification/0.1",
+    "schema": "bited-release-verification/0.1",
     "recorded_at_utc": datetime.datetime.now(datetime.timezone.utc).isoformat(),
     "specification": coverage["specification"],
     "status": "development checks passed; full release proof closure incomplete" if blockers else "release checks passed",
@@ -119,7 +119,7 @@ crate = tomllib.loads((ROOT / "Cargo.toml").read_text())["package"]
 claims = sorted(set(theorem for obligation in coverage["obligations"] for theorem in obligation["theorems"]) |
                 set(coverage["public_entrypoint_refinements"].values()))
 report["identity"] = {"crate": {"name": crate["name"], "version": crate["version"], "archive": package["archive"], "sha256": package["sha256"]},
-    "lean_package": {"name": "bitet", "version": metadata["version"], "archive": lean_package["archive"], "sha256": lean_package["archive_sha256"]}}
+    "lean_package": {"name": "bited", "version": metadata["version"], "archive": lean_package["archive"], "sha256": lean_package["archive_sha256"]}}
 report["claims"] = {name: {"statement_sha256": audit[name]["statement_sha256"], "axioms": audit[name]["axioms"]} for name in claims}
 report["compiled_proof_modules_sha256"] = replay["compiled_project_modules_sha256"]
 report["trust"] = {"formal_scope": "Rust source-level refinement under pinned extraction configuration",

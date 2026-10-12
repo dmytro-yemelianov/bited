@@ -1,11 +1,12 @@
 [package]
-name = "bitet"
+name = "bited"
 version = "0.1.0"
 edition = "2021"
 rust-version = "1.88"
 description = "Allocation-free base-128 varints and ZigZag with Lean 4 source refinement"
 license = "MIT"
 readme = "README.md"
+repository = "https://github.com/dmytro-yemelianov/bited"
 keywords = ["varint", "zigzag", "leb128", "no-std", "lean"]
 categories = ["encoding", "no-std", "embedded", "algorithms"]
 include = ["/src/**", "/Cargo.toml", "/Cargo.lock", "/README.md", "/LICENSE-*", "/CHANGELOG.md", "/examples/**", "/docs/**", "/conformance/**", "/tests/**", "/benches/**", "/rust-toolchain.toml", "/verification/coverage.json", "/verification/toolchain-lock.json", "/verification/axioms-allowlist.json"]

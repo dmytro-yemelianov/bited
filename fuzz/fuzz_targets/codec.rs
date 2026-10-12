@@ -1,6 +1,6 @@
 #![no_main]
 use libfuzzer_sys::fuzz_target;
-use bitet::*;
+use bited::*;
 
 // A separate widened arithmetic oracle, never the encoder under test.
 fn oracle(bytes: &[u8], width: usize, policy: DecodePolicy) -> Result<Decoded<u64>, DecodeError> {

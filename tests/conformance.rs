@@ -1,4 +1,4 @@
-use bitet::*;
+use bited::*;
 use serde_json::Value;
 
 fn bytes(hex: &str) -> Vec<u8> {

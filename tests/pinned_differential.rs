@@ -1,6 +1,6 @@
 //! Independent implementation pinned in Cargo.lock. Only its unsigned LEB128
 //! codec is used; signed LEB128 has a different wire format from ZigZag varints.
-use bitet::*;
+use bited::*;
 fn check(value: u64) {
     let mut external = Vec::new();
     leb128::write::unsigned(&mut external, value).unwrap();

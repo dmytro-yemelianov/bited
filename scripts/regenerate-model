@@ -49,17 +49,17 @@ def main():
     with tempfile.TemporaryDirectory(prefix="vvz-extract-", dir=ROOT / "target") as tmp:
         tmp = Path(tmp)
         command = [str(home / "charon/bin/charon"), "cargo", "--preset=aeneas",
-                   "--targets", lock["extraction_target"], "--dest-file", str(tmp / "bitet.llbc")]
+                   "--targets", lock["extraction_target"], "--dest-file", str(tmp / "bited.llbc")]
         for symbol in lock["start_from"]:
             command += ["--start-from", symbol]
         command += ["--", "--lib", "--locked", "--offline"]
         run(command, env=env, cwd=rust_source)
         run([str(home / "bin/aeneas"), "-backend", "lean", "-dest", str(tmp / "lean"),
-             "-subdir", "Bitet/Generated", "-namespace", "Bitet.Generated",
+             "-subdir", "Bited/Generated", "-namespace", "Bited.Generated",
              "-use-lean-modules", "false", "-split-files", "-abort-on-error", "-warnings-as-errors",
-             "-no-progress-bar", str(tmp / "bitet.llbc")])
-        generated = tmp / "lean/Bitet/Generated"
-        expected = ROOT / "lean/Bitet/Generated"
+             "-no-progress-bar", str(tmp / "bited.llbc")])
+        generated = tmp / "lean/Bited/Generated"
+        expected = ROOT / "lean/Bited/Generated"
         names = {p.name for p in generated.glob("*.lean")}
         if names != {"Types.lean", "Funs.lean"}:
             raise SystemExit(f"Unexpected generated files or missing external models: {sorted(names)}")
@@ -78,7 +78,7 @@ def main():
         record = {
             "status": "source translation checked; not a refinement proof",
             "inputs_and_model": {str(p.relative_to(ROOT)): digest(p) for p in sorted(paths)},
-            "llbc_sha256": digest(tmp / "bitet.llbc"),
+            "llbc_sha256": digest(tmp / "bited.llbc"),
             "tool_binaries": {name: digest(home / name) for name in
                               ["bin/aeneas", "charon/bin/charon", "charon/bin/charon-driver"]},
             "tools": lock,

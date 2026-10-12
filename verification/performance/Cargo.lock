@@ -3,6 +3,10 @@
 version = 4
 
 [[package]]
+name = "bited"
+version = "0.1.0"
+
+[[package]]
 name = "integer-encoding"
 version = "4.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -119,17 +123,13 @@ checksum = "a2c754d6c33795a1c324727428e5a7dedb5b06195f9890bdbcba760d3e246563"
 name = "varint-comparison"
 version = "0.1.0"
 dependencies = [
+ "bited",
  "integer-encoding",
  "leb128",
  "libc",
  "serde_json",
- "bitet",
  "verified-varint-baseline",
 ]
-
-[[package]]
-name = "bitet"
-version = "0.1.0"
 
 [[package]]
 name = "verified-varint-baseline"

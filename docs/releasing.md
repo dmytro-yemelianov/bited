@@ -1,4 +1,4 @@
-# Preparing and publishing bitet releases
+# Preparing and publishing bited releases
 
 Rust and Lean ship together. The initial version is 0.1.0. For each later release,
 update `Cargo.toml` and `lakefile.toml` to the same version, update all three Cargo

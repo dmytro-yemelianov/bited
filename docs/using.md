@@ -1,6 +1,6 @@
-# Using bitet
+# Using bited
 
-Use bitet for bounded base-128 integers in binary protocols, records and telemetry.
+Use bited for bounded base-128 integers in binary protocols, records and telemetry.
 Small unsigned values and small ZigZag signed values encode compactly. Arbitrary
 full-width u64 values can occupy ten bytes; use fixed-width storage when that better
 fits the format. Varint's shortest representation is relative to its own format.
@@ -8,7 +8,7 @@ fits the format. Varint's shortest representation is relative to its own format.
 ## Caller buffers
 
 ```rust
-use bitet::{decode_i64_exact, encode_i64_into, DecodePolicy};
+use bited::{decode_i64_exact, encode_i64_into, DecodePolicy};
 
 let mut output = [0xa5; 16];
 let used = encode_i64_into(-150, &mut output).unwrap();

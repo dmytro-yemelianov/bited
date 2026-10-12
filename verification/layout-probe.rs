@@ -1,6 +1,6 @@
 //! Compiler layout probe, outside the consumer library and formal claim.
 #![no_std]
-use bitet::{DecoderU32, DecoderU64, Encoded32, Encoded64};
+use bited::{DecoderU32, DecoderU64, Encoded32, Encoded64};
 #[no_mangle]
 pub extern "C" fn vvz_decoder_u32_size() -> usize { core::mem::size_of::<DecoderU32>() }
 #[no_mangle]

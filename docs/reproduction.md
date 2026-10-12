@@ -14,8 +14,8 @@ For the combined verification workspace:
 ```sh
 mkdir reproduction
 # Substitute paths to the supplied release archives.
-tar -xzf bitet-0.1.0.crate --strip-components=1 -C reproduction
-tar -xzf bitet-lean-0.1.0.tar.gz --strip-components=1 -C reproduction
+tar -xzf bited-0.1.0.crate --strip-components=1 -C reproduction
+tar -xzf bited-lean-0.1.0.tar.gz --strip-components=1 -C reproduction
 cd reproduction
 cp Cargo.toml.orig Cargo.toml
 # Install pinned tools/dependencies as described in README.md.

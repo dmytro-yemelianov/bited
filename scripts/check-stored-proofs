@@ -18,14 +18,14 @@ if digest != checker["binary_sha256"]:
 version = subprocess.check_output(["lean", "--version"], cwd=ROOT, text=True).strip()
 if checker["lean_commit"] not in version:
     raise SystemExit("Pinned Lean checker/kernel revision differs")
-command = ["lake", "env", "leanchecker", "--fresh", "--verbose", "Bitet"]
+command = ["lake", "env", "leanchecker", "--fresh", "--verbose", "Bited"]
 subprocess.run(command, cwd=ROOT, check=True)
 reports = ROOT / "verification/reports"
 inputs = {str(path.relative_to(ROOT)): hashlib.sha256(path.read_bytes()).hexdigest()
           for path in sorted((ROOT / ".lake/build/lib/lean").rglob("*.olean"))
-          if path.name == "Bitet.olean" or "Bitet" in path.parts}
+          if path.name == "Bited.olean" or "Bited" in path.parts}
 (reports / "stored-proofs.json").write_text(json.dumps({
-    "schema": "bitet-stored-proof-recheck/0.1",
+    "schema": "bited-stored-proof-recheck/0.1",
     "command": command,
     "checker": checker,
     "lean_version": version,

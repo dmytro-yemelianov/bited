@@ -51,7 +51,7 @@ with tempfile.TemporaryDirectory(prefix="vvz-clean-lean-",dir=ROOT/"target") as 
         raise SystemExit("Archived proof declaration/statement/axiom inventory differs")
     clean_replay=json.loads((fresh/"verification/reports/stored-proofs.json").read_text())
     (REPORTS/"lean-package-stored-proofs.json").write_text(json.dumps(clean_replay,indent=2)+"\n")
-record={"schema":"bitet-lean-package/0.1","status":"fresh project build, transitive axiom audit and stored-proof replay passed",
+record={"schema":"bited-lean-package/0.1","status":"fresh project build, transitive axiom audit and stored-proof replay passed",
     "archive":str(archive.relative_to(ROOT)),"archive_sha256":hashlib.sha256(archive.read_bytes()).hexdigest(),
     "source_sha256":{str(path.relative_to(ROOT)):hashlib.sha256(path.read_bytes()).hexdigest() for path in paths},
     "commands":commands,"declarations_match_workspace":True,"fresh_project_outputs":True,

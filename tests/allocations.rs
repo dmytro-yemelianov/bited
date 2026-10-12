@@ -1,5 +1,5 @@
 //! Counts allocations on the calling thread while exercising every public family.
-use bitet::*;
+use bited::*;
 use std::alloc::{GlobalAlloc, Layout, System};
 use std::cell::Cell;
 use std::hint::black_box;

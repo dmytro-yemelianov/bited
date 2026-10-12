@@ -1,5 +1,5 @@
 //! Reproducible scalar baseline. Dataset construction stays outside measurements.
-use bitet::*;
+use bited::*;
 use serde_json::json;
 use std::hint::black_box;
 use std::time::Instant;
@@ -250,7 +250,7 @@ fn main() {
     }
     println!(
         "{}",
-        json!({"schema":"bitet-benchmark/0.1", "benchmark_version":1,
+        json!({"schema":"bited-benchmark/0.1", "benchmark_version":1,
         "seed":format!("{SEED:016x}"), "threads":1, "repeats":REPEATS,
         "baseline":"public scalar API; no fast paths", "uncertainty":"sample SD, SEM and t(8) approximate 95% interval; system noise uncontrolled",
         "weights":"separate equal-length datasets; short mixture 80% one byte, 15% two bytes, 5% full-width",

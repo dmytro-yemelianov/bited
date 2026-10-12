@@ -1,5 +1,5 @@
 //! Feed fragmented input byte by byte and retain the next frame's suffix.
-use bitet::{DecodePolicy, DecoderU64, Step};
+use bited::{DecodePolicy, DecoderU64, Step};
 
 fn main() {
     let chunks: &[&[u8]] = &[&[0xac], &[], &[0x02, 0x7f]];

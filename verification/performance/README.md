@@ -10,7 +10,7 @@ are stored beside it. The root `scripts/verify` command separately rebuilds rele
 current source snapshot. Prior measurement snapshots are kept as
 `results-before-inline.json`, `RESULTS-before-inline.md`, and `after-clz-results.json` / `after-clz-RESULTS.md`.
 
-Compare `bitet`, `leb128 = 0.2.5` and
+Compare `bited`, `leb128 = 0.2.5` and
 `integer-encoding = 4.1.0`, plus the prior verified source compiled as
 `verified-varint-baseline`. Its exact source hashes and commit are recorded in
 `baseline/provenance.json`; its buffers, checks and algorithms match the original
