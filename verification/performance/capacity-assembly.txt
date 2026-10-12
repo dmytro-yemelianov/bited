@@ -1,0 +1,1290 @@
+0000000100000b7c <capacity::batch::h553e43e5faace109>:
+100000b7c: d10083ff    	sub	sp, sp, #0x20
+100000b80: 12001c48    	and	w8, w2, #0xff
+100000b84: 7100091f    	cmp	w8, #0x2
+100000b88: 54000b0d    	b.le	0x100000ce8 <capacity::batch::h553e43e5faace109+0x16c>
+100000b8c: 7100111f    	cmp	w8, #0x4
+100000b90: 5400158c    	b.gt	0x100000e40 <capacity::batch::h553e43e5faace109+0x2c4>
+100000b94: 71000d1f    	cmp	w8, #0x3
+100000b98: 540036a1    	b.ne	0x10000126c <capacity::batch::h553e43e5faace109+0x6f0>
+100000b9c: 790023ff    	strh	wzr, [sp, #0x10]
+100000ba0: f90007ff    	str	xzr, [sp, #0x8]
+100000ba4: b4004ba1    	cbz	x1, 0x100001518 <capacity::batch::h553e43e5faace109+0x99c>
+100000ba8: d37df028    	lsl	x8, x1, #3
+100000bac: 910063e9    	add	x9, sp, #0x18
+100000bb0: 910023ea    	add	x10, sp, #0x8
+100000bb4: 14000008    	b	0x100000bd4 <capacity::batch::h553e43e5faace109+0x58>
+100000bb8: d280000d    	mov	x13, #0x0               ; =0
+100000bbc: 382d696c    	strb	w12, [x11, x13]
+100000bc0: 910005ab    	add	x11, x13, #0x1
+100000bc4: f9000feb    	str	x11, [sp, #0x18]
+100000bc8: f9000fea    	str	x10, [sp, #0x18]
+100000bcc: f1002108    	subs	x8, x8, #0x8
+100000bd0: 54004a40    	b.eq	0x100001518 <capacity::batch::h553e43e5faace109+0x99c>
+100000bd4: f840840b    	ldr	x11, [x0], #0x8
+100000bd8: f9000feb    	str	x11, [sp, #0x18]
+100000bdc: f9400fec    	ldr	x12, [sp, #0x18]
+100000be0: f9000fea    	str	x10, [sp, #0x18]
+100000be4: f9400feb    	ldr	x11, [sp, #0x18]
+100000be8: f102019f    	cmp	x12, #0x80
+100000bec: 54fffe63    	b.lo	0x100000bb8 <capacity::batch::h553e43e5faace109+0x3c>
+100000bf0: 3219018d    	orr	w13, w12, #0x80
+100000bf4: 3900016d    	strb	w13, [x11]
+100000bf8: f140119f    	cmp	x12, #0x4, lsl #12      ; =0x4000
+100000bfc: 54000443    	b.lo	0x100000c84 <capacity::batch::h553e43e5faace109+0x108>
+100000c00: 53077d8d    	lsr	w13, w12, #7
+100000c04: 321901ad    	orr	w13, w13, #0x80
+100000c08: 3900056d    	strb	w13, [x11, #0x1]
+100000c0c: f148019f    	cmp	x12, #0x200, lsl #12    ; =0x200000
+100000c10: 54000403    	b.lo	0x100000c90 <capacity::batch::h553e43e5faace109+0x114>
+100000c14: 530e7d8d    	lsr	w13, w12, #14
+100000c18: 321901ad    	orr	w13, w13, #0x80
+100000c1c: 3900096d    	strb	w13, [x11, #0x2]
+100000c20: d35cfd8e    	lsr	x14, x12, #28
+100000c24: b40003ce    	cbz	x14, 0x100000c9c <capacity::batch::h553e43e5faace109+0x120>
+100000c28: 53157d8d    	lsr	w13, w12, #21
+100000c2c: 321901ad    	orr	w13, w13, #0x80
+100000c30: 39000d6d    	strb	w13, [x11, #0x3]
+100000c34: d363fd8f    	lsr	x15, x12, #35
+100000c38: b400038f    	cbz	x15, 0x100000ca8 <capacity::batch::h553e43e5faace109+0x12c>
+100000c3c: 321901cd    	orr	w13, w14, #0x80
+100000c40: 3900116d    	strb	w13, [x11, #0x4]
+100000c44: d36afd8e    	lsr	x14, x12, #42
+100000c48: b400036e    	cbz	x14, 0x100000cb4 <capacity::batch::h553e43e5faace109+0x138>
+100000c4c: 321901ed    	orr	w13, w15, #0x80
+100000c50: 3900156d    	strb	w13, [x11, #0x5]
+100000c54: d371fd8f    	lsr	x15, x12, #49
+100000c58: b400034f    	cbz	x15, 0x100000cc0 <capacity::batch::h553e43e5faace109+0x144>
+100000c5c: 321901cd    	orr	w13, w14, #0x80
+100000c60: 3900196d    	strb	w13, [x11, #0x6]
+100000c64: d378fd8e    	lsr	x14, x12, #56
+100000c68: b400032e    	cbz	x14, 0x100000ccc <capacity::batch::h553e43e5faace109+0x150>
+100000c6c: 321901ed    	orr	w13, w15, #0x80
+100000c70: 39001d6d    	strb	w13, [x11, #0x7]
+100000c74: b7f8032c    	tbnz	x12, #0x3f, 0x100000cd8 <capacity::batch::h553e43e5faace109+0x15c>
+100000c78: 5280010d    	mov	w13, #0x8               ; =8
+100000c7c: aa0e03ec    	mov	x12, x14
+100000c80: 17ffffcf    	b	0x100000bbc <capacity::batch::h553e43e5faace109+0x40>
+100000c84: d347fd8c    	lsr	x12, x12, #7
+100000c88: 5280002d    	mov	w13, #0x1               ; =1
+100000c8c: 17ffffcc    	b	0x100000bbc <capacity::batch::h553e43e5faace109+0x40>
+100000c90: d34efd8c    	lsr	x12, x12, #14
+100000c94: 5280004d    	mov	w13, #0x2               ; =2
+100000c98: 17ffffc9    	b	0x100000bbc <capacity::batch::h553e43e5faace109+0x40>
+100000c9c: d355fd8c    	lsr	x12, x12, #21
+100000ca0: 5280006d    	mov	w13, #0x3               ; =3
+100000ca4: 17ffffc6    	b	0x100000bbc <capacity::batch::h553e43e5faace109+0x40>
+100000ca8: 5280008d    	mov	w13, #0x4               ; =4
+100000cac: aa0e03ec    	mov	x12, x14
+100000cb0: 17ffffc3    	b	0x100000bbc <capacity::batch::h553e43e5faace109+0x40>
+100000cb4: 528000ad    	mov	w13, #0x5               ; =5
+100000cb8: aa0f03ec    	mov	x12, x15
+100000cbc: 17ffffc0    	b	0x100000bbc <capacity::batch::h553e43e5faace109+0x40>
+100000cc0: 528000cd    	mov	w13, #0x6               ; =6
+100000cc4: aa0e03ec    	mov	x12, x14
+100000cc8: 17ffffbd    	b	0x100000bbc <capacity::batch::h553e43e5faace109+0x40>
+100000ccc: 528000ed    	mov	w13, #0x7               ; =7
+100000cd0: aa0f03ec    	mov	x12, x15
+100000cd4: 17ffffba    	b	0x100000bbc <capacity::batch::h553e43e5faace109+0x40>
+100000cd8: 3900216e    	strb	w14, [x11, #0x8]
+100000cdc: 5280012d    	mov	w13, #0x9               ; =9
+100000ce0: 5280002c    	mov	w12, #0x1               ; =1
+100000ce4: 17ffffb6    	b	0x100000bbc <capacity::batch::h553e43e5faace109+0x40>
+100000ce8: 34001668    	cbz	w8, 0x100000fb4 <capacity::batch::h553e43e5faace109+0x438>
+100000cec: 7100051f    	cmp	w8, #0x1
+100000cf0: 54002181    	b.ne	0x100001120 <capacity::batch::h553e43e5faace109+0x5a4>
+100000cf4: 790023ff    	strh	wzr, [sp, #0x10]
+100000cf8: f90007ff    	str	xzr, [sp, #0x8]
+100000cfc: b40040e1    	cbz	x1, 0x100001518 <capacity::batch::h553e43e5faace109+0x99c>
+100000d00: d37df028    	lsl	x8, x1, #3
+100000d04: 910063e9    	add	x9, sp, #0x18
+100000d08: 910023ea    	add	x10, sp, #0x8
+100000d0c: 14000008    	b	0x100000d2c <capacity::batch::h553e43e5faace109+0x1b0>
+100000d10: d280000d    	mov	x13, #0x0               ; =0
+100000d14: 382d696c    	strb	w12, [x11, x13]
+100000d18: 910005ab    	add	x11, x13, #0x1
+100000d1c: f9000feb    	str	x11, [sp, #0x18]
+100000d20: f9000fea    	str	x10, [sp, #0x18]
+100000d24: f1002108    	subs	x8, x8, #0x8
+100000d28: 54003f80    	b.eq	0x100001518 <capacity::batch::h553e43e5faace109+0x99c>
+100000d2c: f840840b    	ldr	x11, [x0], #0x8
+100000d30: f9000feb    	str	x11, [sp, #0x18]
+100000d34: f9400fec    	ldr	x12, [sp, #0x18]
+100000d38: f9000fea    	str	x10, [sp, #0x18]
+100000d3c: f9400feb    	ldr	x11, [sp, #0x18]
+100000d40: f102019f    	cmp	x12, #0x80
+100000d44: 54fffe63    	b.lo	0x100000d10 <capacity::batch::h553e43e5faace109+0x194>
+100000d48: 3219018d    	orr	w13, w12, #0x80
+100000d4c: 3900016d    	strb	w13, [x11]
+100000d50: f140119f    	cmp	x12, #0x4, lsl #12      ; =0x4000
+100000d54: 54000443    	b.lo	0x100000ddc <capacity::batch::h553e43e5faace109+0x260>
+100000d58: 53077d8d    	lsr	w13, w12, #7
+100000d5c: 321901ad    	orr	w13, w13, #0x80
+100000d60: 3900056d    	strb	w13, [x11, #0x1]
+100000d64: f148019f    	cmp	x12, #0x200, lsl #12    ; =0x200000
+100000d68: 54000403    	b.lo	0x100000de8 <capacity::batch::h553e43e5faace109+0x26c>
+100000d6c: 530e7d8d    	lsr	w13, w12, #14
+100000d70: 321901ad    	orr	w13, w13, #0x80
+100000d74: 3900096d    	strb	w13, [x11, #0x2]
+100000d78: d35cfd8d    	lsr	x13, x12, #28
+100000d7c: b40003cd    	cbz	x13, 0x100000df4 <capacity::batch::h553e43e5faace109+0x278>
+100000d80: 53157d8e    	lsr	w14, w12, #21
+100000d84: 321901ce    	orr	w14, w14, #0x80
+100000d88: 39000d6e    	strb	w14, [x11, #0x3]
+100000d8c: d363fd8e    	lsr	x14, x12, #35
+100000d90: b400038e    	cbz	x14, 0x100000e00 <capacity::batch::h553e43e5faace109+0x284>
+100000d94: 321901ad    	orr	w13, w13, #0x80
+100000d98: 3900116d    	strb	w13, [x11, #0x4]
+100000d9c: d36afd8d    	lsr	x13, x12, #42
+100000da0: b400036d    	cbz	x13, 0x100000e0c <capacity::batch::h553e43e5faace109+0x290>
+100000da4: 321901ce    	orr	w14, w14, #0x80
+100000da8: 3900156e    	strb	w14, [x11, #0x5]
+100000dac: d371fd8e    	lsr	x14, x12, #49
+100000db0: b400034e    	cbz	x14, 0x100000e18 <capacity::batch::h553e43e5faace109+0x29c>
+100000db4: 321901ad    	orr	w13, w13, #0x80
+100000db8: 3900196d    	strb	w13, [x11, #0x6]
+100000dbc: d378fd8d    	lsr	x13, x12, #56
+100000dc0: b400032d    	cbz	x13, 0x100000e24 <capacity::batch::h553e43e5faace109+0x2a8>
+100000dc4: 321901ce    	orr	w14, w14, #0x80
+100000dc8: 39001d6e    	strb	w14, [x11, #0x7]
+100000dcc: b7f8032c    	tbnz	x12, #0x3f, 0x100000e30 <capacity::batch::h553e43e5faace109+0x2b4>
+100000dd0: aa0d03ec    	mov	x12, x13
+100000dd4: 5280010d    	mov	w13, #0x8               ; =8
+100000dd8: 17ffffcf    	b	0x100000d14 <capacity::batch::h553e43e5faace109+0x198>
+100000ddc: d347fd8c    	lsr	x12, x12, #7
+100000de0: 5280002d    	mov	w13, #0x1               ; =1
+100000de4: 17ffffcc    	b	0x100000d14 <capacity::batch::h553e43e5faace109+0x198>
+100000de8: d34efd8c    	lsr	x12, x12, #14
+100000dec: 5280004d    	mov	w13, #0x2               ; =2
+100000df0: 17ffffc9    	b	0x100000d14 <capacity::batch::h553e43e5faace109+0x198>
+100000df4: d355fd8c    	lsr	x12, x12, #21
+100000df8: 5280006d    	mov	w13, #0x3               ; =3
+100000dfc: 17ffffc6    	b	0x100000d14 <capacity::batch::h553e43e5faace109+0x198>
+100000e00: aa0d03ec    	mov	x12, x13
+100000e04: 5280008d    	mov	w13, #0x4               ; =4
+100000e08: 17ffffc3    	b	0x100000d14 <capacity::batch::h553e43e5faace109+0x198>
+100000e0c: aa0e03ec    	mov	x12, x14
+100000e10: 528000ad    	mov	w13, #0x5               ; =5
+100000e14: 17ffffc0    	b	0x100000d14 <capacity::batch::h553e43e5faace109+0x198>
+100000e18: aa0d03ec    	mov	x12, x13
+100000e1c: 528000cd    	mov	w13, #0x6               ; =6
+100000e20: 17ffffbd    	b	0x100000d14 <capacity::batch::h553e43e5faace109+0x198>
+100000e24: aa0e03ec    	mov	x12, x14
+100000e28: 528000ed    	mov	w13, #0x7               ; =7
+100000e2c: 17ffffba    	b	0x100000d14 <capacity::batch::h553e43e5faace109+0x198>
+100000e30: 3900216d    	strb	w13, [x11, #0x8]
+100000e34: 5280002c    	mov	w12, #0x1               ; =1
+100000e38: 5280012d    	mov	w13, #0x9               ; =9
+100000e3c: 17ffffb6    	b	0x100000d14 <capacity::batch::h553e43e5faace109+0x198>
+100000e40: 7100151f    	cmp	w8, #0x5
+100000e44: 54002ba1    	b.ne	0x1000013b8 <capacity::batch::h553e43e5faace109+0x83c>
+100000e48: 790023ff    	strh	wzr, [sp, #0x10]
+100000e4c: f90007ff    	str	xzr, [sp, #0x8]
+100000e50: b4003641    	cbz	x1, 0x100001518 <capacity::batch::h553e43e5faace109+0x99c>
+100000e54: d37df028    	lsl	x8, x1, #3
+100000e58: 910063e9    	add	x9, sp, #0x18
+100000e5c: 910023ea    	add	x10, sp, #0x8
+100000e60: 528008cb    	mov	w11, #0x46              ; =70
+100000e64: d284926c    	mov	x12, #0x2493            ; =9363
+100000e68: f2b2492c    	movk	x12, #0x9249, lsl #16
+100000e6c: f2c9248c    	movk	x12, #0x4924, lsl #32
+100000e70: f2e4924c    	movk	x12, #0x2492, lsl #48
+100000e74: 14000008    	b	0x100000e94 <capacity::batch::h553e43e5faace109+0x318>
+100000e78: d2800010    	mov	x16, #0x0               ; =0
+100000e7c: 5280002e    	mov	w14, #0x1               ; =1
+100000e80: 383069af    	strb	w15, [x13, x16]
+100000e84: f9000fee    	str	x14, [sp, #0x18]
+100000e88: f9000fea    	str	x10, [sp, #0x18]
+100000e8c: f1002108    	subs	x8, x8, #0x8
+100000e90: 54003440    	b.eq	0x100001518 <capacity::batch::h553e43e5faace109+0x99c>
+100000e94: f840840d    	ldr	x13, [x0], #0x8
+100000e98: f9000fed    	str	x13, [sp, #0x18]
+100000e9c: f9400fef    	ldr	x15, [sp, #0x18]
+100000ea0: f9000fea    	str	x10, [sp, #0x18]
+100000ea4: f9400fed    	ldr	x13, [sp, #0x18]
+100000ea8: f10201ff    	cmp	x15, #0x80
+100000eac: 54fffe63    	b.lo	0x100000e78 <capacity::batch::h553e43e5faace109+0x2fc>
+100000eb0: dac011ee    	clz	x14, x15
+100000eb4: cb0e016e    	sub	x14, x11, x14
+100000eb8: 9bcc7dce    	umulh	x14, x14, x12
+100000ebc: 321901f0    	orr	w16, w15, #0x80
+100000ec0: 390001b0    	strb	w16, [x13]
+100000ec4: f14011ff    	cmp	x15, #0x4, lsl #12      ; =0x4000
+100000ec8: 54000443    	b.lo	0x100000f50 <capacity::batch::h553e43e5faace109+0x3d4>
+100000ecc: 53077df0    	lsr	w16, w15, #7
+100000ed0: 32190210    	orr	w16, w16, #0x80
+100000ed4: 390005b0    	strb	w16, [x13, #0x1]
+100000ed8: f14801ff    	cmp	x15, #0x200, lsl #12    ; =0x200000
+100000edc: 54000403    	b.lo	0x100000f5c <capacity::batch::h553e43e5faace109+0x3e0>
+100000ee0: 530e7df0    	lsr	w16, w15, #14
+100000ee4: 32190210    	orr	w16, w16, #0x80
+100000ee8: 390009b0    	strb	w16, [x13, #0x2]
+100000eec: d35cfdf0    	lsr	x16, x15, #28
+100000ef0: b40003d0    	cbz	x16, 0x100000f68 <capacity::batch::h553e43e5faace109+0x3ec>
+100000ef4: 53157df1    	lsr	w17, w15, #21
+100000ef8: 32190231    	orr	w17, w17, #0x80
+100000efc: 39000db1    	strb	w17, [x13, #0x3]
+100000f00: d363fdf1    	lsr	x17, x15, #35
+100000f04: b4000391    	cbz	x17, 0x100000f74 <capacity::batch::h553e43e5faace109+0x3f8>
+100000f08: 32190210    	orr	w16, w16, #0x80
+100000f0c: 390011b0    	strb	w16, [x13, #0x4]
+100000f10: d36afdf0    	lsr	x16, x15, #42
+100000f14: b4000370    	cbz	x16, 0x100000f80 <capacity::batch::h553e43e5faace109+0x404>
+100000f18: 32190231    	orr	w17, w17, #0x80
+100000f1c: 390015b1    	strb	w17, [x13, #0x5]
+100000f20: d371fdf1    	lsr	x17, x15, #49
+100000f24: b4000351    	cbz	x17, 0x100000f8c <capacity::batch::h553e43e5faace109+0x410>
+100000f28: 32190210    	orr	w16, w16, #0x80
+100000f2c: 390019b0    	strb	w16, [x13, #0x6]
+100000f30: d378fdf0    	lsr	x16, x15, #56
+100000f34: b4000330    	cbz	x16, 0x100000f98 <capacity::batch::h553e43e5faace109+0x41c>
+100000f38: 32190231    	orr	w17, w17, #0x80
+100000f3c: 39001db1    	strb	w17, [x13, #0x7]
+100000f40: b7f8032f    	tbnz	x15, #0x3f, 0x100000fa4 <capacity::batch::h553e43e5faace109+0x428>
+100000f44: aa1003ef    	mov	x15, x16
+100000f48: 52800110    	mov	w16, #0x8               ; =8
+100000f4c: 17ffffcd    	b	0x100000e80 <capacity::batch::h553e43e5faace109+0x304>
+100000f50: d347fdef    	lsr	x15, x15, #7
+100000f54: 52800030    	mov	w16, #0x1               ; =1
+100000f58: 17ffffca    	b	0x100000e80 <capacity::batch::h553e43e5faace109+0x304>
+100000f5c: d34efdef    	lsr	x15, x15, #14
+100000f60: 52800050    	mov	w16, #0x2               ; =2
+100000f64: 17ffffc7    	b	0x100000e80 <capacity::batch::h553e43e5faace109+0x304>
+100000f68: d355fdef    	lsr	x15, x15, #21
+100000f6c: 52800070    	mov	w16, #0x3               ; =3
+100000f70: 17ffffc4    	b	0x100000e80 <capacity::batch::h553e43e5faace109+0x304>
+100000f74: aa1003ef    	mov	x15, x16
+100000f78: 52800090    	mov	w16, #0x4               ; =4
+100000f7c: 17ffffc1    	b	0x100000e80 <capacity::batch::h553e43e5faace109+0x304>
+100000f80: aa1103ef    	mov	x15, x17
+100000f84: 528000b0    	mov	w16, #0x5               ; =5
+100000f88: 17ffffbe    	b	0x100000e80 <capacity::batch::h553e43e5faace109+0x304>
+100000f8c: aa1003ef    	mov	x15, x16
+100000f90: 528000d0    	mov	w16, #0x6               ; =6
+100000f94: 17ffffbb    	b	0x100000e80 <capacity::batch::h553e43e5faace109+0x304>
+100000f98: aa1103ef    	mov	x15, x17
+100000f9c: 528000f0    	mov	w16, #0x7               ; =7
+100000fa0: 17ffffb8    	b	0x100000e80 <capacity::batch::h553e43e5faace109+0x304>
+100000fa4: 390021b0    	strb	w16, [x13, #0x8]
+100000fa8: 5280002f    	mov	w15, #0x1               ; =1
+100000fac: 52800130    	mov	w16, #0x9               ; =9
+100000fb0: 17ffffb4    	b	0x100000e80 <capacity::batch::h553e43e5faace109+0x304>
+100000fb4: 790023ff    	strh	wzr, [sp, #0x10]
+100000fb8: f90007ff    	str	xzr, [sp, #0x8]
+100000fbc: b4002ae1    	cbz	x1, 0x100001518 <capacity::batch::h553e43e5faace109+0x99c>
+100000fc0: d37df028    	lsl	x8, x1, #3
+100000fc4: 910063e9    	add	x9, sp, #0x18
+100000fc8: 910023ea    	add	x10, sp, #0x8
+100000fcc: 528008cb    	mov	w11, #0x46              ; =70
+100000fd0: d284926c    	mov	x12, #0x2493            ; =9363
+100000fd4: f2b2492c    	movk	x12, #0x9249, lsl #16
+100000fd8: f2c9248c    	movk	x12, #0x4924, lsl #32
+100000fdc: f2e4924c    	movk	x12, #0x2492, lsl #48
+100000fe0: 14000008    	b	0x100001000 <capacity::batch::h553e43e5faace109+0x484>
+100000fe4: d2800010    	mov	x16, #0x0               ; =0
+100000fe8: 5280002e    	mov	w14, #0x1               ; =1
+100000fec: 383069af    	strb	w15, [x13, x16]
+100000ff0: f9000fee    	str	x14, [sp, #0x18]
+100000ff4: f9000fea    	str	x10, [sp, #0x18]
+100000ff8: f1002108    	subs	x8, x8, #0x8
+100000ffc: 540028e0    	b.eq	0x100001518 <capacity::batch::h553e43e5faace109+0x99c>
+100001000: f840840d    	ldr	x13, [x0], #0x8
+100001004: f9000fed    	str	x13, [sp, #0x18]
+100001008: f9400fef    	ldr	x15, [sp, #0x18]
+10000100c: f9000fea    	str	x10, [sp, #0x18]
+100001010: f9400fed    	ldr	x13, [sp, #0x18]
+100001014: f10201ff    	cmp	x15, #0x80
+100001018: 54fffe63    	b.lo	0x100000fe4 <capacity::batch::h553e43e5faace109+0x468>
+10000101c: dac011ee    	clz	x14, x15
+100001020: cb0e016e    	sub	x14, x11, x14
+100001024: 9bcc7dce    	umulh	x14, x14, x12
+100001028: 321901f0    	orr	w16, w15, #0x80
+10000102c: 390001b0    	strb	w16, [x13]
+100001030: f14011ff    	cmp	x15, #0x4, lsl #12      ; =0x4000
+100001034: 54000443    	b.lo	0x1000010bc <capacity::batch::h553e43e5faace109+0x540>
+100001038: 53077df0    	lsr	w16, w15, #7
+10000103c: 32190210    	orr	w16, w16, #0x80
+100001040: 390005b0    	strb	w16, [x13, #0x1]
+100001044: f14801ff    	cmp	x15, #0x200, lsl #12    ; =0x200000
+100001048: 54000403    	b.lo	0x1000010c8 <capacity::batch::h553e43e5faace109+0x54c>
+10000104c: 530e7df0    	lsr	w16, w15, #14
+100001050: 32190210    	orr	w16, w16, #0x80
+100001054: 390009b0    	strb	w16, [x13, #0x2]
+100001058: d35cfdf0    	lsr	x16, x15, #28
+10000105c: b40003d0    	cbz	x16, 0x1000010d4 <capacity::batch::h553e43e5faace109+0x558>
+100001060: 53157df1    	lsr	w17, w15, #21
+100001064: 32190231    	orr	w17, w17, #0x80
+100001068: 39000db1    	strb	w17, [x13, #0x3]
+10000106c: d363fdf1    	lsr	x17, x15, #35
+100001070: b4000391    	cbz	x17, 0x1000010e0 <capacity::batch::h553e43e5faace109+0x564>
+100001074: 32190210    	orr	w16, w16, #0x80
+100001078: 390011b0    	strb	w16, [x13, #0x4]
+10000107c: d36afdf0    	lsr	x16, x15, #42
+100001080: b4000370    	cbz	x16, 0x1000010ec <capacity::batch::h553e43e5faace109+0x570>
+100001084: 32190231    	orr	w17, w17, #0x80
+100001088: 390015b1    	strb	w17, [x13, #0x5]
+10000108c: d371fdf1    	lsr	x17, x15, #49
+100001090: b4000351    	cbz	x17, 0x1000010f8 <capacity::batch::h553e43e5faace109+0x57c>
+100001094: 32190210    	orr	w16, w16, #0x80
+100001098: 390019b0    	strb	w16, [x13, #0x6]
+10000109c: d378fdf0    	lsr	x16, x15, #56
+1000010a0: b4000330    	cbz	x16, 0x100001104 <capacity::batch::h553e43e5faace109+0x588>
+1000010a4: 32190231    	orr	w17, w17, #0x80
+1000010a8: 39001db1    	strb	w17, [x13, #0x7]
+1000010ac: b7f8032f    	tbnz	x15, #0x3f, 0x100001110 <capacity::batch::h553e43e5faace109+0x594>
+1000010b0: aa1003ef    	mov	x15, x16
+1000010b4: 52800110    	mov	w16, #0x8               ; =8
+1000010b8: 17ffffcd    	b	0x100000fec <capacity::batch::h553e43e5faace109+0x470>
+1000010bc: d347fdef    	lsr	x15, x15, #7
+1000010c0: 52800030    	mov	w16, #0x1               ; =1
+1000010c4: 17ffffca    	b	0x100000fec <capacity::batch::h553e43e5faace109+0x470>
+1000010c8: d34efdef    	lsr	x15, x15, #14
+1000010cc: 52800050    	mov	w16, #0x2               ; =2
+1000010d0: 17ffffc7    	b	0x100000fec <capacity::batch::h553e43e5faace109+0x470>
+1000010d4: d355fdef    	lsr	x15, x15, #21
+1000010d8: 52800070    	mov	w16, #0x3               ; =3
+1000010dc: 17ffffc4    	b	0x100000fec <capacity::batch::h553e43e5faace109+0x470>
+1000010e0: aa1003ef    	mov	x15, x16
+1000010e4: 52800090    	mov	w16, #0x4               ; =4
+1000010e8: 17ffffc1    	b	0x100000fec <capacity::batch::h553e43e5faace109+0x470>
+1000010ec: aa1103ef    	mov	x15, x17
+1000010f0: 528000b0    	mov	w16, #0x5               ; =5
+1000010f4: 17ffffbe    	b	0x100000fec <capacity::batch::h553e43e5faace109+0x470>
+1000010f8: aa1003ef    	mov	x15, x16
+1000010fc: 528000d0    	mov	w16, #0x6               ; =6
+100001100: 17ffffbb    	b	0x100000fec <capacity::batch::h553e43e5faace109+0x470>
+100001104: aa1103ef    	mov	x15, x17
+100001108: 528000f0    	mov	w16, #0x7               ; =7
+10000110c: 17ffffb8    	b	0x100000fec <capacity::batch::h553e43e5faace109+0x470>
+100001110: 390021b0    	strb	w16, [x13, #0x8]
+100001114: 5280002f    	mov	w15, #0x1               ; =1
+100001118: 52800130    	mov	w16, #0x9               ; =9
+10000111c: 17ffffb4    	b	0x100000fec <capacity::batch::h553e43e5faace109+0x470>
+100001120: 790023ff    	strh	wzr, [sp, #0x10]
+100001124: f90007ff    	str	xzr, [sp, #0x8]
+100001128: b4001f81    	cbz	x1, 0x100001518 <capacity::batch::h553e43e5faace109+0x99c>
+10000112c: d37df028    	lsl	x8, x1, #3
+100001130: 910063e9    	add	x9, sp, #0x18
+100001134: 910023ea    	add	x10, sp, #0x8
+100001138: 14000008    	b	0x100001158 <capacity::batch::h553e43e5faace109+0x5dc>
+10000113c: d280000d    	mov	x13, #0x0               ; =0
+100001140: 382d696c    	strb	w12, [x11, x13]
+100001144: 910005ab    	add	x11, x13, #0x1
+100001148: f9000feb    	str	x11, [sp, #0x18]
+10000114c: f9000fea    	str	x10, [sp, #0x18]
+100001150: f1002108    	subs	x8, x8, #0x8
+100001154: 54001e20    	b.eq	0x100001518 <capacity::batch::h553e43e5faace109+0x99c>
+100001158: f840840b    	ldr	x11, [x0], #0x8
+10000115c: f9000feb    	str	x11, [sp, #0x18]
+100001160: f9400fec    	ldr	x12, [sp, #0x18]
+100001164: f9000fea    	str	x10, [sp, #0x18]
+100001168: f9400feb    	ldr	x11, [sp, #0x18]
+10000116c: f102019f    	cmp	x12, #0x80
+100001170: 54fffe63    	b.lo	0x10000113c <capacity::batch::h553e43e5faace109+0x5c0>
+100001174: 3219018d    	orr	w13, w12, #0x80
+100001178: 3900016d    	strb	w13, [x11]
+10000117c: f140119f    	cmp	x12, #0x4, lsl #12      ; =0x4000
+100001180: 54000443    	b.lo	0x100001208 <capacity::batch::h553e43e5faace109+0x68c>
+100001184: 53077d8d    	lsr	w13, w12, #7
+100001188: 321901ad    	orr	w13, w13, #0x80
+10000118c: 3900056d    	strb	w13, [x11, #0x1]
+100001190: f148019f    	cmp	x12, #0x200, lsl #12    ; =0x200000
+100001194: 54000403    	b.lo	0x100001214 <capacity::batch::h553e43e5faace109+0x698>
+100001198: 530e7d8d    	lsr	w13, w12, #14
+10000119c: 321901ad    	orr	w13, w13, #0x80
+1000011a0: 3900096d    	strb	w13, [x11, #0x2]
+1000011a4: d35cfd8d    	lsr	x13, x12, #28
+1000011a8: b40003cd    	cbz	x13, 0x100001220 <capacity::batch::h553e43e5faace109+0x6a4>
+1000011ac: 53157d8e    	lsr	w14, w12, #21
+1000011b0: 321901ce    	orr	w14, w14, #0x80
+1000011b4: 39000d6e    	strb	w14, [x11, #0x3]
+1000011b8: d363fd8e    	lsr	x14, x12, #35
+1000011bc: b400038e    	cbz	x14, 0x10000122c <capacity::batch::h553e43e5faace109+0x6b0>
+1000011c0: 321901ad    	orr	w13, w13, #0x80
+1000011c4: 3900116d    	strb	w13, [x11, #0x4]
+1000011c8: d36afd8d    	lsr	x13, x12, #42
+1000011cc: b400036d    	cbz	x13, 0x100001238 <capacity::batch::h553e43e5faace109+0x6bc>
+1000011d0: 321901ce    	orr	w14, w14, #0x80
+1000011d4: 3900156e    	strb	w14, [x11, #0x5]
+1000011d8: d371fd8e    	lsr	x14, x12, #49
+1000011dc: b400034e    	cbz	x14, 0x100001244 <capacity::batch::h553e43e5faace109+0x6c8>
+1000011e0: 321901ad    	orr	w13, w13, #0x80
+1000011e4: 3900196d    	strb	w13, [x11, #0x6]
+1000011e8: d378fd8d    	lsr	x13, x12, #56
+1000011ec: b400032d    	cbz	x13, 0x100001250 <capacity::batch::h553e43e5faace109+0x6d4>
+1000011f0: 321901ce    	orr	w14, w14, #0x80
+1000011f4: 39001d6e    	strb	w14, [x11, #0x7]
+1000011f8: b7f8032c    	tbnz	x12, #0x3f, 0x10000125c <capacity::batch::h553e43e5faace109+0x6e0>
+1000011fc: aa0d03ec    	mov	x12, x13
+100001200: 5280010d    	mov	w13, #0x8               ; =8
+100001204: 17ffffcf    	b	0x100001140 <capacity::batch::h553e43e5faace109+0x5c4>
+100001208: d347fd8c    	lsr	x12, x12, #7
+10000120c: 5280002d    	mov	w13, #0x1               ; =1
+100001210: 17ffffcc    	b	0x100001140 <capacity::batch::h553e43e5faace109+0x5c4>
+100001214: d34efd8c    	lsr	x12, x12, #14
+100001218: 5280004d    	mov	w13, #0x2               ; =2
+10000121c: 17ffffc9    	b	0x100001140 <capacity::batch::h553e43e5faace109+0x5c4>
+100001220: d355fd8c    	lsr	x12, x12, #21
+100001224: 5280006d    	mov	w13, #0x3               ; =3
+100001228: 17ffffc6    	b	0x100001140 <capacity::batch::h553e43e5faace109+0x5c4>
+10000122c: aa0d03ec    	mov	x12, x13
+100001230: 5280008d    	mov	w13, #0x4               ; =4
+100001234: 17ffffc3    	b	0x100001140 <capacity::batch::h553e43e5faace109+0x5c4>
+100001238: aa0e03ec    	mov	x12, x14
+10000123c: 528000ad    	mov	w13, #0x5               ; =5
+100001240: 17ffffc0    	b	0x100001140 <capacity::batch::h553e43e5faace109+0x5c4>
+100001244: aa0d03ec    	mov	x12, x13
+100001248: 528000cd    	mov	w13, #0x6               ; =6
+10000124c: 17ffffbd    	b	0x100001140 <capacity::batch::h553e43e5faace109+0x5c4>
+100001250: aa0e03ec    	mov	x12, x14
+100001254: 528000ed    	mov	w13, #0x7               ; =7
+100001258: 17ffffba    	b	0x100001140 <capacity::batch::h553e43e5faace109+0x5c4>
+10000125c: 3900216d    	strb	w13, [x11, #0x8]
+100001260: 5280002c    	mov	w12, #0x1               ; =1
+100001264: 5280012d    	mov	w13, #0x9               ; =9
+100001268: 17ffffb6    	b	0x100001140 <capacity::batch::h553e43e5faace109+0x5c4>
+10000126c: 790023ff    	strh	wzr, [sp, #0x10]
+100001270: f90007ff    	str	xzr, [sp, #0x8]
+100001274: b4001521    	cbz	x1, 0x100001518 <capacity::batch::h553e43e5faace109+0x99c>
+100001278: d37df028    	lsl	x8, x1, #3
+10000127c: 910063e9    	add	x9, sp, #0x18
+100001280: 910023ea    	add	x10, sp, #0x8
+100001284: 14000008    	b	0x1000012a4 <capacity::batch::h553e43e5faace109+0x728>
+100001288: d280000d    	mov	x13, #0x0               ; =0
+10000128c: 382d696c    	strb	w12, [x11, x13]
+100001290: 910005ab    	add	x11, x13, #0x1
+100001294: f9000feb    	str	x11, [sp, #0x18]
+100001298: f9000fea    	str	x10, [sp, #0x18]
+10000129c: f1002108    	subs	x8, x8, #0x8
+1000012a0: 540013c0    	b.eq	0x100001518 <capacity::batch::h553e43e5faace109+0x99c>
+1000012a4: f840840b    	ldr	x11, [x0], #0x8
+1000012a8: f9000feb    	str	x11, [sp, #0x18]
+1000012ac: f9400fec    	ldr	x12, [sp, #0x18]
+1000012b0: f9000fea    	str	x10, [sp, #0x18]
+1000012b4: f9400feb    	ldr	x11, [sp, #0x18]
+1000012b8: f102019f    	cmp	x12, #0x80
+1000012bc: 54fffe63    	b.lo	0x100001288 <capacity::batch::h553e43e5faace109+0x70c>
+1000012c0: 3219018d    	orr	w13, w12, #0x80
+1000012c4: 3900016d    	strb	w13, [x11]
+1000012c8: f140119f    	cmp	x12, #0x4, lsl #12      ; =0x4000
+1000012cc: 54000443    	b.lo	0x100001354 <capacity::batch::h553e43e5faace109+0x7d8>
+1000012d0: 53077d8d    	lsr	w13, w12, #7
+1000012d4: 321901ad    	orr	w13, w13, #0x80
+1000012d8: 3900056d    	strb	w13, [x11, #0x1]
+1000012dc: f148019f    	cmp	x12, #0x200, lsl #12    ; =0x200000
+1000012e0: 54000403    	b.lo	0x100001360 <capacity::batch::h553e43e5faace109+0x7e4>
+1000012e4: 530e7d8d    	lsr	w13, w12, #14
+1000012e8: 321901ad    	orr	w13, w13, #0x80
+1000012ec: 3900096d    	strb	w13, [x11, #0x2]
+1000012f0: d35cfd8e    	lsr	x14, x12, #28
+1000012f4: b40003ce    	cbz	x14, 0x10000136c <capacity::batch::h553e43e5faace109+0x7f0>
+1000012f8: 53157d8d    	lsr	w13, w12, #21
+1000012fc: 321901ad    	orr	w13, w13, #0x80
+100001300: 39000d6d    	strb	w13, [x11, #0x3]
+100001304: d363fd8f    	lsr	x15, x12, #35
+100001308: b400038f    	cbz	x15, 0x100001378 <capacity::batch::h553e43e5faace109+0x7fc>
+10000130c: 321901cd    	orr	w13, w14, #0x80
+100001310: 3900116d    	strb	w13, [x11, #0x4]
+100001314: d36afd8e    	lsr	x14, x12, #42
+100001318: b400036e    	cbz	x14, 0x100001384 <capacity::batch::h553e43e5faace109+0x808>
+10000131c: 321901ed    	orr	w13, w15, #0x80
+100001320: 3900156d    	strb	w13, [x11, #0x5]
+100001324: d371fd8f    	lsr	x15, x12, #49
+100001328: b400034f    	cbz	x15, 0x100001390 <capacity::batch::h553e43e5faace109+0x814>
+10000132c: 321901cd    	orr	w13, w14, #0x80
+100001330: 3900196d    	strb	w13, [x11, #0x6]
+100001334: d378fd8e    	lsr	x14, x12, #56
+100001338: b400032e    	cbz	x14, 0x10000139c <capacity::batch::h553e43e5faace109+0x820>
+10000133c: 321901ed    	orr	w13, w15, #0x80
+100001340: 39001d6d    	strb	w13, [x11, #0x7]
+100001344: b7f8032c    	tbnz	x12, #0x3f, 0x1000013a8 <capacity::batch::h553e43e5faace109+0x82c>
+100001348: 5280010d    	mov	w13, #0x8               ; =8
+10000134c: aa0e03ec    	mov	x12, x14
+100001350: 17ffffcf    	b	0x10000128c <capacity::batch::h553e43e5faace109+0x710>
+100001354: d347fd8c    	lsr	x12, x12, #7
+100001358: 5280002d    	mov	w13, #0x1               ; =1
+10000135c: 17ffffcc    	b	0x10000128c <capacity::batch::h553e43e5faace109+0x710>
+100001360: d34efd8c    	lsr	x12, x12, #14
+100001364: 5280004d    	mov	w13, #0x2               ; =2
+100001368: 17ffffc9    	b	0x10000128c <capacity::batch::h553e43e5faace109+0x710>
+10000136c: d355fd8c    	lsr	x12, x12, #21
+100001370: 5280006d    	mov	w13, #0x3               ; =3
+100001374: 17ffffc6    	b	0x10000128c <capacity::batch::h553e43e5faace109+0x710>
+100001378: 5280008d    	mov	w13, #0x4               ; =4
+10000137c: aa0e03ec    	mov	x12, x14
+100001380: 17ffffc3    	b	0x10000128c <capacity::batch::h553e43e5faace109+0x710>
+100001384: 528000ad    	mov	w13, #0x5               ; =5
+100001388: aa0f03ec    	mov	x12, x15
+10000138c: 17ffffc0    	b	0x10000128c <capacity::batch::h553e43e5faace109+0x710>
+100001390: 528000cd    	mov	w13, #0x6               ; =6
+100001394: aa0e03ec    	mov	x12, x14
+100001398: 17ffffbd    	b	0x10000128c <capacity::batch::h553e43e5faace109+0x710>
+10000139c: 528000ed    	mov	w13, #0x7               ; =7
+1000013a0: aa0f03ec    	mov	x12, x15
+1000013a4: 17ffffba    	b	0x10000128c <capacity::batch::h553e43e5faace109+0x710>
+1000013a8: 3900216e    	strb	w14, [x11, #0x8]
+1000013ac: 5280012d    	mov	w13, #0x9               ; =9
+1000013b0: 5280002c    	mov	w12, #0x1               ; =1
+1000013b4: 17ffffb6    	b	0x10000128c <capacity::batch::h553e43e5faace109+0x710>
+1000013b8: 790023ff    	strh	wzr, [sp, #0x10]
+1000013bc: f90007ff    	str	xzr, [sp, #0x8]
+1000013c0: b4000ac1    	cbz	x1, 0x100001518 <capacity::batch::h553e43e5faace109+0x99c>
+1000013c4: d37df028    	lsl	x8, x1, #3
+1000013c8: 910063e9    	add	x9, sp, #0x18
+1000013cc: 910023ea    	add	x10, sp, #0x8
+1000013d0: 14000007    	b	0x1000013ec <capacity::batch::h553e43e5faace109+0x870>
+1000013d4: 3900016d    	strb	w13, [x11]
+1000013d8: 5280002e    	mov	w14, #0x1               ; =1
+1000013dc: f9000fee    	str	x14, [sp, #0x18]
+1000013e0: f9000fea    	str	x10, [sp, #0x18]
+1000013e4: f1002108    	subs	x8, x8, #0x8
+1000013e8: 54000980    	b.eq	0x100001518 <capacity::batch::h553e43e5faace109+0x99c>
+1000013ec: f840840b    	ldr	x11, [x0], #0x8
+1000013f0: f9000feb    	str	x11, [sp, #0x18]
+1000013f4: f9400fed    	ldr	x13, [sp, #0x18]
+1000013f8: f9000fea    	str	x10, [sp, #0x18]
+1000013fc: f9400feb    	ldr	x11, [sp, #0x18]
+100001400: f101fdbf    	cmp	x13, #0x7f
+100001404: 54fffe89    	b.ls	0x1000013d4 <capacity::batch::h553e43e5faace109+0x858>
+100001408: 321901ac    	orr	w12, w13, #0x80
+10000140c: 3900016c    	strb	w12, [x11]
+100001410: d34efdac    	lsr	x12, x13, #14
+100001414: b400044c    	cbz	x12, 0x10000149c <capacity::batch::h553e43e5faace109+0x920>
+100001418: 53077dae    	lsr	w14, w13, #7
+10000141c: 321901ce    	orr	w14, w14, #0x80
+100001420: 3900056e    	strb	w14, [x11, #0x1]
+100001424: f14801bf    	cmp	x13, #0x200, lsl #12    ; =0x200000
+100001428: 54000423    	b.lo	0x1000014ac <capacity::batch::h553e43e5faace109+0x930>
+10000142c: 530e7dac    	lsr	w12, w13, #14
+100001430: 3219018c    	orr	w12, w12, #0x80
+100001434: 3900096c    	strb	w12, [x11, #0x2]
+100001438: d35cfdac    	lsr	x12, x13, #28
+10000143c: b40003ec    	cbz	x12, 0x1000014b8 <capacity::batch::h553e43e5faace109+0x93c>
+100001440: 53157dae    	lsr	w14, w13, #21
+100001444: 321901ce    	orr	w14, w14, #0x80
+100001448: 39000d6e    	strb	w14, [x11, #0x3]
+10000144c: d363fdae    	lsr	x14, x13, #35
+100001450: b40003ce    	cbz	x14, 0x1000014c8 <capacity::batch::h553e43e5faace109+0x94c>
+100001454: 3219018c    	orr	w12, w12, #0x80
+100001458: 3900116c    	strb	w12, [x11, #0x4]
+10000145c: d36afdac    	lsr	x12, x13, #42
+100001460: b40003ac    	cbz	x12, 0x1000014d4 <capacity::batch::h553e43e5faace109+0x958>
+100001464: 321901ce    	orr	w14, w14, #0x80
+100001468: 3900156e    	strb	w14, [x11, #0x5]
+10000146c: d371fdae    	lsr	x14, x13, #49
+100001470: b40003ae    	cbz	x14, 0x1000014e4 <capacity::batch::h553e43e5faace109+0x968>
+100001474: 3219018c    	orr	w12, w12, #0x80
+100001478: 3900196c    	strb	w12, [x11, #0x6]
+10000147c: d378fdac    	lsr	x12, x13, #56
+100001480: b400038c    	cbz	x12, 0x1000014f0 <capacity::batch::h553e43e5faace109+0x974>
+100001484: 321901ce    	orr	w14, w14, #0x80
+100001488: 39001d6e    	strb	w14, [x11, #0x7]
+10000148c: b7f803ad    	tbnz	x13, #0x3f, 0x100001500 <capacity::batch::h553e43e5faace109+0x984>
+100001490: 5280010d    	mov	w13, #0x8               ; =8
+100001494: 5280012e    	mov	w14, #0x9               ; =9
+100001498: 1400001e    	b	0x100001510 <capacity::batch::h553e43e5faace109+0x994>
+10000149c: d347fdac    	lsr	x12, x13, #7
+1000014a0: 5280002d    	mov	w13, #0x1               ; =1
+1000014a4: 5280004e    	mov	w14, #0x2               ; =2
+1000014a8: 1400001a    	b	0x100001510 <capacity::batch::h553e43e5faace109+0x994>
+1000014ac: 5280004d    	mov	w13, #0x2               ; =2
+1000014b0: 5280006e    	mov	w14, #0x3               ; =3
+1000014b4: 14000017    	b	0x100001510 <capacity::batch::h553e43e5faace109+0x994>
+1000014b8: d355fdac    	lsr	x12, x13, #21
+1000014bc: 5280006d    	mov	w13, #0x3               ; =3
+1000014c0: 5280008e    	mov	w14, #0x4               ; =4
+1000014c4: 14000013    	b	0x100001510 <capacity::batch::h553e43e5faace109+0x994>
+1000014c8: 5280008d    	mov	w13, #0x4               ; =4
+1000014cc: 528000ae    	mov	w14, #0x5               ; =5
+1000014d0: 14000010    	b	0x100001510 <capacity::batch::h553e43e5faace109+0x994>
+1000014d4: 528000ad    	mov	w13, #0x5               ; =5
+1000014d8: aa0e03ec    	mov	x12, x14
+1000014dc: 528000ce    	mov	w14, #0x6               ; =6
+1000014e0: 1400000c    	b	0x100001510 <capacity::batch::h553e43e5faace109+0x994>
+1000014e4: 528000cd    	mov	w13, #0x6               ; =6
+1000014e8: 528000ee    	mov	w14, #0x7               ; =7
+1000014ec: 14000009    	b	0x100001510 <capacity::batch::h553e43e5faace109+0x994>
+1000014f0: 528000ed    	mov	w13, #0x7               ; =7
+1000014f4: aa0e03ec    	mov	x12, x14
+1000014f8: 5280010e    	mov	w14, #0x8               ; =8
+1000014fc: 14000005    	b	0x100001510 <capacity::batch::h553e43e5faace109+0x994>
+100001500: 3900216c    	strb	w12, [x11, #0x8]
+100001504: 5280012d    	mov	w13, #0x9               ; =9
+100001508: 5280002c    	mov	w12, #0x1               ; =1
+10000150c: 5280014e    	mov	w14, #0xa               ; =10
+100001510: 382d696c    	strb	w12, [x11, x13]
+100001514: 17ffffb2    	b	0x1000013dc <capacity::batch::h553e43e5faace109+0x860>
+100001518: 910083ff    	add	sp, sp, #0x20
+10000151c: d65f03c0    	ret
+
+
+0000000100001520 <capacity::batch::hdb6de3c887ae3b06>:
+100001520: d100c3ff    	sub	sp, sp, #0x30
+100001524: a9027bfd    	stp	x29, x30, [sp, #0x20]
+100001528: 910083fd    	add	x29, sp, #0x20
+10000152c: 8b010c09    	add	x9, x0, x1, lsl #3
+100001530: 12001c48    	and	w8, w2, #0xff
+100001534: 7100091f    	cmp	w8, #0x2
+100001538: 5400074d    	b.le	0x100001620 <capacity::batch::hdb6de3c887ae3b06+0x100>
+10000153c: 7100111f    	cmp	w8, #0x4
+100001540: 54000c4c    	b.gt	0x1000016c8 <capacity::batch::hdb6de3c887ae3b06+0x1a8>
+100001544: 71000d1f    	cmp	w8, #0x3
+100001548: 54002a41    	b.ne	0x100001a90 <capacity::batch::hdb6de3c887ae3b06+0x570>
+10000154c: 790013ff    	strh	wzr, [sp, #0x8]
+100001550: f90003ff    	str	xzr, [sp]
+100001554: b4004701    	cbz	x1, 0x100001e34 <capacity::batch::hdb6de3c887ae3b06+0x914>
+100001558: 91002008    	add	x8, x0, #0x8
+10000155c: 910043ea    	add	x10, sp, #0x10
+100001560: 910003eb    	mov	x11, sp
+100001564: 5280014c    	mov	w12, #0xa               ; =10
+100001568: 528008cd    	mov	w13, #0x46              ; =70
+10000156c: 5280126e    	mov	w14, #0x93              ; =147
+100001570: f940000f    	ldr	x15, [x0]
+100001574: aa0803e0    	mov	x0, x8
+100001578: f9000bef    	str	x15, [sp, #0x10]
+10000157c: f9400bef    	ldr	x15, [sp, #0x10]
+100001580: a90133eb    	stp	x11, x12, [sp, #0x10]
+100001584: f10201ff    	cmp	x15, #0x80
+100001588: 54000062    	b.hs	0x100001594 <capacity::batch::hdb6de3c887ae3b06+0x74>
+10000158c: 52800028    	mov	w8, #0x1                ; =1
+100001590: 14000006    	b	0x1000015a8 <capacity::batch::hdb6de3c887ae3b06+0x88>
+100001594: dac011e8    	clz	x8, x15
+100001598: 4b0801a8    	sub	w8, w13, w8
+10000159c: 12001d08    	and	w8, w8, #0xff
+1000015a0: 1b0e7d08    	mul	w8, w8, w14
+1000015a4: 530a7d08    	lsr	w8, w8, #10
+1000015a8: f9400fe1    	ldr	x1, [sp, #0x18]
+1000015ac: eb08003f    	cmp	x1, x8
+1000015b0: 540048c3    	b.lo	0x100001ec8 <capacity::batch::hdb6de3c887ae3b06+0x9a8>
+1000015b4: f9400bf0    	ldr	x16, [sp, #0x10]
+1000015b8: f10201ff    	cmp	x15, #0x80
+1000015bc: 540001a3    	b.lo	0x1000015f0 <capacity::batch::hdb6de3c887ae3b06+0xd0>
+1000015c0: d2800008    	mov	x8, #0x0                ; =0
+1000015c4: aa0f03f1    	mov	x17, x15
+1000015c8: eb08003f    	cmp	x1, x8
+1000015cc: 540043a0    	b.eq	0x100001e40 <capacity::batch::hdb6de3c887ae3b06+0x920>
+1000015d0: 3219022f    	orr	w15, w17, #0x80
+1000015d4: 38286a0f    	strb	w15, [x16, x8]
+1000015d8: 91000508    	add	x8, x8, #0x1
+1000015dc: d347fe2f    	lsr	x15, x17, #7
+1000015e0: d34efe22    	lsr	x2, x17, #14
+1000015e4: aa0f03f1    	mov	x17, x15
+1000015e8: b5ffff02    	cbnz	x2, 0x1000015c8 <capacity::batch::hdb6de3c887ae3b06+0xa8>
+1000015ec: 14000002    	b	0x1000015f4 <capacity::batch::hdb6de3c887ae3b06+0xd4>
+1000015f0: d2800008    	mov	x8, #0x0                ; =0
+1000015f4: eb01011f    	cmp	x8, x1
+1000015f8: 54004442    	b.hs	0x100001e80 <capacity::batch::hdb6de3c887ae3b06+0x960>
+1000015fc: 38286a0f    	strb	w15, [x16, x8]
+100001600: 91000508    	add	x8, x8, #0x1
+100001604: f9000be8    	str	x8, [sp, #0x10]
+100001608: f9000beb    	str	x11, [sp, #0x10]
+10000160c: eb09001f    	cmp	x0, x9
+100001610: 1a9f07e8    	cset	w8, ne
+100001614: 8b284c08    	add	x8, x0, w8, uxtw #3
+100001618: 54fffac1    	b.ne	0x100001570 <capacity::batch::hdb6de3c887ae3b06+0x50>
+10000161c: 14000206    	b	0x100001e34 <capacity::batch::hdb6de3c887ae3b06+0x914>
+100001620: 34001668    	cbz	w8, 0x1000018ec <capacity::batch::hdb6de3c887ae3b06+0x3cc>
+100001624: 7100051f    	cmp	w8, #0x1
+100001628: 54001ca1    	b.ne	0x1000019bc <capacity::batch::hdb6de3c887ae3b06+0x49c>
+10000162c: 790013ff    	strh	wzr, [sp, #0x8]
+100001630: f90003ff    	str	xzr, [sp]
+100001634: b4004001    	cbz	x1, 0x100001e34 <capacity::batch::hdb6de3c887ae3b06+0x914>
+100001638: 91002008    	add	x8, x0, #0x8
+10000163c: 910043ea    	add	x10, sp, #0x10
+100001640: 910003eb    	mov	x11, sp
+100001644: 5280014c    	mov	w12, #0xa               ; =10
+100001648: f940000d    	ldr	x13, [x0]
+10000164c: aa0803e0    	mov	x0, x8
+100001650: f9000bed    	str	x13, [sp, #0x10]
+100001654: f9400bee    	ldr	x14, [sp, #0x10]
+100001658: a90133eb    	stp	x11, x12, [sp, #0x10]
+10000165c: a94107ed    	ldp	x13, x1, [sp, #0x10]
+100001660: f10201df    	cmp	x14, #0x80
+100001664: 540001a3    	b.lo	0x100001698 <capacity::batch::hdb6de3c887ae3b06+0x178>
+100001668: d2800008    	mov	x8, #0x0                ; =0
+10000166c: aa0e03ef    	mov	x15, x14
+100001670: eb08003f    	cmp	x1, x8
+100001674: 54003ee0    	b.eq	0x100001e50 <capacity::batch::hdb6de3c887ae3b06+0x930>
+100001678: 321901ee    	orr	w14, w15, #0x80
+10000167c: 382869ae    	strb	w14, [x13, x8]
+100001680: 91000508    	add	x8, x8, #0x1
+100001684: d347fdee    	lsr	x14, x15, #7
+100001688: d34efdf0    	lsr	x16, x15, #14
+10000168c: aa0e03ef    	mov	x15, x14
+100001690: b5ffff10    	cbnz	x16, 0x100001670 <capacity::batch::hdb6de3c887ae3b06+0x150>
+100001694: 14000002    	b	0x10000169c <capacity::batch::hdb6de3c887ae3b06+0x17c>
+100001698: d2800008    	mov	x8, #0x0                ; =0
+10000169c: eb01011f    	cmp	x8, x1
+1000016a0: 54003e82    	b.hs	0x100001e70 <capacity::batch::hdb6de3c887ae3b06+0x950>
+1000016a4: 382869ae    	strb	w14, [x13, x8]
+1000016a8: 91000508    	add	x8, x8, #0x1
+1000016ac: f9000be8    	str	x8, [sp, #0x10]
+1000016b0: f9000beb    	str	x11, [sp, #0x10]
+1000016b4: eb09001f    	cmp	x0, x9
+1000016b8: 1a9f07e8    	cset	w8, ne
+1000016bc: 8b284c08    	add	x8, x0, w8, uxtw #3
+1000016c0: 54fffc41    	b.ne	0x100001648 <capacity::batch::hdb6de3c887ae3b06+0x128>
+1000016c4: 140001dc    	b	0x100001e34 <capacity::batch::hdb6de3c887ae3b06+0x914>
+1000016c8: 7100151f    	cmp	w8, #0x5
+1000016cc: 54002d61    	b.ne	0x100001c78 <capacity::batch::hdb6de3c887ae3b06+0x758>
+1000016d0: 790013ff    	strh	wzr, [sp, #0x8]
+1000016d4: f90003ff    	str	xzr, [sp]
+1000016d8: b4003ae1    	cbz	x1, 0x100001e34 <capacity::batch::hdb6de3c887ae3b06+0x914>
+1000016dc: 91002008    	add	x8, x0, #0x8
+1000016e0: 910043ea    	add	x10, sp, #0x10
+1000016e4: 910003eb    	mov	x11, sp
+1000016e8: 5280014c    	mov	w12, #0xa               ; =10
+1000016ec: 528008cd    	mov	w13, #0x46              ; =70
+1000016f0: d284926e    	mov	x14, #0x2493            ; =9363
+1000016f4: f2b2492e    	movk	x14, #0x9249, lsl #16
+1000016f8: f2c9248e    	movk	x14, #0x4924, lsl #32
+1000016fc: f2e4924e    	movk	x14, #0x2492, lsl #48
+100001700: 5280126f    	mov	w15, #0x93              ; =147
+100001704: 14000009    	b	0x100001728 <capacity::batch::hdb6de3c887ae3b06+0x208>
+100001708: 52800031    	mov	w17, #0x1               ; =1
+10000170c: 383f6a02    	strb	w2, [x16, xzr]
+100001710: f9000bf1    	str	x17, [sp, #0x10]
+100001714: f9000beb    	str	x11, [sp, #0x10]
+100001718: eb09001f    	cmp	x0, x9
+10000171c: 1a9f07e8    	cset	w8, ne
+100001720: 8b284c08    	add	x8, x0, w8, uxtw #3
+100001724: 54003880    	b.eq	0x100001e34 <capacity::batch::hdb6de3c887ae3b06+0x914>
+100001728: f9400010    	ldr	x16, [x0]
+10000172c: aa0803e0    	mov	x0, x8
+100001730: f9000bf0    	str	x16, [sp, #0x10]
+100001734: f9400be2    	ldr	x2, [sp, #0x10]
+100001738: a90133eb    	stp	x11, x12, [sp, #0x10]
+10000173c: a94107f0    	ldp	x16, x1, [sp, #0x10]
+100001740: f100243f    	cmp	x1, #0x9
+100001744: 54000589    	b.ls	0x1000017f4 <capacity::batch::hdb6de3c887ae3b06+0x2d4>
+100001748: f102005f    	cmp	x2, #0x80
+10000174c: 54fffde3    	b.lo	0x100001708 <capacity::batch::hdb6de3c887ae3b06+0x1e8>
+100001750: dac01048    	clz	x8, x2
+100001754: cb0801a8    	sub	x8, x13, x8
+100001758: 9bce7d11    	umulh	x17, x8, x14
+10000175c: 32190048    	orr	w8, w2, #0x80
+100001760: 39000208    	strb	w8, [x16]
+100001764: d34efc48    	lsr	x8, x2, #14
+100001768: b4000808    	cbz	x8, 0x100001868 <capacity::batch::hdb6de3c887ae3b06+0x348>
+10000176c: 53077c41    	lsr	w1, w2, #7
+100001770: 32190021    	orr	w1, w1, #0x80
+100001774: 39000601    	strb	w1, [x16, #0x1]
+100001778: f148005f    	cmp	x2, #0x200, lsl #12     ; =0x200000
+10000177c: 540007e3    	b.lo	0x100001878 <capacity::batch::hdb6de3c887ae3b06+0x358>
+100001780: 530e7c48    	lsr	w8, w2, #14
+100001784: 32190108    	orr	w8, w8, #0x80
+100001788: 39000a08    	strb	w8, [x16, #0x2]
+10000178c: d35cfc48    	lsr	x8, x2, #28
+100001790: b40007c8    	cbz	x8, 0x100001888 <capacity::batch::hdb6de3c887ae3b06+0x368>
+100001794: 53157c41    	lsr	w1, w2, #21
+100001798: 32190021    	orr	w1, w1, #0x80
+10000179c: 39000e01    	strb	w1, [x16, #0x3]
+1000017a0: d363fc41    	lsr	x1, x2, #35
+1000017a4: b40007a1    	cbz	x1, 0x100001898 <capacity::batch::hdb6de3c887ae3b06+0x378>
+1000017a8: 32190108    	orr	w8, w8, #0x80
+1000017ac: 39001208    	strb	w8, [x16, #0x4]
+1000017b0: d36afc48    	lsr	x8, x2, #42
+1000017b4: b40007a8    	cbz	x8, 0x1000018a8 <capacity::batch::hdb6de3c887ae3b06+0x388>
+1000017b8: 32190021    	orr	w1, w1, #0x80
+1000017bc: 39001601    	strb	w1, [x16, #0x5]
+1000017c0: d371fc41    	lsr	x1, x2, #49
+1000017c4: b40007a1    	cbz	x1, 0x1000018b8 <capacity::batch::hdb6de3c887ae3b06+0x398>
+1000017c8: 32190108    	orr	w8, w8, #0x80
+1000017cc: 39001a08    	strb	w8, [x16, #0x6]
+1000017d0: d378fc48    	lsr	x8, x2, #56
+1000017d4: b40007a8    	cbz	x8, 0x1000018c8 <capacity::batch::hdb6de3c887ae3b06+0x3a8>
+1000017d8: 32190021    	orr	w1, w1, #0x80
+1000017dc: 39001e01    	strb	w1, [x16, #0x7]
+1000017e0: b7f807c2    	tbnz	x2, #0x3f, 0x1000018d8 <capacity::batch::hdb6de3c887ae3b06+0x3b8>
+1000017e4: aa0803e2    	mov	x2, x8
+1000017e8: 52800108    	mov	w8, #0x8                ; =8
+1000017ec: 38286a02    	strb	w2, [x16, x8]
+1000017f0: 17ffffc8    	b	0x100001710 <capacity::batch::hdb6de3c887ae3b06+0x1f0>
+1000017f4: f102005f    	cmp	x2, #0x80
+1000017f8: 54000062    	b.hs	0x100001804 <capacity::batch::hdb6de3c887ae3b06+0x2e4>
+1000017fc: 52800031    	mov	w17, #0x1               ; =1
+100001800: 14000006    	b	0x100001818 <capacity::batch::hdb6de3c887ae3b06+0x2f8>
+100001804: dac01048    	clz	x8, x2
+100001808: 4b0801a8    	sub	w8, w13, w8
+10000180c: 12001d08    	and	w8, w8, #0xff
+100001810: 1b0f7d08    	mul	w8, w8, w15
+100001814: 530a7d11    	lsr	w17, w8, #10
+100001818: eb11003f    	cmp	x1, x17
+10000181c: 540037e3    	b.lo	0x100001f18 <capacity::batch::hdb6de3c887ae3b06+0x9f8>
+100001820: f102005f    	cmp	x2, #0x80
+100001824: 540001e3    	b.lo	0x100001860 <capacity::batch::hdb6de3c887ae3b06+0x340>
+100001828: d2800008    	mov	x8, #0x0                ; =0
+10000182c: eb08003f    	cmp	x1, x8
+100001830: 54003180    	b.eq	0x100001e60 <capacity::batch::hdb6de3c887ae3b06+0x940>
+100001834: 32190043    	orr	w3, w2, #0x80
+100001838: 38286a03    	strb	w3, [x16, x8]
+10000183c: 91000508    	add	x8, x8, #0x1
+100001840: d347fc43    	lsr	x3, x2, #7
+100001844: d34efc44    	lsr	x4, x2, #14
+100001848: aa0303e2    	mov	x2, x3
+10000184c: b5ffff04    	cbnz	x4, 0x10000182c <capacity::batch::hdb6de3c887ae3b06+0x30c>
+100001850: eb01011f    	cmp	x8, x1
+100001854: 540031e2    	b.hs	0x100001e90 <capacity::batch::hdb6de3c887ae3b06+0x970>
+100001858: 38286a03    	strb	w3, [x16, x8]
+10000185c: 17ffffad    	b	0x100001710 <capacity::batch::hdb6de3c887ae3b06+0x1f0>
+100001860: 39000202    	strb	w2, [x16]
+100001864: 17ffffab    	b	0x100001710 <capacity::batch::hdb6de3c887ae3b06+0x1f0>
+100001868: d347fc42    	lsr	x2, x2, #7
+10000186c: 52800028    	mov	w8, #0x1                ; =1
+100001870: 38286a02    	strb	w2, [x16, x8]
+100001874: 17ffffa7    	b	0x100001710 <capacity::batch::hdb6de3c887ae3b06+0x1f0>
+100001878: aa0803e2    	mov	x2, x8
+10000187c: 52800048    	mov	w8, #0x2                ; =2
+100001880: 38286a02    	strb	w2, [x16, x8]
+100001884: 17ffffa3    	b	0x100001710 <capacity::batch::hdb6de3c887ae3b06+0x1f0>
+100001888: d355fc42    	lsr	x2, x2, #21
+10000188c: 52800068    	mov	w8, #0x3                ; =3
+100001890: 38286a02    	strb	w2, [x16, x8]
+100001894: 17ffff9f    	b	0x100001710 <capacity::batch::hdb6de3c887ae3b06+0x1f0>
+100001898: aa0803e2    	mov	x2, x8
+10000189c: 52800088    	mov	w8, #0x4                ; =4
+1000018a0: 38286a02    	strb	w2, [x16, x8]
+1000018a4: 17ffff9b    	b	0x100001710 <capacity::batch::hdb6de3c887ae3b06+0x1f0>
+1000018a8: aa0103e2    	mov	x2, x1
+1000018ac: 528000a8    	mov	w8, #0x5                ; =5
+1000018b0: 38286a02    	strb	w2, [x16, x8]
+1000018b4: 17ffff97    	b	0x100001710 <capacity::batch::hdb6de3c887ae3b06+0x1f0>
+1000018b8: aa0803e2    	mov	x2, x8
+1000018bc: 528000c8    	mov	w8, #0x6                ; =6
+1000018c0: 38286a02    	strb	w2, [x16, x8]
+1000018c4: 17ffff93    	b	0x100001710 <capacity::batch::hdb6de3c887ae3b06+0x1f0>
+1000018c8: aa0103e2    	mov	x2, x1
+1000018cc: 528000e8    	mov	w8, #0x7                ; =7
+1000018d0: 38286a02    	strb	w2, [x16, x8]
+1000018d4: 17ffff8f    	b	0x100001710 <capacity::batch::hdb6de3c887ae3b06+0x1f0>
+1000018d8: 39002208    	strb	w8, [x16, #0x8]
+1000018dc: 52800022    	mov	w2, #0x1                ; =1
+1000018e0: 52800128    	mov	w8, #0x9                ; =9
+1000018e4: 38286a02    	strb	w2, [x16, x8]
+1000018e8: 17ffff8a    	b	0x100001710 <capacity::batch::hdb6de3c887ae3b06+0x1f0>
+1000018ec: 790013ff    	strh	wzr, [sp, #0x8]
+1000018f0: f90003ff    	str	xzr, [sp]
+1000018f4: b4002a01    	cbz	x1, 0x100001e34 <capacity::batch::hdb6de3c887ae3b06+0x914>
+1000018f8: 91002008    	add	x8, x0, #0x8
+1000018fc: 910043ea    	add	x10, sp, #0x10
+100001900: 910003eb    	mov	x11, sp
+100001904: 5280014c    	mov	w12, #0xa               ; =10
+100001908: 528008cd    	mov	w13, #0x46              ; =70
+10000190c: 5280126e    	mov	w14, #0x93              ; =147
+100001910: f940000f    	ldr	x15, [x0]
+100001914: aa0803e0    	mov	x0, x8
+100001918: f9000bef    	str	x15, [sp, #0x10]
+10000191c: f9400bf0    	ldr	x16, [sp, #0x10]
+100001920: a90133eb    	stp	x11, x12, [sp, #0x10]
+100001924: f102021f    	cmp	x16, #0x80
+100001928: 54000062    	b.hs	0x100001934 <capacity::batch::hdb6de3c887ae3b06+0x414>
+10000192c: 5280002f    	mov	w15, #0x1               ; =1
+100001930: 14000006    	b	0x100001948 <capacity::batch::hdb6de3c887ae3b06+0x428>
+100001934: dac01208    	clz	x8, x16
+100001938: 4b0801a8    	sub	w8, w13, w8
+10000193c: 12001d08    	and	w8, w8, #0xff
+100001940: 1b0e7d08    	mul	w8, w8, w14
+100001944: 530a7d0f    	lsr	w15, w8, #10
+100001948: f9400fe1    	ldr	x1, [sp, #0x18]
+10000194c: eb0f003f    	cmp	x1, x15
+100001950: 54002a83    	b.lo	0x100001ea0 <capacity::batch::hdb6de3c887ae3b06+0x980>
+100001954: f9400bf1    	ldr	x17, [sp, #0x10]
+100001958: f102021f    	cmp	x16, #0x80
+10000195c: 540001a3    	b.lo	0x100001990 <capacity::batch::hdb6de3c887ae3b06+0x470>
+100001960: d2800008    	mov	x8, #0x0                ; =0
+100001964: aa1003e2    	mov	x2, x16
+100001968: eb08003f    	cmp	x1, x8
+10000196c: 540027a0    	b.eq	0x100001e60 <capacity::batch::hdb6de3c887ae3b06+0x940>
+100001970: 32190050    	orr	w16, w2, #0x80
+100001974: 38286a30    	strb	w16, [x17, x8]
+100001978: 91000508    	add	x8, x8, #0x1
+10000197c: d347fc50    	lsr	x16, x2, #7
+100001980: d34efc43    	lsr	x3, x2, #14
+100001984: aa1003e2    	mov	x2, x16
+100001988: b5ffff03    	cbnz	x3, 0x100001968 <capacity::batch::hdb6de3c887ae3b06+0x448>
+10000198c: 14000002    	b	0x100001994 <capacity::batch::hdb6de3c887ae3b06+0x474>
+100001990: d2800008    	mov	x8, #0x0                ; =0
+100001994: eb01011f    	cmp	x8, x1
+100001998: 540027c2    	b.hs	0x100001e90 <capacity::batch::hdb6de3c887ae3b06+0x970>
+10000199c: 38286a30    	strb	w16, [x17, x8]
+1000019a0: f9000bef    	str	x15, [sp, #0x10]
+1000019a4: f9000beb    	str	x11, [sp, #0x10]
+1000019a8: eb09001f    	cmp	x0, x9
+1000019ac: 1a9f07e8    	cset	w8, ne
+1000019b0: 8b284c08    	add	x8, x0, w8, uxtw #3
+1000019b4: 54fffae1    	b.ne	0x100001910 <capacity::batch::hdb6de3c887ae3b06+0x3f0>
+1000019b8: 1400011f    	b	0x100001e34 <capacity::batch::hdb6de3c887ae3b06+0x914>
+1000019bc: 790013ff    	strh	wzr, [sp, #0x8]
+1000019c0: f90003ff    	str	xzr, [sp]
+1000019c4: b4002381    	cbz	x1, 0x100001e34 <capacity::batch::hdb6de3c887ae3b06+0x914>
+1000019c8: 91002008    	add	x8, x0, #0x8
+1000019cc: 910043ea    	add	x10, sp, #0x10
+1000019d0: 910003eb    	mov	x11, sp
+1000019d4: 5280014c    	mov	w12, #0xa               ; =10
+1000019d8: 528008cd    	mov	w13, #0x46              ; =70
+1000019dc: 5280126e    	mov	w14, #0x93              ; =147
+1000019e0: f940000f    	ldr	x15, [x0]
+1000019e4: aa0803e0    	mov	x0, x8
+1000019e8: f9000bef    	str	x15, [sp, #0x10]
+1000019ec: f9400bef    	ldr	x15, [sp, #0x10]
+1000019f0: a90133eb    	stp	x11, x12, [sp, #0x10]
+1000019f4: f10201ff    	cmp	x15, #0x80
+1000019f8: 54000062    	b.hs	0x100001a04 <capacity::batch::hdb6de3c887ae3b06+0x4e4>
+1000019fc: 52800028    	mov	w8, #0x1                ; =1
+100001a00: 14000006    	b	0x100001a18 <capacity::batch::hdb6de3c887ae3b06+0x4f8>
+100001a04: dac011e8    	clz	x8, x15
+100001a08: 4b0801a8    	sub	w8, w13, w8
+100001a0c: 12001d08    	and	w8, w8, #0xff
+100001a10: 1b0e7d08    	mul	w8, w8, w14
+100001a14: 530a7d08    	lsr	w8, w8, #10
+100001a18: f9400fe1    	ldr	x1, [sp, #0x18]
+100001a1c: eb08003f    	cmp	x1, x8
+100001a20: 54002683    	b.lo	0x100001ef0 <capacity::batch::hdb6de3c887ae3b06+0x9d0>
+100001a24: f9400bf0    	ldr	x16, [sp, #0x10]
+100001a28: f10201ff    	cmp	x15, #0x80
+100001a2c: 540001a3    	b.lo	0x100001a60 <capacity::batch::hdb6de3c887ae3b06+0x540>
+100001a30: d2800008    	mov	x8, #0x0                ; =0
+100001a34: aa0f03f1    	mov	x17, x15
+100001a38: eb08003f    	cmp	x1, x8
+100001a3c: 540020a0    	b.eq	0x100001e50 <capacity::batch::hdb6de3c887ae3b06+0x930>
+100001a40: 3219022f    	orr	w15, w17, #0x80
+100001a44: 38286a0f    	strb	w15, [x16, x8]
+100001a48: 91000508    	add	x8, x8, #0x1
+100001a4c: d347fe2f    	lsr	x15, x17, #7
+100001a50: d34efe22    	lsr	x2, x17, #14
+100001a54: aa0f03f1    	mov	x17, x15
+100001a58: b5ffff02    	cbnz	x2, 0x100001a38 <capacity::batch::hdb6de3c887ae3b06+0x518>
+100001a5c: 14000002    	b	0x100001a64 <capacity::batch::hdb6de3c887ae3b06+0x544>
+100001a60: d2800008    	mov	x8, #0x0                ; =0
+100001a64: eb01011f    	cmp	x8, x1
+100001a68: 54002042    	b.hs	0x100001e70 <capacity::batch::hdb6de3c887ae3b06+0x950>
+100001a6c: 38286a0f    	strb	w15, [x16, x8]
+100001a70: 91000508    	add	x8, x8, #0x1
+100001a74: f9000be8    	str	x8, [sp, #0x10]
+100001a78: f9000beb    	str	x11, [sp, #0x10]
+100001a7c: eb09001f    	cmp	x0, x9
+100001a80: 1a9f07e8    	cset	w8, ne
+100001a84: 8b284c08    	add	x8, x0, w8, uxtw #3
+100001a88: 54fffac1    	b.ne	0x1000019e0 <capacity::batch::hdb6de3c887ae3b06+0x4c0>
+100001a8c: 140000ea    	b	0x100001e34 <capacity::batch::hdb6de3c887ae3b06+0x914>
+100001a90: 790013ff    	strh	wzr, [sp, #0x8]
+100001a94: f90003ff    	str	xzr, [sp]
+100001a98: b4001ce1    	cbz	x1, 0x100001e34 <capacity::batch::hdb6de3c887ae3b06+0x914>
+100001a9c: 91002008    	add	x8, x0, #0x8
+100001aa0: 910043ea    	add	x10, sp, #0x10
+100001aa4: 910003eb    	mov	x11, sp
+100001aa8: 5280014c    	mov	w12, #0xa               ; =10
+100001aac: 528008cd    	mov	w13, #0x46              ; =70
+100001ab0: 5280126e    	mov	w14, #0x93              ; =147
+100001ab4: 1400000a    	b	0x100001adc <capacity::batch::hdb6de3c887ae3b06+0x5bc>
+100001ab8: d2800008    	mov	x8, #0x0                ; =0
+100001abc: 382869f0    	strb	w16, [x15, x8]
+100001ac0: 91000508    	add	x8, x8, #0x1
+100001ac4: f9000be8    	str	x8, [sp, #0x10]
+100001ac8: f9000beb    	str	x11, [sp, #0x10]
+100001acc: eb09001f    	cmp	x0, x9
+100001ad0: 1a9f07e8    	cset	w8, ne
+100001ad4: 8b284c08    	add	x8, x0, w8, uxtw #3
+100001ad8: 54001ae0    	b.eq	0x100001e34 <capacity::batch::hdb6de3c887ae3b06+0x914>
+100001adc: f940000f    	ldr	x15, [x0]
+100001ae0: aa0803e0    	mov	x0, x8
+100001ae4: f9000bef    	str	x15, [sp, #0x10]
+100001ae8: f9400bf0    	ldr	x16, [sp, #0x10]
+100001aec: a90133eb    	stp	x11, x12, [sp, #0x10]
+100001af0: a94107ef    	ldp	x15, x1, [sp, #0x10]
+100001af4: f100243f    	cmp	x1, #0x9
+100001af8: 54000509    	b.ls	0x100001b98 <capacity::batch::hdb6de3c887ae3b06+0x678>
+100001afc: f102021f    	cmp	x16, #0x80
+100001b00: 54fffdc3    	b.lo	0x100001ab8 <capacity::batch::hdb6de3c887ae3b06+0x598>
+100001b04: 32190208    	orr	w8, w16, #0x80
+100001b08: 390001e8    	strb	w8, [x15]
+100001b0c: f140121f    	cmp	x16, #0x4, lsl #12      ; =0x4000
+100001b10: 54000823    	b.lo	0x100001c14 <capacity::batch::hdb6de3c887ae3b06+0x6f4>
+100001b14: 53077e08    	lsr	w8, w16, #7
+100001b18: 32190108    	orr	w8, w8, #0x80
+100001b1c: 390005e8    	strb	w8, [x15, #0x1]
+100001b20: f148021f    	cmp	x16, #0x200, lsl #12    ; =0x200000
+100001b24: 540007e3    	b.lo	0x100001c20 <capacity::batch::hdb6de3c887ae3b06+0x700>
+100001b28: 530e7e08    	lsr	w8, w16, #14
+100001b2c: 32190108    	orr	w8, w8, #0x80
+100001b30: 390009e8    	strb	w8, [x15, #0x2]
+100001b34: d35cfe11    	lsr	x17, x16, #28
+100001b38: b40007b1    	cbz	x17, 0x100001c2c <capacity::batch::hdb6de3c887ae3b06+0x70c>
+100001b3c: 53157e08    	lsr	w8, w16, #21
+100001b40: 32190108    	orr	w8, w8, #0x80
+100001b44: 39000de8    	strb	w8, [x15, #0x3]
+100001b48: d363fe01    	lsr	x1, x16, #35
+100001b4c: b4000761    	cbz	x1, 0x100001c38 <capacity::batch::hdb6de3c887ae3b06+0x718>
+100001b50: 32190228    	orr	w8, w17, #0x80
+100001b54: 390011e8    	strb	w8, [x15, #0x4]
+100001b58: d36afe11    	lsr	x17, x16, #42
+100001b5c: b4000751    	cbz	x17, 0x100001c44 <capacity::batch::hdb6de3c887ae3b06+0x724>
+100001b60: 32190028    	orr	w8, w1, #0x80
+100001b64: 390015e8    	strb	w8, [x15, #0x5]
+100001b68: d371fe01    	lsr	x1, x16, #49
+100001b6c: b4000721    	cbz	x1, 0x100001c50 <capacity::batch::hdb6de3c887ae3b06+0x730>
+100001b70: 32190228    	orr	w8, w17, #0x80
+100001b74: 390019e8    	strb	w8, [x15, #0x6]
+100001b78: d378fe11    	lsr	x17, x16, #56
+100001b7c: b4000711    	cbz	x17, 0x100001c5c <capacity::batch::hdb6de3c887ae3b06+0x73c>
+100001b80: 32190028    	orr	w8, w1, #0x80
+100001b84: 39001de8    	strb	w8, [x15, #0x7]
+100001b88: b7f80710    	tbnz	x16, #0x3f, 0x100001c68 <capacity::batch::hdb6de3c887ae3b06+0x748>
+100001b8c: 52800108    	mov	w8, #0x8                ; =8
+100001b90: aa1103f0    	mov	x16, x17
+100001b94: 17ffffca    	b	0x100001abc <capacity::batch::hdb6de3c887ae3b06+0x59c>
+100001b98: f102021f    	cmp	x16, #0x80
+100001b9c: 54000062    	b.hs	0x100001ba8 <capacity::batch::hdb6de3c887ae3b06+0x688>
+100001ba0: 52800028    	mov	w8, #0x1                ; =1
+100001ba4: 14000006    	b	0x100001bbc <capacity::batch::hdb6de3c887ae3b06+0x69c>
+100001ba8: dac01208    	clz	x8, x16
+100001bac: 4b0801a8    	sub	w8, w13, w8
+100001bb0: 12001d08    	and	w8, w8, #0xff
+100001bb4: 1b0e7d08    	mul	w8, w8, w14
+100001bb8: 530a7d08    	lsr	w8, w8, #10
+100001bbc: eb08003f    	cmp	x1, x8
+100001bc0: 54001c03    	b.lo	0x100001f40 <capacity::batch::hdb6de3c887ae3b06+0xa20>
+100001bc4: f102021f    	cmp	x16, #0x80
+100001bc8: 540001e3    	b.lo	0x100001c04 <capacity::batch::hdb6de3c887ae3b06+0x6e4>
+100001bcc: d2800008    	mov	x8, #0x0                ; =0
+100001bd0: aa1003f1    	mov	x17, x16
+100001bd4: eb08003f    	cmp	x1, x8
+100001bd8: 54001340    	b.eq	0x100001e40 <capacity::batch::hdb6de3c887ae3b06+0x920>
+100001bdc: 32190230    	orr	w16, w17, #0x80
+100001be0: 382869f0    	strb	w16, [x15, x8]
+100001be4: 91000508    	add	x8, x8, #0x1
+100001be8: d347fe30    	lsr	x16, x17, #7
+100001bec: d34efe22    	lsr	x2, x17, #14
+100001bf0: aa1003f1    	mov	x17, x16
+100001bf4: b5ffff02    	cbnz	x2, 0x100001bd4 <capacity::batch::hdb6de3c887ae3b06+0x6b4>
+100001bf8: eb01011f    	cmp	x8, x1
+100001bfc: 54fff603    	b.lo	0x100001abc <capacity::batch::hdb6de3c887ae3b06+0x59c>
+100001c00: 140000a0    	b	0x100001e80 <capacity::batch::hdb6de3c887ae3b06+0x960>
+100001c04: d2800008    	mov	x8, #0x0                ; =0
+100001c08: eb01011f    	cmp	x8, x1
+100001c0c: 54fff583    	b.lo	0x100001abc <capacity::batch::hdb6de3c887ae3b06+0x59c>
+100001c10: 1400009c    	b	0x100001e80 <capacity::batch::hdb6de3c887ae3b06+0x960>
+100001c14: d347fe10    	lsr	x16, x16, #7
+100001c18: 52800028    	mov	w8, #0x1                ; =1
+100001c1c: 17ffffa8    	b	0x100001abc <capacity::batch::hdb6de3c887ae3b06+0x59c>
+100001c20: d34efe10    	lsr	x16, x16, #14
+100001c24: 52800048    	mov	w8, #0x2                ; =2
+100001c28: 17ffffa5    	b	0x100001abc <capacity::batch::hdb6de3c887ae3b06+0x59c>
+100001c2c: d355fe10    	lsr	x16, x16, #21
+100001c30: 52800068    	mov	w8, #0x3                ; =3
+100001c34: 17ffffa2    	b	0x100001abc <capacity::batch::hdb6de3c887ae3b06+0x59c>
+100001c38: 52800088    	mov	w8, #0x4                ; =4
+100001c3c: aa1103f0    	mov	x16, x17
+100001c40: 17ffff9f    	b	0x100001abc <capacity::batch::hdb6de3c887ae3b06+0x59c>
+100001c44: 528000a8    	mov	w8, #0x5                ; =5
+100001c48: aa0103f0    	mov	x16, x1
+100001c4c: 17ffff9c    	b	0x100001abc <capacity::batch::hdb6de3c887ae3b06+0x59c>
+100001c50: 528000c8    	mov	w8, #0x6                ; =6
+100001c54: aa1103f0    	mov	x16, x17
+100001c58: 17ffff99    	b	0x100001abc <capacity::batch::hdb6de3c887ae3b06+0x59c>
+100001c5c: 528000e8    	mov	w8, #0x7                ; =7
+100001c60: aa0103f0    	mov	x16, x1
+100001c64: 17ffff96    	b	0x100001abc <capacity::batch::hdb6de3c887ae3b06+0x59c>
+100001c68: 390021f1    	strb	w17, [x15, #0x8]
+100001c6c: 52800128    	mov	w8, #0x9                ; =9
+100001c70: 52800030    	mov	w16, #0x1               ; =1
+100001c74: 17ffff92    	b	0x100001abc <capacity::batch::hdb6de3c887ae3b06+0x59c>
+100001c78: 790013ff    	strh	wzr, [sp, #0x8]
+100001c7c: f90003ff    	str	xzr, [sp]
+100001c80: b4000da1    	cbz	x1, 0x100001e34 <capacity::batch::hdb6de3c887ae3b06+0x914>
+100001c84: 91002008    	add	x8, x0, #0x8
+100001c88: 910043ea    	add	x10, sp, #0x10
+100001c8c: 910003eb    	mov	x11, sp
+100001c90: 5280014c    	mov	w12, #0xa               ; =10
+100001c94: 528008cd    	mov	w13, #0x46              ; =70
+100001c98: 5280126e    	mov	w14, #0x93              ; =147
+100001c9c: 1400000b    	b	0x100001cc8 <capacity::batch::hdb6de3c887ae3b06+0x7a8>
+100001ca0: d347fe08    	lsr	x8, x16, #7
+100001ca4: 52800030    	mov	w16, #0x1               ; =1
+100001ca8: 383069e8    	strb	w8, [x15, x16]
+100001cac: 91000608    	add	x8, x16, #0x1
+100001cb0: f9000be8    	str	x8, [sp, #0x10]
+100001cb4: f9000beb    	str	x11, [sp, #0x10]
+100001cb8: eb09001f    	cmp	x0, x9
+100001cbc: 1a9f07e8    	cset	w8, ne
+100001cc0: 8b284c08    	add	x8, x0, w8, uxtw #3
+100001cc4: 54000b80    	b.eq	0x100001e34 <capacity::batch::hdb6de3c887ae3b06+0x914>
+100001cc8: f940000f    	ldr	x15, [x0]
+100001ccc: aa0803e0    	mov	x0, x8
+100001cd0: f9000bef    	str	x15, [sp, #0x10]
+100001cd4: f9400bf0    	ldr	x16, [sp, #0x10]
+100001cd8: a90133eb    	stp	x11, x12, [sp, #0x10]
+100001cdc: a94107ef    	ldp	x15, x1, [sp, #0x10]
+100001ce0: f102021f    	cmp	x16, #0x80
+100001ce4: 540000a2    	b.hs	0x100001cf8 <capacity::batch::hdb6de3c887ae3b06+0x7d8>
+100001ce8: b4001401    	cbz	x1, 0x100001f68 <capacity::batch::hdb6de3c887ae3b06+0xa48>
+100001cec: 390001f0    	strb	w16, [x15]
+100001cf0: 52800028    	mov	w8, #0x1                ; =1
+100001cf4: 17ffffef    	b	0x100001cb0 <capacity::batch::hdb6de3c887ae3b06+0x790>
+100001cf8: f100243f    	cmp	x1, #0x9
+100001cfc: 540004a9    	b.ls	0x100001d90 <capacity::batch::hdb6de3c887ae3b06+0x870>
+100001d00: 32190208    	orr	w8, w16, #0x80
+100001d04: 390001e8    	strb	w8, [x15]
+100001d08: d34efe08    	lsr	x8, x16, #14
+100001d0c: b4fffca8    	cbz	x8, 0x100001ca0 <capacity::batch::hdb6de3c887ae3b06+0x780>
+100001d10: 53077e11    	lsr	w17, w16, #7
+100001d14: 32190231    	orr	w17, w17, #0x80
+100001d18: 390005f1    	strb	w17, [x15, #0x1]
+100001d1c: f148021f    	cmp	x16, #0x200, lsl #12    ; =0x200000
+100001d20: 54000643    	b.lo	0x100001de8 <capacity::batch::hdb6de3c887ae3b06+0x8c8>
+100001d24: 530e7e08    	lsr	w8, w16, #14
+100001d28: 32190108    	orr	w8, w8, #0x80
+100001d2c: 390009e8    	strb	w8, [x15, #0x2]
+100001d30: d35cfe08    	lsr	x8, x16, #28
+100001d34: b40005e8    	cbz	x8, 0x100001df0 <capacity::batch::hdb6de3c887ae3b06+0x8d0>
+100001d38: 53157e11    	lsr	w17, w16, #21
+100001d3c: 32190231    	orr	w17, w17, #0x80
+100001d40: 39000df1    	strb	w17, [x15, #0x3]
+100001d44: d363fe11    	lsr	x17, x16, #35
+100001d48: b40005b1    	cbz	x17, 0x100001dfc <capacity::batch::hdb6de3c887ae3b06+0x8dc>
+100001d4c: 32190108    	orr	w8, w8, #0x80
+100001d50: 390011e8    	strb	w8, [x15, #0x4]
+100001d54: d36afe08    	lsr	x8, x16, #42
+100001d58: b4000568    	cbz	x8, 0x100001e04 <capacity::batch::hdb6de3c887ae3b06+0x8e4>
+100001d5c: 32190231    	orr	w17, w17, #0x80
+100001d60: 390015f1    	strb	w17, [x15, #0x5]
+100001d64: d371fe11    	lsr	x17, x16, #49
+100001d68: b4000551    	cbz	x17, 0x100001e10 <capacity::batch::hdb6de3c887ae3b06+0x8f0>
+100001d6c: 32190108    	orr	w8, w8, #0x80
+100001d70: 390019e8    	strb	w8, [x15, #0x6]
+100001d74: d378fe08    	lsr	x8, x16, #56
+100001d78: b4000508    	cbz	x8, 0x100001e18 <capacity::batch::hdb6de3c887ae3b06+0x8f8>
+100001d7c: 32190231    	orr	w17, w17, #0x80
+100001d80: 39001df1    	strb	w17, [x15, #0x7]
+100001d84: b7f80510    	tbnz	x16, #0x3f, 0x100001e24 <capacity::batch::hdb6de3c887ae3b06+0x904>
+100001d88: 52800110    	mov	w16, #0x8               ; =8
+100001d8c: 17ffffc7    	b	0x100001ca8 <capacity::batch::hdb6de3c887ae3b06+0x788>
+100001d90: dac01208    	clz	x8, x16
+100001d94: 4b0801a8    	sub	w8, w13, w8
+100001d98: 12001d08    	and	w8, w8, #0xff
+100001d9c: 1b0e7d08    	mul	w8, w8, w14
+100001da0: 530a7d08    	lsr	w8, w8, #10
+100001da4: eb08003f    	cmp	x1, x8
+100001da8: 54000e23    	b.lo	0x100001f6c <capacity::batch::hdb6de3c887ae3b06+0xa4c>
+100001dac: d2800008    	mov	x8, #0x0                ; =0
+100001db0: eb08003f    	cmp	x1, x8
+100001db4: 54000460    	b.eq	0x100001e40 <capacity::batch::hdb6de3c887ae3b06+0x920>
+100001db8: 32190211    	orr	w17, w16, #0x80
+100001dbc: 382869f1    	strb	w17, [x15, x8]
+100001dc0: 91000508    	add	x8, x8, #0x1
+100001dc4: d347fe11    	lsr	x17, x16, #7
+100001dc8: d34efe02    	lsr	x2, x16, #14
+100001dcc: aa1103f0    	mov	x16, x17
+100001dd0: b5ffff02    	cbnz	x2, 0x100001db0 <capacity::batch::hdb6de3c887ae3b06+0x890>
+100001dd4: eb01011f    	cmp	x8, x1
+100001dd8: 54000542    	b.hs	0x100001e80 <capacity::batch::hdb6de3c887ae3b06+0x960>
+100001ddc: 382869f1    	strb	w17, [x15, x8]
+100001de0: 91000508    	add	x8, x8, #0x1
+100001de4: 17ffffb3    	b	0x100001cb0 <capacity::batch::hdb6de3c887ae3b06+0x790>
+100001de8: 52800050    	mov	w16, #0x2               ; =2
+100001dec: 17ffffaf    	b	0x100001ca8 <capacity::batch::hdb6de3c887ae3b06+0x788>
+100001df0: d355fe08    	lsr	x8, x16, #21
+100001df4: 52800070    	mov	w16, #0x3               ; =3
+100001df8: 17ffffac    	b	0x100001ca8 <capacity::batch::hdb6de3c887ae3b06+0x788>
+100001dfc: 52800090    	mov	w16, #0x4               ; =4
+100001e00: 17ffffaa    	b	0x100001ca8 <capacity::batch::hdb6de3c887ae3b06+0x788>
+100001e04: 528000b0    	mov	w16, #0x5               ; =5
+100001e08: aa1103e8    	mov	x8, x17
+100001e0c: 17ffffa7    	b	0x100001ca8 <capacity::batch::hdb6de3c887ae3b06+0x788>
+100001e10: 528000d0    	mov	w16, #0x6               ; =6
+100001e14: 17ffffa5    	b	0x100001ca8 <capacity::batch::hdb6de3c887ae3b06+0x788>
+100001e18: 528000f0    	mov	w16, #0x7               ; =7
+100001e1c: aa1103e8    	mov	x8, x17
+100001e20: 17ffffa2    	b	0x100001ca8 <capacity::batch::hdb6de3c887ae3b06+0x788>
+100001e24: 390021e8    	strb	w8, [x15, #0x8]
+100001e28: 52800130    	mov	w16, #0x9               ; =9
+100001e2c: 52800028    	mov	w8, #0x1                ; =1
+100001e30: 17ffff9e    	b	0x100001ca8 <capacity::batch::hdb6de3c887ae3b06+0x788>
+100001e34: a9427bfd    	ldp	x29, x30, [sp, #0x20]
+100001e38: 9100c3ff    	add	sp, sp, #0x30
+100001e3c: d65f03c0    	ret
+100001e40: f00002a2    	adrp	x2, 0x100058000 <dyld_stub_binder+0x100058000>
+100001e44: 9104a042    	add	x2, x2, #0x128
+100001e48: aa0103e0    	mov	x0, x1
+100001e4c: 9400fbaa    	bl	0x100040cf4 <core::panicking::panic_bounds_check::h486908b9a487d47c>
+100001e50: f00002a2    	adrp	x2, 0x100058000 <dyld_stub_binder+0x100058000>
+100001e54: 91028042    	add	x2, x2, #0xa0
+100001e58: aa0103e0    	mov	x0, x1
+100001e5c: 9400fba6    	bl	0x100040cf4 <core::panicking::panic_bounds_check::h486908b9a487d47c>
+100001e60: f00002a2    	adrp	x2, 0x100058000 <dyld_stub_binder+0x100058000>
+100001e64: 91006042    	add	x2, x2, #0x18
+100001e68: aa0103e0    	mov	x0, x1
+100001e6c: 9400fba2    	bl	0x100040cf4 <core::panicking::panic_bounds_check::h486908b9a487d47c>
+100001e70: f00002a2    	adrp	x2, 0x100058000 <dyld_stub_binder+0x100058000>
+100001e74: 91022042    	add	x2, x2, #0x88
+100001e78: aa0803e0    	mov	x0, x8
+100001e7c: 9400fb9e    	bl	0x100040cf4 <core::panicking::panic_bounds_check::h486908b9a487d47c>
+100001e80: f00002a2    	adrp	x2, 0x100058000 <dyld_stub_binder+0x100058000>
+100001e84: 91044042    	add	x2, x2, #0x110
+100001e88: aa0803e0    	mov	x0, x8
+100001e8c: 9400fb9a    	bl	0x100040cf4 <core::panicking::panic_bounds_check::h486908b9a487d47c>
+100001e90: f00002a2    	adrp	x2, 0x100058000 <dyld_stub_binder+0x100058000>
+100001e94: 91000042    	add	x2, x2, #0x0
+100001e98: aa0803e0    	mov	x0, x8
+100001e9c: 9400fb96    	bl	0x100040cf4 <core::panicking::panic_bounds_check::h486908b9a487d47c>
+100001ea0: a90107ef    	stp	x15, x1, [sp, #0x10]
+100001ea4: d0000200    	adrp	x0, 0x100043000 <GCC_except_table1146+0x158>
+100001ea8: 910f7000    	add	x0, x0, #0x3dc
+100001eac: f00002a3    	adrp	x3, 0x100058000 <dyld_stub_binder+0x100058000>
+100001eb0: 91012063    	add	x3, x3, #0x48
+100001eb4: f00002a4    	adrp	x4, 0x100058000 <dyld_stub_binder+0x100058000>
+100001eb8: 91050084    	add	x4, x4, #0x140
+100001ebc: 910043e2    	add	x2, sp, #0x10
+100001ec0: 52800561    	mov	w1, #0x2b               ; =43
+100001ec4: 9400fbf7    	bl	0x100040ea0 <core::result::unwrap_failed::hfab4c59284c125d5>
+100001ec8: a90107e8    	stp	x8, x1, [sp, #0x10]
+100001ecc: d0000200    	adrp	x0, 0x100043000 <GCC_except_table1146+0x158>
+100001ed0: 910f7000    	add	x0, x0, #0x3dc
+100001ed4: f00002a3    	adrp	x3, 0x100058000 <dyld_stub_binder+0x100058000>
+100001ed8: 91012063    	add	x3, x3, #0x48
+100001edc: f00002a4    	adrp	x4, 0x100058000 <dyld_stub_binder+0x100058000>
+100001ee0: 9105c084    	add	x4, x4, #0x170
+100001ee4: 910043e2    	add	x2, sp, #0x10
+100001ee8: 52800561    	mov	w1, #0x2b               ; =43
+100001eec: 9400fbed    	bl	0x100040ea0 <core::result::unwrap_failed::hfab4c59284c125d5>
+100001ef0: a90107e8    	stp	x8, x1, [sp, #0x10]
+100001ef4: d0000200    	adrp	x0, 0x100043000 <GCC_except_table1146+0x158>
+100001ef8: 910f7000    	add	x0, x0, #0x3dc
+100001efc: f00002a3    	adrp	x3, 0x100058000 <dyld_stub_binder+0x100058000>
+100001f00: 91012063    	add	x3, x3, #0x48
+100001f04: f00002a4    	adrp	x4, 0x100058000 <dyld_stub_binder+0x100058000>
+100001f08: 91056084    	add	x4, x4, #0x158
+100001f0c: 910043e2    	add	x2, sp, #0x10
+100001f10: 52800561    	mov	w1, #0x2b               ; =43
+100001f14: 9400fbe3    	bl	0x100040ea0 <core::result::unwrap_failed::hfab4c59284c125d5>
+100001f18: a90107f1    	stp	x17, x1, [sp, #0x10]
+100001f1c: d0000200    	adrp	x0, 0x100043000 <GCC_except_table1146+0x158>
+100001f20: 910f7000    	add	x0, x0, #0x3dc
+100001f24: f00002a3    	adrp	x3, 0x100058000 <dyld_stub_binder+0x100058000>
+100001f28: 91012063    	add	x3, x3, #0x48
+100001f2c: f00002a4    	adrp	x4, 0x100058000 <dyld_stub_binder+0x100058000>
+100001f30: 91068084    	add	x4, x4, #0x1a0
+100001f34: 910043e2    	add	x2, sp, #0x10
+100001f38: 52800561    	mov	w1, #0x2b               ; =43
+100001f3c: 9400fbd9    	bl	0x100040ea0 <core::result::unwrap_failed::hfab4c59284c125d5>
+100001f40: a90107e8    	stp	x8, x1, [sp, #0x10]
+100001f44: d0000200    	adrp	x0, 0x100043000 <GCC_except_table1146+0x158>
+100001f48: 910f7000    	add	x0, x0, #0x3dc
+100001f4c: f00002a3    	adrp	x3, 0x100058000 <dyld_stub_binder+0x100058000>
+100001f50: 91012063    	add	x3, x3, #0x48
+100001f54: f00002a4    	adrp	x4, 0x100058000 <dyld_stub_binder+0x100058000>
+100001f58: 91062084    	add	x4, x4, #0x188
+100001f5c: 910043e2    	add	x2, sp, #0x10
+100001f60: 52800561    	mov	w1, #0x2b               ; =43
+100001f64: 9400fbcf    	bl	0x100040ea0 <core::result::unwrap_failed::hfab4c59284c125d5>
+100001f68: 52800028    	mov	w8, #0x1                ; =1
+100001f6c: a90107e8    	stp	x8, x1, [sp, #0x10]
+100001f70: d0000200    	adrp	x0, 0x100043000 <GCC_except_table1146+0x158>
+100001f74: 910f7000    	add	x0, x0, #0x3dc
+100001f78: f00002a3    	adrp	x3, 0x100058000 <dyld_stub_binder+0x100058000>
+100001f7c: 91012063    	add	x3, x3, #0x48
+100001f80: f00002a4    	adrp	x4, 0x100058000 <dyld_stub_binder+0x100058000>
+100001f84: 9106e084    	add	x4, x4, #0x1b8
+100001f88: 910043e2    	add	x2, sp, #0x10
+100001f8c: 52800561    	mov	w1, #0x2b               ; =43
+100001f90: 9400fbc4    	bl	0x100040ea0 <core::result::unwrap_failed::hfab4c59284c125d5>

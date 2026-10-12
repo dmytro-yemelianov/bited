@@ -82,3 +82,7 @@ See PROFILING.md for the instruction analysis, known/opaque capacity controls,
 atomic-preflight peer adapter, and explicitly unverified count-return prototype.
 These are profiling-only controls; production Rust and Lean source remain the
 verified release snapshot. Both timers, all conditions and samples are recorded.
+
+## Dynamic-capacity follow-up
+
+[CAPACITY.md](CAPACITY.md) compares three benchmark-only specializations of buffers with at least ten bytes, including short-input tradeoffs and three repeated matched runs. Run `./scripts/profile-capacity` from the repository root. These candidates are not shipped or Lean-verified; the production release remains unchanged.
