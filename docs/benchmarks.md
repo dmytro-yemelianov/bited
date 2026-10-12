@@ -1,6 +1,6 @@
 # Scalar baseline benchmarks
 
-Run `./scripts/benchmark` or the complete `./scripts/verify` workflow. The complete raw samples and metadata are recorded in `verification/reports/benchmark.json`; release sidecars bind that report by digest. Measurements characterize the checked scalar API, with encoder inlining enabled and no speed-optimality claim.
+Run `./scripts/benchmark` or the complete `./scripts/verify` workflow. The complete raw samples and metadata are recorded in `verification/reports/benchmark.json`; release sidecars bind that report by digest. Measurements characterize the checked scalar API, with encoder inlining and fixed-word length preflight enabled and no speed-optimality claim.
 
 The baseline was measured on Apple M5, rustc 1.88.0 (6b00bc388 2025-06-23), one thread, opt-level 3, overflow checks enabled, no LTO/features and the compiler default target CPU. Source and benchmark hashes are recorded. Dataset generation and allocation are outside timed regions; `black_box` protects inputs/results. Public buffer/prefix/exact checks remain in the measured path.
 
@@ -10,9 +10,9 @@ Workloads separately cover every encoded length, full-width values, an 80% one-b
 
 | Target | Object code section bytes | Decoder state bytes | Largest observed library static call path |
 |---|---:|---:|---:|
-| aarch64-apple-darwin | 4028 | 48 | 64 bytes |
-| wasm32-wasip1 | 4946 | 32 | 16 bytes |
-| riscv32imac-unknown-none-elf | 3422 | 32 | 32 bytes |
+| aarch64-apple-darwin | 4084 | 48 | 64 bytes |
+| wasm32-wasip1 | 4880 | 32 | 16 bytes |
+| riscv32imac-unknown-none-elf | 3956 | 32 | 32 bytes |
 
 These resource figures come from the pinned compiler: `llvm-size`, an LLVM-IR layout probe and emitted assembly. Archive size includes metadata and is reported separately. Static call paths exclude caller/OS/runtime, panic paths, Wasm operand stack and final-link changes. They are observations, not formal compiler stack bounds. The calling-thread allocator test must observe zero allocations on host and WASI.
 

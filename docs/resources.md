@@ -18,7 +18,8 @@ Canonical emission writes exactly L payload bytes. Fixed-array storage initializ
 is charged separately: u64 initializes ten bytes; u32 uses that core and copies five
 initialized bytes, so its storage-write allowance is `L+15`, with five copy reads.
 The fixed-array profiles bound payload transitions by 5/10 and storage writes by 20.
-Caller-buffer emission has a bounded length preflight and emission pass, writes only
+Caller-buffer emission has a fixed-word leading-zero/arithmetic length preflight
+and a bounded emission pass, writes only
 L bytes on success and zero bytes on insufficient capacity. Signed wrappers add fixed
 ZigZag/cast work. The internal u32 widening reuses the u64 core without changing wire
 values. ZigZag performs a fixed number of scalar operations for each width.
@@ -38,3 +39,7 @@ State layout and static assembly frames are compiler observations recorded by th
 benchmark script, not formal stack/ABI guarantees. Library call-path frame estimates
 exclude panic paths, caller/runtime/OS stack and Wasm's operand stack. Abstract costs,
 shortest encoded length and measured runtime speed remain separate claims.
+
+The leading-zero intrinsic is modeled as a fixed-word bit operation. Existing
+caller-buffer charges remain conservative allowances rather than exact hardware
+instruction counts; target lowering and object-code size are measured separately.

@@ -62,13 +62,15 @@ library continues to forbid unsafe code.
 
 ## Encoder optimization
 
-The library now marks unsigned length/encoder entry points with `#[inline]`,
-allowing cross-crate optimization in normal non-LTO builds. Algorithms, error
-precedence, buffer atomicity and initialization are unchanged. The caller-buffer
-path already writes directly; no temporary-array removal was needed. Regenerated
-Lean definitions differ only in source-line doc comments; the normal release
-workflow still rechecks extraction, proofs, stored-proof replay and archives.
+Unsigned length/encoder entry points retain `#[inline]` for cross-crate
+optimization. Length preflight now uses `leading_zeros` and fixed arithmetic,
+with a one-byte fast case, rather than shifting in a loop. The atomic short-buffer
+contract, encoding loop and error behavior are preserved. The regenerated Lean
+length function has a new proof connecting the exact Aeneas leading-zero primitive
+to Nat logarithms/bit size and the independent shortest encoder. The release
+workflow checks all dependent proofs and archived-source correspondence.
 
-Comparative improvement is measured against the original source in the same
-executable and repetition order. This controls more host drift than comparing
-absolute times from separate runs, but concurrent system load remains recorded.
+The matched `Previous` fixture now records the immediately preceding inlined
+source at commit b0f071d2b1d4727394020c7c43489b10f3f3a06e. Earlier results and the
+inlining-only model identity record are explicitly historical snapshots. Their
+source identities describe those runs, rather than the current fixture.

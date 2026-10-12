@@ -296,3 +296,25 @@ fn exhaustive_reduced_width_models() {
         }
     }
 }
+
+#[test]
+fn length_preflight_matches_leb128_at_every_binary_boundary() {
+    const LENGTHS: [usize; 4] = [
+        encoded_len_u64(0),
+        encoded_len_u64(1),
+        encoded_len_u64(u64::MAX),
+        encoded_len_u32(u32::MAX),
+    ];
+    assert_eq!(LENGTHS, [1, 1, 10, 5]);
+    for bit in 0..64 {
+        let edge = 1u64 << bit;
+        for value in [0, edge - 1, edge, edge + 1, u64::MAX] {
+            let mut bytes = Vec::new();
+            leb128::write::unsigned(&mut bytes, value).unwrap();
+            assert_eq!(encoded_len_u64(value), bytes.len(), "{value}");
+            if let Ok(value32) = u32::try_from(value) {
+                assert_eq!(encoded_len_u32(value32), bytes.len(), "{value32}");
+            }
+        }
+    }
+}

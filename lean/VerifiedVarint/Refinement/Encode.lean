@@ -1,5 +1,5 @@
 import VerifiedVarint.Generated.Funs
-import VerifiedVarint.Proofs.Encode
+import VerifiedVarint.Proofs.Length
 
 namespace VerifiedVarint.Refinement
 open Aeneas Aeneas.Std Aeneas.Std.Result Aeneas.Std.ControlFlow
@@ -15,60 +15,49 @@ theorem encode_length_u64_bounds (value : U64) :
     norm_num at h ⊢
     omega
 
-/-- One length transition agrees with division by 128, with checked addition. -/
-theorem encoded_len_u64_body_refines (value : U64) (len : Usize) (total : Nat)
-    (ht : total ≤ 10) (hl : 1 ≤ len.val)
-    (hinv : len.val + (Reference.encode value.val).length = total + 1) :
-    Generated.encode.encoded_len_u64_loop.body value len ⦃ r =>
-      match r with
-      | .cont (next, nextLen) =>
-        1 ≤ nextLen.val ∧
-        nextLen.val + (Reference.encode next.val).length = total + 1 ∧
-        next.val < value.val
-      | .done result => result.val = total ⦄ := by
-  unfold Generated.encode.encoded_len_u64_loop.body
-  have hp := Spec.encode_length_pos value.val
-  have hlen : len.val ≤ 10 := by omega
-  step*
-  · have hx : 128 ≤ value.val := by scalar_tac
-    have hv : value1.val = value.val / 128 := by
-      simpa only [Nat.shiftRight_eq_div_pow] using value1_post
-    rw [Spec.encode_length_step value.val hx] at hinv
-    rw [hv]
-    have hd : value.val / 128 < value.val := Nat.div_lt_self (by omega) (by decide)
-    omega
-  · have hx : value.val < 128 := by scalar_tac
-    rw [Spec.encode_length_small value.val hx] at hinv
-    omega
+/-- The modeled Rust leading-zero primitive agrees with the logarithmic bit length. -/
+theorem leading_zeros_u64_value (value : U64) (hn : value.val ≠ 0) :
+    (core.num.U64.leading_zeros value).val = 64 - Nat.log 2 value.val - 1 := by
+  have hb : value.bv ≠ 0 := by
+    intro h
+    apply hn
+    change value.bv.toNat = 0
+    rw [h]
+    rfl
+  have hs : 64 - Nat.log 2 value.val - 1 < 2 ^ 32 := by omega
+  change (BitVec.leadingZeros value.bv) % 2 ^ 32 = 64 - Nat.log 2 value.val - 1
+  simp only [BitVec.leadingZeros, hb, if_false]
+  exact Nat.mod_eq_of_lt hs
 
-/-- Universal correspondence of the actual Rust length function to the
-    independent list encoder, including termination and the 1..10 bound. -/
+theorem size_eq_log_add_one (x : Nat) (hn : x ≠ 0) : x.size = Nat.log 2 x + 1 := by
+  have upper := Nat.size_le.mpr (Nat.lt_pow_succ_log_self (by decide : 1 < 2) x)
+  have lower := Nat.log_lt_of_lt_pow hn (Nat.lt_size_self x)
+  omega
+
+/-- Constant-word length preflight refines the independent shortest encoder. -/
 @[step]
 theorem encoded_len_u64_refines (value : U64) :
     Generated.encode.encoded_len_u64 value ⦃ len =>
       len.val = (Reference.encode value.val).length ∧
       1 ≤ len.val ∧ len.val ≤ 10 ⦄ := by
-  have hb := encode_length_u64_bounds value
-  unfold Generated.encode.encoded_len_u64 Generated.encode.encoded_len_u64_loop
-  apply loop.spec_decr_nat
-    (fun (state : U64 × Usize) => state.1.val)
-    (fun state => 1 ≤ state.2.val ∧
-      state.2.val + (Reference.encode state.1.val).length =
-        (Reference.encode value.val).length + 1)
-  · rintro ⟨current, len⟩ ⟨hl, hinv⟩
-    apply WP.spec_mono
-      (encoded_len_u64_body_refines current len _ hb.2 hl hinv)
-    intro r hr
-    cases r with
-    | done result =>
-      dsimp at hr ⊢
-      rw [hr]
-      exact ⟨rfl, hb⟩
-    | cont state =>
-      rcases state with ⟨next, nextLen⟩
-      dsimp at hr ⊢
-      exact ⟨⟨hr.1, hr.2.1⟩, hr.2.2⟩
-  · simp [Nat.add_comm]
+  unfold Generated.encode.encoded_len_u64
+  split <;> rename_i hx
+  · have hsmall : value.val < 128 := by scalar_tac
+    simp [Spec.encode_length_small value.val hsmall]
+  · have hn : value.val ≠ 0 := by scalar_tac
+    have hlog : Nat.log 2 value.val < 64 :=
+      Nat.log_lt_of_lt_pow hn value.bv.isLt
+    have hz := leading_zeros_u64_value value hn
+    have hs := size_eq_log_add_one value.val hn
+    step*
+    rw [Spec.encode_length_formula]
+    unfold Spec.encodedLength
+    have hi : i.val = 64 - Nat.log 2 value.val - 1 := by rw [i_post]; exact hz
+    have he : i1.val = value.val.size + 6 := by omega
+    have hi2 : i2.val ≤ 10 := by omega
+    have hc : (UScalar.cast .Usize i2).val = i2.val := by scalar_tac
+    rw [hc, i2_post, he]
+    omega
 
 theorem encoded_len_u64_minimal (value : U64) :
     Generated.encode.encoded_len_u64 value ⦃ len =>

@@ -1,48 +1,47 @@
-# Encoder inlining and measured comparison
+# Fixed-word length preflight and encoder optimization
 
-Unsigned encoder/length entry points now carry `#[inline]`, letting ordinary
-non-LTO consumers optimize across the crate boundary. The caller-buffer encoder
-already writes directly to the supplied buffer; no temporary array was removed.
-Length preflight, atomic short-buffer failure, preserved suffix, fixed-storage
-initialization and all encoding algorithms are unchanged.
+The inlined unsigned length function now returns one byte immediately for values
+below 128. Otherwise it computes `(70 - value.leading_zeros()) / 7`: the bit length
+is `64 - leading_zeros`, and adding six rounds up division by seven. This removes
+the iterative preflight scan while preserving minimal length, exact required
+capacity, atomic short-buffer failure and the output suffix.
 
-Pinned Rust-to-Lean extraction differs only in source-line doc comments. The
-actual generated definitions and proof statements are unchanged. The full
-release workflow rechecks correspondence, all 18 obligations, axiom closure,
-stored-proof replay and fresh Rust/Lean archives for the modified Rust source.
-Compiler optimization remains outside the formal source-refinement boundary.
+The Aeneas primitive has an existing pure BitVec model. New kernel-checked Lean
+lemmas connect it to Nat logarithms and bit size; the length correspondence proves
+checked arithmetic safety and agreement with the independent shortest encoder.
+The normal release gate audits all dependent obligations and freshly rebuilds
+and replays proofs from the archived package. Compiler correctness remains outside
+the source-refinement boundary.
 
-The separate repository command `./scripts/compare-performance` compares current
-and previous source in the same executable, along with leb128 0.2.5 and
-integer-encoding 4.1.0. The old source is bound to Git commit
-`a39937d4fcc5c13904bdfa680e921ee0ad57d446`. All participants use identical canonical
-u64 datasets and preallocated caller buffers, one thread, Rust 1.88, optimization
-3, overflow checks enabled, default CPU target and no LTO. Fifteen repetitions
-rotate order. CPU and wall time, samples, approximate intervals, source/binary
-hashes and twelve stack profiles are recorded. Byte/value/consumption agreement
-passes before timing. These observations do not prove competitor APIs.
+Matched Apple M5 measurements versus the immediately preceding inlined source
+at `b0f071d2b1d4727394020c7c43489b10f3f3a06e` gave:
 
-On Apple M5, paired thread CPU-time reductions versus the previous source were:
-
-| Dataset | Mean reduction | Approximate 95% interval |
+| Dataset | Mean CPU-time reduction | Approximate 95% interval |
 |---|---:|---:|
-| One-byte values | 27.1% | 25.3%–28.9% |
-| 80/15/5 short-biased mixture | 22.6% | 19.2%–25.9% |
-| Full-width values | 4.5% | 3.9%–5.2% |
-| Large full-width traversal | 6.6% | 5.3%–8.0% |
+| length-1 | 4.8% | 2.3%–7.3% |
+| short-80-15-5 | 9.6% | 7.2%–12.0% |
+| full-width | 31.3% | 29.0%–33.7% |
+| large-full-width | 25.8% | 22.6%–29.0% |
 
-One-byte encoding was approximately tied with integer-encoding. The short mixture
-remained about 8% slower and full-width encoding about 1.4–1.5 times slower. Our
-full-width encoding used about half leb128's CPU time. Decoder source is unchanged.
-This is a shared-host run, with load averages near 4–5; it is not a controlled
-idle-host ranking. Thread CPU time removes descheduling, but frequency, cache
-contention and core migration remain uncontrolled. Ratio intervals describe the
-observed repetitions, not universal performance guarantees.
+The same executable compares current/previous code, leb128 0.2.5 and
+integer-encoding 4.1.0 with rotating order, fifteen repeats, identical u64 values
+and caller buffers, Rust 1.88, optimization 3, overflow checks enabled and no LTO.
+CPU/wall samples, intervals, source/binary hashes, disassembly and twelve profiles
+are in the separate repository harness `verification/performance`. All canonical
+bytes, values and consumption counts agree before timing.
 
-The timed comparison covers shared u64 wire operations, with ZigZag near-zero
-values mapped outside timing for all participants. Native signed wrappers, u32
-and incremental throughput remain outside this comparison. Canonical validation,
-structured errors and buffer atomicity differ across APIs. This measures their
-natural costs on shared valid inputs rather than identical validation work.
-The comparison executable's tiny unsafe CPU-timer FFI is separate from the
-production library, which continues to forbid unsafe code.
+Full-width encoding remains about 7–8% slower than integer-encoding in this run.
+The host is shared; CPU time removes descheduling but not frequency, migration or
+cache contention. Ratio intervals are not performance guarantees on other hosts.
+ZigZag input mapping occurs outside timing. Native signed wrappers, u32 and
+incremental throughput remain outside this comparison; their correctness remains
+covered by the full suite and Lean proofs.
+
+Object code sections changed from 4028 to 4084 bytes on aarch64, 4946 to 4880 on
+WASI and 3422 to 3956 on RISC-V. RISC-V hardware timing has not been measured, and
+the larger RISC-V object is an explicit tradeoff. These library-only observations
+do not predict total consumer code size or formally bound compiler stack usage.
+
+A focused test compares every binary boundary and neighbors to pinned leb128 and
+checks compile-time zero/max lengths. The production library still forbids unsafe
+code and has no runtime dependencies; timer FFI is confined to the comparison executable.

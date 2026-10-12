@@ -36,37 +36,17 @@ def zigzag.zigzag_i32_to_u32 (n : Std.I32) : Result Std.U32 := do
   let i1 ← zigzag.zigzag_i64_to_u64 i
   ok (UScalar.cast .U32 i1)
 
-/-- [verified_varint::encode::encoded_len_u64]: loop body 0:
-    Source: 'src/encode.rs', lines 83:4-86:5
-    Visibility: public -/
-@[rust_loop_body]
-def encode.encoded_len_u64_loop.body
-  (value : Std.U64) (len : Std.Usize) :
-  Result (ControlFlow (Std.U64 × Std.Usize) Std.Usize)
-  := do
-  if value >= 128#u64
-  then
-    let value1 ← value >>> 7#i32
-    let len1 ← len + 1#usize
-    ok (cont (value1, len1))
-  else ok (done len)
-
-/-- [verified_varint::encode::encoded_len_u64]: loop 0:
-    Source: 'src/encode.rs', lines 83:4-86:5
-    Visibility: public -/
-@[rust_loop]
-def encode.encoded_len_u64_loop
-  (value : Std.U64) (len : Std.Usize) : Result Std.Usize := do
-  loop
-    (fun (value1, len1) => encode.encoded_len_u64_loop.body value1 len1)
-    (value, len)
-
 /-- [verified_varint::encode::encoded_len_u64]:
-    Source: 'src/encode.rs', lines 81:0-88:1
+    Source: 'src/encode.rs', lines 81:0-87:1
     Visibility: public -/
-@[reducible]
 def encode.encoded_len_u64 (value : Std.U64) : Result Std.Usize := do
-  encode.encoded_len_u64_loop value 1#usize
+  if value < 128#u64
+  then ok 1#usize
+  else
+    let i ← lift (core.num.U64.leading_zeros value)
+    let i1 ← 70#u32 - i
+    let i2 ← i1 / 7#u32
+    ok (UScalar.cast .Usize i2)
 
 /-- [verified_varint::encode::encoded_len_u32]:
     Source: 'src/encode.rs', lines 37:0-39:1
@@ -90,7 +70,7 @@ def api.encoded_len_i64 (value : Std.I64) : Result Std.Usize := do
   encode.encoded_len_u64 i
 
 /-- [verified_varint::encode::encode_u64]: loop body 0:
-    Source: 'src/encode.rs', lines 95:4-99:5
+    Source: 'src/encode.rs', lines 94:4-98:5
     Visibility: public -/
 @[rust_loop_body]
 def encode.encode_u64_loop.body
@@ -110,7 +90,7 @@ def encode.encode_u64_loop.body
   else ok (done (value, bytes, i))
 
 /-- [verified_varint::encode::encode_u64]: loop 0:
-    Source: 'src/encode.rs', lines 95:4-99:5
+    Source: 'src/encode.rs', lines 94:4-98:5
     Visibility: public -/
 @[rust_loop]
 def encode.encode_u64_loop
@@ -122,7 +102,7 @@ def encode.encode_u64_loop
     (value, bytes, i)
 
 /-- [verified_varint::encode::encode_u64]:
-    Source: 'src/encode.rs', lines 92:0-102:1
+    Source: 'src/encode.rs', lines 91:0-101:1
     Visibility: public -/
 def encode.encode_u64 (value : Std.U64) : Result encode.Encoded64 := do
   let bytes := Array.repeat 10#usize 0#u8
@@ -162,7 +142,7 @@ def api.encode_i64 (value : Std.I64) : Result encode.Encoded64 := do
   encode.encode_u64 i
 
 /-- [verified_varint::encode::encode_u64_into]: loop body 0:
-    Source: 'src/encode.rs', lines 117:4-121:5
+    Source: 'src/encode.rs', lines 116:4-120:5
     Visibility: public -/
 @[rust_loop_body]
 def encode.encode_u64_into_loop.body
@@ -182,7 +162,7 @@ def encode.encode_u64_into_loop.body
   else ok (done (value, out, i))
 
 /-- [verified_varint::encode::encode_u64_into]: loop 0:
-    Source: 'src/encode.rs', lines 117:4-121:5
+    Source: 'src/encode.rs', lines 116:4-120:5
     Visibility: public -/
 @[rust_loop]
 def encode.encode_u64_into_loop
@@ -194,7 +174,7 @@ def encode.encode_u64_into_loop
     (value, out, i)
 
 /-- [verified_varint::encode::encode_u64_into]:
-    Source: 'src/encode.rs', lines 107:0-124:1
+    Source: 'src/encode.rs', lines 106:0-123:1
     Visibility: public -/
 def encode.encode_u64_into
   (value : Std.U64) (out : Slice Std.U8) :
