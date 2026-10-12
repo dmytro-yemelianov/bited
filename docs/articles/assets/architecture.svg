@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="440" viewBox="0 0 1100 440" role="img" aria-labelledby="title desc">
+<title id="title">bited: runtime boundaries and proof pipeline</title>
+<desc id="desc">One Rust library exposes thin adapters over a deterministic codec core. Rust source is extracted by Charon and Aeneas to a Lean model and checked against mathematical contracts. Compiler and machine correctness are outside this source refinement.</desc>
+<defs><marker id="arrow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0,0 L10,4 L0,8" fill="#546477"/></marker></defs>
+<rect width="1100" height="440" rx="16" fill="#f5f8fc"/>
+<g font-family="sans-serif" fill="#172b40">
+<text x="35" y="42" font-size="23" font-weight="bold">One library. Explicit contracts. Source-level correspondence.</text>
+<g fill="white" stroke="#087f8c" stroke-width="2">
+<rect x="35" y="80" width="250" height="130" rx="10"/>
+<rect x="340" y="80" width="320" height="130" rx="10"/>
+<rect x="715" y="80" width="350" height="130" rx="10"/>
+</g>
+<g font-size="18"><text x="55" y="110" font-weight="bold">Inputs</text><text x="55" y="142">u32 / u64 / i32 / i64</text><text x="55" y="174">Bytes, buffers, chunks</text>
+<text x="360" y="110" font-weight="bold">Thin public adapters</text><text x="360" y="142">Array / slice / prefix / exact</text><text x="360" y="174">Signed wrappers / streaming</text>
+<text x="735" y="110" font-weight="bold">Deterministic Rust core</text><text x="735" y="142">Varint, ZigZag, length, policy</text><text x="735" y="174">no_std · no heap · safe Rust</text></g>
+<g stroke="#546477" stroke-width="2" marker-end="url(#arrow)"><path d="M285 145 H330"/><path d="M660 145 H705"/><path d="M890 210 V265"/><path d="M715 315 H665"/><path d="M340 315 H295"/></g>
+<g fill="white" stroke="#7952b3" stroke-width="2"><rect x="715" y="275" width="350" height="85" rx="10"/><rect x="340" y="275" width="320" height="85" rx="10"/><rect x="35" y="275" width="250" height="85" rx="10"/></g>
+<g font-size="18"><text x="735" y="308" font-weight="bold">Charon → Aeneas</text><text x="735" y="338">Pinned Rust source extraction</text><text x="360" y="308" font-weight="bold">Lean model + contracts</text><text x="360" y="338">18 obligations and refinement</text><text x="55" y="308" font-weight="bold">Proof replay + audit</text><text x="55" y="338">Pinned Lean kernel</text></g>
+<text x="35" y="408" font-size="16">Proof scope: extracted source on Apple ARM / 64-bit usize; compiler and machine-code correctness excluded.</text>
+</g></svg>

@@ -24,6 +24,8 @@ paths = ["Cargo.toml", "Cargo.lock", "README.md", "LICENSE-MIT", "CHANGELOG.md",
 paths += [str(p.relative_to(ROOT)) for folder in ["src", "tests", "benches", "examples"]
           for p in sorted((ROOT / folder).glob("*.rs"))]
 paths += [str(p.relative_to(ROOT)) for p in sorted((ROOT / "docs").rglob("*.md"))]
+paths += [str(p.relative_to(ROOT)) for p in sorted((ROOT / "docs/articles/assets").glob("*"))
+          if p.suffix in {".svg", ".png"}]
 with tarfile.open(archive) as package:
     contents = {p.name.partition("/")[2]: p for p in package if p.isfile()}
     allowed = set(paths) | {"Cargo.toml.orig", ".cargo_vcs_info.json"}

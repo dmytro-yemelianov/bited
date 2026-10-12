@@ -6,6 +6,9 @@ One small `no_std` Rust library for 32/64-bit base-128 varints and ZigZag,
 with a corresponding Lean 4 proof package. It has zero runtime dependencies,
 forbids unsafe code, and allocates no heap memory.
 
+Read [the bited engineering article](docs/articles/bited.md) for the contract,
+proof boundaries, benchmark charts, peer comparison, and weighted workload tradeoff.
+
 The [specification](docs/specification.md) and all 351 original
 [conformance vectors](conformance/vectors.json) are preserved byte-for-byte.
 The crate provides unsigned/signed encoders, exact lengths, fixed arrays,
