@@ -27,7 +27,7 @@ def portable_svg(path):
 
     svg = re.sub(r'style="([^"]*)"', attributes, svg)
     svg = svg.replace("<svg ", '<svg stroke-linejoin="round" stroke-linecap="butt" ', 1)
-    path.write_text(svg)
+    path.write_text("\n".join(line.rstrip() for line in svg.splitlines()) + "\n")
 
 rows = {(r["dataset"], r["implementation"]): r for r in report["results"] if r["operation"] == "encode"}
 plt.rcParams.update({"font.family": "DejaVu Sans", "font.size": 11, "svg.fonttype": "none"})
