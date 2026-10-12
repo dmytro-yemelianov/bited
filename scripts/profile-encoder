@@ -1,0 +1,69 @@
+#!/usr/bin/env python3
+"""Matched encoder controls and assembly evidence; production sources unchanged."""
+import datetime
+import hashlib
+import json
+import os
+from pathlib import Path
+import platform
+import subprocess
+
+ROOT = Path(__file__).resolve().parent.parent
+PACKAGE = ROOT / 'verification/performance'
+REPORTS = ROOT / 'verification/reports'
+REPORTS.mkdir(exist_ok=True)
+for key in ['RUSTFLAGS', 'CARGO_ENCODED_RUSTFLAGS', 'CARGO_PROFILE_RELEASE_OPT_LEVEL',
+            'CARGO_PROFILE_RELEASE_LTO', 'CARGO_PROFILE_RELEASE_OVERFLOW_CHECKS']:
+    if os.environ.get(key):
+        raise SystemExit(f'Unset {key} for matched settings')
+
+def run(command):
+    return subprocess.check_output(command, cwd=ROOT, text=True)
+
+def sha(path):
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+report = json.loads(run(['cargo', 'run', '--manifest-path', str(PACKAGE/'Cargo.toml'),
+                         '--release', '--locked', '--offline', '--bin', 'explain']))
+report['timestamp_utc'] = datetime.datetime.now(datetime.timezone.utc).isoformat()
+report['host'] = platform.platform()
+report['cpu'] = run(['sysctl', '-n', 'machdep.cpu.brand_string']).strip()
+report['rustc'] = run(['rustc', '-Vv']).strip()
+report['git_commit'] = run(['git', 'rev-parse', 'HEAD']).strip()
+report['working_tree_dirty'] = bool(run(['git', 'status', '--porcelain']).strip())
+report['load_average_after_timing'] = os.getloadavg()
+report['flags'] = {'opt_level':3, 'overflow_checks':True, 'lto':False,
+                   'debug_info':1, 'target_cpu':'compiler default', 'threads':1}
+inputs = [PACKAGE/'Cargo.toml', PACKAGE/'Cargo.lock', PACKAGE/'src/bin/explain.rs',
+          ROOT/'Cargo.toml', ROOT/'scripts/profile-encoder', *sorted((ROOT/'src').glob('*.rs'))]
+report['source_sha256'] = {str(p.relative_to(ROOT)):sha(p) for p in inputs}
+binary = PACKAGE/'target/release/explain'
+report['binary_sha256'] = sha(binary)
+disassembly = REPORTS/'profile-controls-disassembly.txt'
+disassembly.write_text(run(['xcrun','llvm-objdump','--disassemble','--demangle',str(binary)]))
+report['disassembly_sha256'] = sha(disassembly)
+profiles=[]
+for codec in ['current','peer','checked','count']:
+    for capacity in ['opaque','known']:
+        name=f'control-{codec}-{capacity}'
+        log=REPORTS/(name+'.log')
+        sample=REPORTS/(name+'.sample.txt')
+        with log.open('w') as stream:
+            process=subprocess.Popen([str(binary),'profile',codec,capacity],cwd=ROOT,
+                                     stdout=stream,stderr=stream)
+            try:
+                result=subprocess.run(['/usr/bin/sample',str(process.pid),'3','1','-file',str(sample)],
+                                      cwd=ROOT,capture_output=True,text=True,timeout=15)
+                profiles.append({'codec':codec,'capacity':capacity,'return_code':result.returncode,
+                    'report':str(sample.relative_to(ROOT)),'sha256':sha(sample) if sample.exists() else None,
+                    'log':str(log.relative_to(ROOT)),'tool_output':result.stdout+result.stderr})
+            finally:
+                if process.poll() is None: process.terminate()
+                process.wait(timeout=5)
+        print('Collected '+name,flush=True)
+if any(p['return_code'] != 0 or p['sha256'] is None for p in profiles):
+    raise SystemExit('Sampling failed; inspect logs; no success report written')
+report['profiles']=profiles
+report['limits']='statistical 1 ms stacks, no PMU/branch-miss counters; shared host; controls modify multiple instruction/layout effects and are not additive cost accounting'
+(REPORTS/'profile-controls.json').write_text(json.dumps(report,indent=2)+'\n')
+print('Wrote verification/reports/profile-controls.json',flush=True)

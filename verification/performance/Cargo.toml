@@ -3,6 +3,7 @@ name = "varint-comparison"
 version = "0.1.0"
 edition = "2021"
 publish = false
+default-run = "varint-comparison"
 
 [dependencies]
 verified-varint-baseline = { path = "baseline" }

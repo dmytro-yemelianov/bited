@@ -74,3 +74,11 @@ The matched `Previous` fixture now records the immediately preceding inlined
 source at commit b0f071d2b1d4727394020c7c43489b10f3f3a06e. Earlier results and the
 inlining-only model identity record are explicitly historical snapshots. Their
 source identities describe those runs, rather than the current fixture.
+
+## Profiling controls
+
+`./scripts/profile-encoder` measures and samples a separate `explain` binary.
+See PROFILING.md for the instruction analysis, known/opaque capacity controls,
+atomic-preflight peer adapter, and explicitly unverified count-return prototype.
+These are profiling-only controls; production Rust and Lean source remain the
+verified release snapshot. Both timers, all conditions and samples are recorded.
