@@ -1,6 +1,6 @@
 # bited: small integers, explicit contracts, and a faster verified encoder
 
-*Dmytro Yemelianov · 12 October 2026 · bited 0.1.0 release candidate*
+*Dmytro Yemelianov · 12 October 2026 · bited 0.1.0*
 
 An integer codec is easy to underestimate. The happy path is a loop that emits seven bits at a time. The contract also has to answer what happens when a buffer ends halfway through a number, when the number overflows, when its representation is longer than necessary, or when a caller supplies too little output space.
 
@@ -141,10 +141,10 @@ The smallest base-128 representation is the encoder's proved format-level optimu
 
 ## Status and reproducibility
 
-Version 0.1.0 is a prepared release candidate. The GitHub repository and draft release are currently private; the crate has not been uploaded to crates.io. The frozen release evidence belongs to source commit `d9af05c28e0d3114423dfeeb93c31f2ff30588df`. Later CI and article changes do not silently update that evidence.
+Version 0.1.0 is published on [crates.io](https://crates.io/crates/bited/0.1.0), with a public [GitHub release](https://github.com/dmytro-yemelianov/bited/releases/tag/v0.1.0). Install it with `cargo add bited@0.1.0`. The strict Rust/Lean release gate passed on source commit `5b7ef6eaa2ebb4b0bad123630348c7c9f02d3724`; the release assets bind that exact commit, both packages and their evidence through recorded SHA-256 digests. Later documentation changes do not alter the frozen release evidence.
 
 Portable Rust checks now pass on the repository-scoped `bited-ci-x64` runner on `raps-ci`. Full formal release verification remains a separate pinned local workflow.
 
-Readers with repository access can inspect the [specification](../specification.md), [conformance vectors](../../conformance/vectors.json), [proof status](../proof-status.md), [trust boundary](../trust-boundary.md), and [raw benchmark results](../../verification/performance/results.json). Run `scripts/compare-performance` for the comparison and `scripts/verify` for the strict gate using the documented toolchain. Charts are regenerated from the recorded JSON by `scripts/article-charts.py`; raw timing metadata records the source hashes and the dirty working tree used at measurement time.
+Readers can inspect the [specification](../specification.md), [conformance vectors](../../conformance/vectors.json), [proof status](../proof-status.md), [trust boundary](../trust-boundary.md), and [raw benchmark results](../../verification/performance/results.json). Run `scripts/compare-performance` for the comparison and `scripts/verify` for the strict gate using the documented toolchain. Charts are regenerated from the recorded JSON by `scripts/article-charts.py`; raw timing metadata records the source hashes and the dirty working tree used at measurement time.
 
 The [public article](https://yemelianov.dev/?doc=bited) also appears as a project detail inside the site's WASM portfolio.
