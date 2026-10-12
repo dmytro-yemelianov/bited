@@ -38,7 +38,7 @@ with tempfile.TemporaryDirectory(prefix="vvz-fuzz-corpus-", dir=ROOT/"target") a
         raise SystemExit(result.returncode or "Fuzz dependency lock changed")
     if f"Done {lock['runs']} runs" not in result.stdout:
         raise SystemExit("Fuzzer did not finish the configured run count")
-record = {"schema":"verified-varint-fuzz/0.1", "status":"configured run count passed with AddressSanitizer",
+record = {"schema":"bitet-fuzz/0.1", "status":"configured run count passed with AddressSanitizer",
     "configuration":lock, "invocation":command+["temporary seeded corpus","--","-runs="+str(lock["runs"]),"-max_len="+str(lock["max_len"]),"-seed="+str(lock["seed"])],
     "source_sha256":{str(p.relative_to(ROOT)):sha(p) for p in sorted((ROOT/"src").glob("*.rs"))+
         [ROOT/"fuzz/Cargo.toml",ROOT/"fuzz/Cargo.lock",ROOT/"fuzz/fuzz_targets/codec.rs"]},

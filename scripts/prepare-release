@@ -1,0 +1,86 @@
+#!/usr/bin/env python3
+"""Prepare a hash-bound local release bundle; never publish or create Git tags."""
+import hashlib
+import json
+from pathlib import Path
+import shutil
+import subprocess
+import tempfile
+from release_meta import package_metadata
+
+ROOT = Path(__file__).resolve().parent.parent
+
+
+def sha(path):
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def require(condition, message):
+    if not condition:
+        raise SystemExit(message)
+
+
+metadata = package_metadata(ROOT)
+manifest_path = ROOT / "verification/reports/verification.json"
+require(manifest_path.exists(), "Run the full ./scripts/verify workflow first")
+manifest = json.loads(manifest_path.read_text())
+require(manifest["status"] == "release checks passed" and manifest["release_ready"]
+        and not manifest["remaining_gates"], "Full release verification is required")
+commit = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
+require(not subprocess.check_output(["git", "status", "--porcelain"], cwd=ROOT, text=True).strip(),
+        "Commit the release inputs before preparing artifacts")
+require(manifest["source_commit"] == commit and not manifest["working_tree_dirty"],
+        "Verification belongs to a different or dirty source snapshot; rerun ./scripts/verify")
+crate = manifest["identity"]["crate"]
+require(crate["name"] == metadata["name"] and crate["version"] == metadata["version"],
+        "Verification package identity differs from the current release")
+for name, digest in {**manifest["source_inputs_sha256"], **manifest["evidence_sha256"]}.items():
+    require((ROOT / name).is_file() and sha(ROOT / name) == digest, f"Verified input changed: {name}")
+artifacts = [ROOT / entry["archive"] for entry in manifest["identity"].values()]
+artifacts.append(ROOT / manifest["evidence_archive"]["path"])
+for entry in manifest["identity"].values():
+    require(sha(ROOT / entry["archive"]) == entry["sha256"], "Verified package archive changed")
+require(sha(artifacts[-1]) == manifest["evidence_archive"]["sha256"], "Evidence archive changed")
+sidecar = ROOT / "target/package" / (metadata["stem"] + "-verification.json")
+require(sidecar.read_bytes() == manifest_path.read_bytes(), "Release sidecar differs from verification")
+notes = ROOT / "docs/releases" / (metadata["version"] + ".md")
+require(notes.is_file(), "Add version-specific release notes before preparing a release")
+
+releases = ROOT / "target/releases"
+releases.mkdir(parents=True, exist_ok=True)
+destination = releases / (metadata["stem"] + "-" + sha(manifest_path)[:12])
+if destination.exists():
+    existing = json.loads((destination / "release.json").read_text())
+    require(existing["verification_sha256"] == sha(manifest_path), "Existing bundle identity differs")
+    for line in (destination / "SHA256SUMS").read_text().splitlines():
+        digest, name = line.split("  ", 1)
+        require(Path(name).name == name and sha(destination / name) == digest,
+                "Existing bundle checksum failed")
+    print(f"Prepared bundle already verified: {destination}")
+    raise SystemExit(0)
+
+# Cargo's dry-run compiles the normalized registry package without uploading it.
+result = subprocess.run(["cargo", "publish", "--dry-run", "--locked", "--offline"],
+                        cwd=ROOT, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+require(result.returncode == 0, "Cargo publication dry-run failed:\n" + result.stdout)
+require(sha(ROOT / crate["archive"]) == crate["sha256"],
+        "Cargo dry-run changed the verified crate; rerun ./scripts/verify")
+with tempfile.TemporaryDirectory(prefix=".bitet-stage-", dir=releases) as temporary:
+    staged = Path(temporary) / "bundle"
+    staged.mkdir()
+    for path in [*artifacts, sidecar, ROOT / "CHANGELOG.md"]:
+        shutil.copyfile(path, staged / path.name)
+    shutil.copyfile(notes, staged / "RELEASE_NOTES.md")
+    (staged / "cargo-publish-dry-run.log").write_text(result.stdout)
+    record = {**metadata, "source_commit": commit, "verification_sha256": sha(manifest_path),
+              "verification_recorded_at_utc": manifest["recorded_at_utc"],
+              "publication_status": "prepared locally; not uploaded or tagged",
+              "repository_metadata_complete": bool(metadata["repository"]),
+              "files_sha256": {p.name: sha(p) for p in sorted(staged.iterdir())}}
+    (staged / "release.json").write_text(json.dumps(record, indent=2) + "\n")
+    (staged / "SHA256SUMS").write_text("".join(f"{sha(p)}  {p.name}\n" for p in sorted(staged.iterdir())))
+    staged.rename(destination)
+print(f"Prepared {metadata['stem']}: {destination}")
+print("Local bundle only; publication and Git tagging have not occurred")
+if not metadata["repository"]:
+    print("Public repository URL is still missing from Cargo metadata")

@@ -1,4 +1,4 @@
-use verified_varint::*;
+use bitet::*;
 
 // Independent list/arithmetic oracle: collect the prefix, validate its shape,
 // then sum in u128. It does not call the production encoder or decoder.

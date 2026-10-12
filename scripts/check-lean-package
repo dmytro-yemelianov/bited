@@ -6,19 +6,21 @@ from pathlib import Path
 import subprocess
 import tarfile
 import tempfile
+from release_meta import package_metadata
 
 ROOT = Path(__file__).resolve().parent.parent
 REPORTS = ROOT / "verification/reports"
 REPORTS.mkdir(parents=True,exist_ok=True)
-archive = ROOT / "target/package/verified-varint-lean-0.1.0.tar.gz"
+metadata = package_metadata(ROOT)
+archive = ROOT / "target/package" / (metadata["lean_stem"] + ".tar.gz")
 archive.parent.mkdir(parents=True,exist_ok=True)
-paths = [ROOT/"lakefile.toml", ROOT/"lake-manifest.json", ROOT/"lean-toolchain", ROOT/"rust-toolchain.toml", ROOT/"README.md", ROOT/"LICENSE-MIT"]
+paths = [ROOT/"lakefile.toml", ROOT/"lake-manifest.json", ROOT/"lean-toolchain", ROOT/"rust-toolchain.toml", ROOT/"README.md", ROOT/"LICENSE-MIT", ROOT/"CHANGELOG.md"]
 paths += sorted((ROOT/"lean").rglob("*.lean"))
 paths += [p for folder in ["docs","verification","scripts","fuzz"] for p in sorted((ROOT/folder).rglob("*"))
           if p.is_file() and not any(part in ["reports","__pycache__","history","target","corpus","artifacts"] for part in p.relative_to(ROOT).parts)]
 with tarfile.open(archive,"w:gz") as package:
     for path in paths:
-        package.add(path,arcname="verified-varint-lean-0.1.0/"+str(path.relative_to(ROOT)),recursive=False)
+        package.add(path,arcname=metadata["lean_stem"]+"/"+str(path.relative_to(ROOT)),recursive=False)
 lock = json.loads((ROOT/"lake-manifest.json").read_text())
 cache_revisions = {}
 for dependency in lock["packages"]:
@@ -33,7 +35,7 @@ with tempfile.TemporaryDirectory(prefix="vvz-clean-lean-",dir=ROOT/"target") as 
     temporary = Path(temporary)
     with tarfile.open(archive) as package:
         package.extractall(temporary,filter="data")
-    fresh = temporary/"verified-varint-lean-0.1.0"
+    fresh = temporary/metadata["lean_stem"]
     (fresh/".lake").mkdir()
     # Dependencies are reused, but no project .olean or Lake build cache is copied.
     (fresh/".lake/packages").symlink_to(ROOT/".lake/packages",target_is_directory=True)
@@ -49,7 +51,7 @@ with tempfile.TemporaryDirectory(prefix="vvz-clean-lean-",dir=ROOT/"target") as 
         raise SystemExit("Archived proof declaration/statement/axiom inventory differs")
     clean_replay=json.loads((fresh/"verification/reports/stored-proofs.json").read_text())
     (REPORTS/"lean-package-stored-proofs.json").write_text(json.dumps(clean_replay,indent=2)+"\n")
-record={"schema":"verified-varint-lean-package/0.1","status":"fresh project build, transitive axiom audit and stored-proof replay passed",
+record={"schema":"bitet-lean-package/0.1","status":"fresh project build, transitive axiom audit and stored-proof replay passed",
     "archive":str(archive.relative_to(ROOT)),"archive_sha256":hashlib.sha256(archive.read_bytes()).hexdigest(),
     "source_sha256":{str(path.relative_to(ROOT)):hashlib.sha256(path.read_bytes()).hexdigest() for path in paths},
     "commands":commands,"declarations_match_workspace":True,"fresh_project_outputs":True,

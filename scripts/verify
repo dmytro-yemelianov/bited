@@ -11,8 +11,10 @@ import sys
 import datetime
 import tomllib
 import tarfile
+from release_meta import package_metadata
 
 ROOT = Path(__file__).resolve().parent.parent
+metadata = package_metadata(ROOT)
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument("--development", action="store_true", help="check current partial coverage without claiming release completion")
 args = parser.parse_args()
@@ -87,7 +89,7 @@ if lock["checker"] is None:
 if not args.development and blockers:
     raise SystemExit("Release verification refused:\n" + "\n".join(blockers))
 report = {
-    "schema": "verified-varint-release-verification/0.1",
+    "schema": "bitet-release-verification/0.1",
     "recorded_at_utc": datetime.datetime.now(datetime.timezone.utc).isoformat(),
     "specification": coverage["specification"],
     "status": "development checks passed; full release proof closure incomplete" if blockers else "release checks passed",
@@ -104,11 +106,11 @@ report = {
     "working_tree_dirty": bool(subprocess.check_output(["git", "status", "--porcelain"], cwd=ROOT, text=True).strip()) if (ROOT / ".git").exists() else None,
 }
 report["source_inputs_sha256"] = {str(p.relative_to(ROOT)): sha(p) for folder in
-    ["src", "lean", "tests", "benches", "scripts", "fuzz", "docs", "conformance", "verification"]
+    ["src", "lean", "tests", "benches", "examples", "scripts", "fuzz", "docs", "conformance", "verification", ".github"]
     for p in sorted((ROOT / folder).rglob("*")) if p.is_file()
     and not any(part in ["target", "reports", "corpus", "artifacts", "__pycache__", "history"] for part in p.relative_to(ROOT).parts)}
 report["source_inputs_sha256"].update({name:sha(ROOT/name) for name in
-    ["Cargo.toml","Cargo.lock","lakefile.toml","lake-manifest.json","lean-toolchain","rust-toolchain.toml","README.md","LICENSE-MIT"]})
+    ["Cargo.toml","Cargo.lock","lakefile.toml","lake-manifest.json","lean-toolchain","rust-toolchain.toml","README.md","LICENSE-MIT","CHANGELOG.md"]})
 package = json.loads((reports / "package.json").read_text())
 lean_package = json.loads((reports / "lean-package.json").read_text())
 audit = json.loads((reports / "axioms.json").read_text())
@@ -117,7 +119,7 @@ crate = tomllib.loads((ROOT / "Cargo.toml").read_text())["package"]
 claims = sorted(set(theorem for obligation in coverage["obligations"] for theorem in obligation["theorems"]) |
                 set(coverage["public_entrypoint_refinements"].values()))
 report["identity"] = {"crate": {"name": crate["name"], "version": crate["version"], "archive": package["archive"], "sha256": package["sha256"]},
-    "lean_package": {"name": "verifiedVarint", "version": "0.1.0", "archive": lean_package["archive"], "sha256": lean_package["archive_sha256"]}}
+    "lean_package": {"name": "bitet", "version": metadata["version"], "archive": lean_package["archive"], "sha256": lean_package["archive_sha256"]}}
 report["claims"] = {name: {"statement_sha256": audit[name]["statement_sha256"], "axioms": audit[name]["axioms"]} for name in claims}
 report["compiled_proof_modules_sha256"] = replay["compiled_project_modules_sha256"]
 report["trust"] = {"formal_scope": "Rust source-level refinement under pinned extraction configuration",
@@ -129,7 +131,7 @@ report["trust"] = {"formal_scope": "Rust source-level refinement under pinned ex
 report["reproduction"] = {"command": "AENEAS_HOME=/absolute/path/to/pinned/aeneas ./scripts/verify",
     "instructions": "docs/reproduction.md", "lean_package_environment": lean_package["environment_scope"],
     "dependency_commits": lean_package["pinned_pristine_dependency_cache_revisions"]}
-evidence_archive = ROOT / "target/package/verified-varint-0.1.0-evidence.tar.gz"
+evidence_archive = ROOT / "target/package" / (metadata["stem"] + "-evidence.tar.gz")
 with tarfile.open(evidence_archive, "w:gz") as evidence:
     for path in sorted(reports.iterdir()):
         if path.is_file() and path.name != "verification.json":
@@ -137,6 +139,6 @@ with tarfile.open(evidence_archive, "w:gz") as evidence:
 report["evidence_archive"] = {"path": str(evidence_archive.relative_to(ROOT)), "sha256": sha(evidence_archive),
     "scope": "test/fuzz/benchmark/package/checker logs and inventories; excludes this self-referencing manifest"}
 (reports / "verification.json").write_text(json.dumps(report, indent=2) + "\n")
-sidecar = ROOT / "target/package/verified-varint-0.1.0-verification.json"
+sidecar = ROOT / "target/package" / (metadata["stem"] + "-verification.json")
 sidecar.write_text(json.dumps(report, indent=2) + "\n")
 print(report["status"])

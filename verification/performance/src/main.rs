@@ -1,7 +1,7 @@
+use bitet::{decode_u64, encode_u64_into, DecodePolicy};
 use integer_encoding::VarInt;
 use serde_json::json;
 use std::{hint::black_box, time::Instant};
-use verified_varint::{decode_u64, encode_u64_into, DecodePolicy};
 const N: usize = 16384;
 const ROUNDS: usize = 64;
 const REPEATS: usize = 15;

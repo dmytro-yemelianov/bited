@@ -1,5 +1,5 @@
 [package]
-name = "verified-varint-fuzz"
+name = "bitet-fuzz"
 version = "0.0.0"
 publish = false
 edition = "2021"
@@ -9,7 +9,7 @@ cargo-fuzz = true
 
 [dependencies]
 libfuzzer-sys = "=0.4.13"
-verified-varint = { path = ".." }
+bitet = { path = ".." }
 
 [[bin]]
 name = "codec"

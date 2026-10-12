@@ -123,12 +123,12 @@ dependencies = [
  "leb128",
  "libc",
  "serde_json",
- "verified-varint",
+ "bitet",
  "verified-varint-baseline",
 ]
 
 [[package]]
-name = "verified-varint"
+name = "bitet"
 version = "0.1.0"
 
 [[package]]

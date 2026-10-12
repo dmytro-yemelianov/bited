@@ -4,7 +4,7 @@ The formal model counts byte transitions, emitted bytes, word-operation charges,
 input byte reads, output byte writes and state accesses separately. A word primitive
 is a fixed-width arithmetic, bitwise, Boolean or comparison operation. Charges are
 conservative allowances for scalar source paths, not a count of CPU instructions.
-`Reference.Cost` and its profiles are exported by `VerifiedVarint.Public`.
+`Reference.Cost` and its profiles are exported by `Bitet.Public`.
 
 `Reference.decodeTrace` follows the same independent fuel/list transition structure
 as the decoder. Its erased outcome is proved equal to `decodeAux`; its input reads

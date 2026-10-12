@@ -8,7 +8,7 @@ import subprocess
 
 ROOT = Path(__file__).resolve().parent.parent
 allowed = set(json.loads((ROOT / "verification/axioms-allowlist.json").read_text())["allowed"])
-result = subprocess.run(["lake", "env", "lean", "lean/VerifiedVarint/Audit.lean"],
+result = subprocess.run(["lake", "env", "lean", "lean/Bitet/Audit.lean"],
                         cwd=ROOT, text=True, capture_output=True)
 if result.returncode:
     print(result.stdout + result.stderr)

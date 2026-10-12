@@ -1,7 +1,9 @@
 /// Short-output error. The entire caller buffer remains unchanged.
 #[derive(Copy, Clone, Debug, Eq, PartialEq)]
 pub struct EncodeError {
+    /// Minimum capacity needed to encode the value.
     pub required: usize,
+    /// Actual capacity of the caller-provided buffer.
     pub available: usize,
 }
 
@@ -20,25 +22,30 @@ pub struct Encoded32 {
 }
 
 impl Encoded32 {
+    /// The initialized canonical prefix.
     pub fn as_bytes(&self) -> &[u8] {
         &self.bytes[..self.len]
     }
 
+    /// Encoded prefix length, always in 1..=5.
     pub const fn len(&self) -> usize {
         self.len
     }
 
+    /// Always false: zero also requires one byte.
     pub const fn is_empty(&self) -> bool {
         false
     }
 }
 
 #[inline]
+/// Exact shortest base-128 length for a u32.
 pub const fn encoded_len_u32(value: u32) -> usize {
     encoded_len_u64(value as u64)
 }
 
 #[inline]
+/// Encode a u32 into initialized fixed storage without allocation.
 pub fn encode_u32(value: u32) -> Encoded32 {
     let encoded = encode_u64(value as u64);
     let bytes = [
@@ -55,6 +62,7 @@ pub fn encode_u32(value: u32) -> Encoded32 {
 }
 
 #[inline]
+/// Write a canonical u32 prefix with atomic short-buffer failure and preserved suffix.
 pub fn encode_u32_into(value: u32, out: &mut [u8]) -> Result<usize, EncodeError> {
     encode_u64_into(value as u64, out)
 }

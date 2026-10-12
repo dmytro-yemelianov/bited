@@ -1,4 +1,6 @@
-# verified-varint
+# bitet
+
+Rust Varint + ZigZag with a companion Lean 4 proof package. Version 0.1.0 is being prepared for its first public release.
 
 One small `no_std` Rust library for 32/64-bit base-128 varints and ZigZag,
 with a corresponding Lean 4 proof package. It has zero runtime dependencies,
@@ -11,7 +13,7 @@ atomic caller-buffer output, prefix/exact decoders, and incremental decoders.
 Both canonical and explicitly selected bounded-noncanonical policies are supported.
 
 ```rust
-use verified_varint::{decode_u64, encode_u64, DecodePolicy};
+use bitet::{decode_u64, encode_u64, DecodePolicy};
 
 let encoded = encode_u64(300);
 assert_eq!(encoded.as_bytes(), &[0xac, 0x02]);
@@ -28,7 +30,7 @@ cargo test --locked --release
 cargo check --locked --lib --target riscv32imac-unknown-none-elf
 ```
 
-The Lean package exports `VerifiedVarint.Public`. It includes mathematical
+The Lean package exports `Bitet.Public`. It includes mathematical
 contracts, independent reference semantics, and Rust-derived refinement theorems
 for every explicit core entry point. See [proof coverage](verification/coverage.json),
 [proof status](docs/proof-status.md), [resource model](docs/resources.md), and the
@@ -87,3 +89,19 @@ The caller-buffer encoder specializes buffers with at least ten bytes through a
 bounded view. Its full buffer contract is covered by Lean correspondence. See
 [encoder optimization](docs/optimization.md) for matched speed measurements and
 short-input/code-size tradeoffs.
+
+## Installation and examples
+
+After registry publication, add `bitet = "0.1"` to your Cargo dependencies.
+For the prepared source checkout, use a path dependency on this directory.
+
+```sh
+cargo run --example buffer
+cargo run --example stream
+cargo run --example deltas
+```
+
+Every public Rust item has API documentation. Generate it locally with
+`cargo doc --no-deps --open`. See [usage](docs/using.md),
+[changelog](CHANGELOG.md), [release notes](docs/releases/0.1.0.md) and
+[release workflow](docs/releasing.md). Rust and Lean versions ship together.

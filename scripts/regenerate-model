@@ -49,17 +49,17 @@ def main():
     with tempfile.TemporaryDirectory(prefix="vvz-extract-", dir=ROOT / "target") as tmp:
         tmp = Path(tmp)
         command = [str(home / "charon/bin/charon"), "cargo", "--preset=aeneas",
-                   "--targets", lock["extraction_target"], "--dest-file", str(tmp / "verified_varint.llbc")]
+                   "--targets", lock["extraction_target"], "--dest-file", str(tmp / "bitet.llbc")]
         for symbol in lock["start_from"]:
             command += ["--start-from", symbol]
         command += ["--", "--lib", "--locked", "--offline"]
         run(command, env=env, cwd=rust_source)
         run([str(home / "bin/aeneas"), "-backend", "lean", "-dest", str(tmp / "lean"),
-             "-subdir", "VerifiedVarint/Generated", "-namespace", "VerifiedVarint.Generated",
+             "-subdir", "Bitet/Generated", "-namespace", "Bitet.Generated",
              "-use-lean-modules", "false", "-split-files", "-abort-on-error", "-warnings-as-errors",
-             "-no-progress-bar", str(tmp / "verified_varint.llbc")])
-        generated = tmp / "lean/VerifiedVarint/Generated"
-        expected = ROOT / "lean/VerifiedVarint/Generated"
+             "-no-progress-bar", str(tmp / "bitet.llbc")])
+        generated = tmp / "lean/Bitet/Generated"
+        expected = ROOT / "lean/Bitet/Generated"
         names = {p.name for p in generated.glob("*.lean")}
         if names != {"Types.lean", "Funs.lean"}:
             raise SystemExit(f"Unexpected generated files or missing external models: {sorted(names)}")
@@ -78,7 +78,7 @@ def main():
         record = {
             "status": "source translation checked; not a refinement proof",
             "inputs_and_model": {str(p.relative_to(ROOT)): digest(p) for p in sorted(paths)},
-            "llbc_sha256": digest(tmp / "verified_varint.llbc"),
+            "llbc_sha256": digest(tmp / "bitet.llbc"),
             "tool_binaries": {name: digest(home / name) for name in
                               ["bin/aeneas", "charon/bin/charon", "charon/bin/charon-driver"]},
             "tools": lock,

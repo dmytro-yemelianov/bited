@@ -8,6 +8,7 @@ import subprocess
 import tarfile
 import tempfile
 import sys
+from release_meta import package_metadata
 
 ROOT = Path(__file__).resolve().parent.parent
 parser = argparse.ArgumentParser(description=__doc__)
@@ -17,9 +18,10 @@ command = ["cargo", "package", "--locked", "--offline"]
 if args.allow_dirty:
     command.append("--allow-dirty")
 subprocess.run(command, cwd=ROOT, check=True)
-archive = ROOT / "target/package/verified-varint-0.1.0.crate"
-paths = ["Cargo.toml", "Cargo.lock", "README.md", "LICENSE-MIT", "conformance/vectors.json", "rust-toolchain.toml", "verification/coverage.json", "verification/toolchain-lock.json", "verification/axioms-allowlist.json"]
-paths += [str(p.relative_to(ROOT)) for folder in ["src", "tests", "benches"]
+metadata = package_metadata(ROOT)
+archive = ROOT / "target/package" / (metadata["stem"] + ".crate")
+paths = ["Cargo.toml", "Cargo.lock", "README.md", "LICENSE-MIT", "CHANGELOG.md", "conformance/vectors.json", "rust-toolchain.toml", "verification/coverage.json", "verification/toolchain-lock.json", "verification/axioms-allowlist.json"]
+paths += [str(p.relative_to(ROOT)) for folder in ["src", "tests", "benches", "examples"]
           for p in sorted((ROOT / folder).glob("*.rs"))]
 paths += [str(p.relative_to(ROOT)) for p in sorted((ROOT / "docs").glob("*.md"))]
 with tarfile.open(archive) as package:
@@ -43,7 +45,7 @@ with tempfile.TemporaryDirectory(prefix="vvz-published-rust-", dir=ROOT / "targe
     temporary = Path(temporary)
     with tarfile.open(archive) as package:
         package.extractall(temporary, filter="data")
-    published = temporary / "verified-varint-0.1.0"
+    published = temporary / metadata["stem"]
     subprocess.run([sys.executable, str(ROOT / "scripts/regenerate-model"), "--check",
         "--rust-source", str(published), "--report-name", "packaged-extraction.json"], cwd=ROOT, check=True)
 reports = ROOT / "verification/reports"

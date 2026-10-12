@@ -15,9 +15,9 @@ emitter proofs apply to the shorter path. All public correspondence claims retai
 their original contract.
 
 Matched production-library measurements versus release source `0fdaadf` show a
-50.0% reduction for full-width u64 encoding (approximate interval 46.2%–53.8%) and
-39.2% for large traversal (35.2%–43.3%). The short-mixture result is inconclusive
-(−2.2%, interval −10.1% to +5.7%). See [current comparison](../verification/performance/RESULTS.md)
+52.2% reduction for full-width u64 encoding (approximate interval 51.6%–52.9%) and
+40.9% for large traversal (37.5%–44.3%). The short-mixture result is inconclusive
+(−1.1%, interval −3.8% to +1.6%). See [current comparison](../verification/performance/RESULTS.md)
 for CPU/wall samples, peers, provenance and limitations.
 
 The historical capacity study's weighted model placed the one-byte/full-width

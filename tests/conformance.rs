@@ -1,5 +1,5 @@
+use bitet::*;
 use serde_json::Value;
-use verified_varint::*;
 
 fn bytes(hex: &str) -> Vec<u8> {
     hex.split_whitespace()

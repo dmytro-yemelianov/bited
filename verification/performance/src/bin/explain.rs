@@ -1,8 +1,8 @@
 //! Profiling controls only. CountReturn is an unverified experimental clone.
+use bitet::{encode_u64_into, encoded_len_u64, EncodeError};
 use integer_encoding::VarInt;
 use serde_json::json;
 use std::{hint::black_box, time::Instant};
-use verified_varint::{encode_u64_into, encoded_len_u64, EncodeError};
 const REPEATS: usize = 21;
 const ROUNDS: usize = 64;
 const N: usize = 16384;

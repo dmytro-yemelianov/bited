@@ -1,0 +1,40 @@
+name: Portable Rust checks
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  rust:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Install pinned Rust toolchain
+        run: |
+          rustup toolchain install 1.88.0 --profile minimal --component rustfmt --component clippy
+          rustup target add --toolchain 1.88.0 wasm32-wasip1 riscv32imac-unknown-none-elf
+      - name: Fetch locked dependencies
+        run: cargo fetch --locked
+      - name: Format and lint
+        run: |
+          cargo fmt --check
+          cargo clippy --locked --offline --all-targets -- -D warnings
+      - name: Tests and examples
+        run: |
+          cargo test --locked --offline
+          cargo test --locked --offline --release
+          cargo run --locked --offline --example buffer
+          cargo run --locked --offline --example stream
+          cargo run --locked --offline --example deltas
+      - name: no_std target compilation
+        run: |
+          cargo check --locked --offline --lib --target wasm32-wasip1
+          cargo check --locked --offline --lib --target riscv32imac-unknown-none-elf
+      - name: API documentation
+        env:
+          RUSTDOCFLAGS: -D warnings
+        run: cargo doc --locked --offline --no-deps
