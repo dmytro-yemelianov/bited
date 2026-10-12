@@ -60,7 +60,7 @@ if destination.exists():
     raise SystemExit(0)
 
 # Cargo's dry-run compiles the normalized registry package without uploading it.
-result = subprocess.run(["cargo", "publish", "--dry-run", "--locked", "--offline"],
+result = subprocess.run(["cargo", "publish", "--dry-run", "--locked"],
                         cwd=ROOT, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 require(result.returncode == 0, "Cargo publication dry-run failed:\n" + result.stdout)
 require(sha(ROOT / crate["archive"]) == crate["sha256"],

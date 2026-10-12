@@ -24,7 +24,9 @@ The preparation command checks every recorded source/evidence/archive digest,
 requires the current clean Git commit, runs Cargo publication dry-run, and creates
 an immutable local bundle under `target/releases/`. Its directory includes a
 verification digest, allowing distinct verified candidates without overwriting.
-Re-running preparation validates and reuses an identical bundle.
+Re-running preparation validates and reuses an identical bundle. Cargo publication
+dry-run reads registry metadata over the network but aborts before uploading. The
+verification workflow builds Rust with locked offline dependencies.
 
 The bundle contains the Rust crate, Lean source archive, evidence archive,
 verification JSON, release notes, changelog, dry-run log and SHA256SUMS. Check it:
