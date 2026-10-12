@@ -1,6 +1,6 @@
 # bited
 
-Rust Varint + ZigZag with a companion Lean 4 proof package. Version 0.1.0 is being prepared for its first public release.
+Rust Varint + ZigZag with a companion Lean 4 proof package. [Version 0.1.0](https://github.com/dmytro-yemelianov/bited/releases/tag/v0.1.0) is published on [crates.io](https://crates.io/crates/bited/0.1.0).
 
 One small `no_std` Rust library for 32/64-bit base-128 varints and ZigZag,
 with a corresponding Lean 4 proof package. It has zero runtime dependencies,
@@ -41,6 +41,71 @@ for every explicit core entry point. See [proof coverage](verification/coverage.
 `aarch64-apple-darwin` with 64-bit `usize`; execution also covers 32-bit WASI,
 and compilation covers 32-bit bare-metal RISC-V. Source refinement does not
 establish compiler or machine-code correctness.
+
+## Lean 4 proof structure
+
+The diagram shows the modeling, proof and export relationships between package
+layers. It is an overview, rather than a complete module import graph.
+
+```mermaid
+flowchart TB
+    Rust["Rust source: src/"] --> Tools["Pinned Charon + Aeneas extraction"]
+    Tools --> Generated["Bited/Generated/<br/>Rust-derived Types and Funs"]
+
+    subgraph Math["Mathematical contract and independent semantics"]
+        Spec["Bited/Spec/<br/>Bytes and ZigZag"]
+        Reference["Bited/Reference/<br/>Encode, Decode, Stream, ZigZag"]
+        Proofs["Bited/Proofs/<br/>Correctness, canonicality, length,<br/>streaming and resource bounds"]
+        Spec --> Reference
+        Reference --> Proofs
+    end
+
+    Generated --> Refinement["Bited/Refinement/<br/>Rust-to-model correspondence:<br/>32/64-bit, buffers, exact and streaming APIs"]
+    Reference --> Refinement
+    Proofs --> Refinement
+    Proofs --> Public["Bited.Public<br/>Public contracts and refinement theorems"]
+    Refinement --> Public
+    Public --> Entry["Bited.lean<br/>Package entry point"]
+    Public --> Audit["Bited/Audit.lean<br/>Transitive statement and axiom inventory"]
+    Entry --> Replay["leanchecker --fresh Bited<br/>Stored-proof replay with the pinned Lean kernel"]
+```
+
+All **18 obligations** are inventoried in [proof coverage](verification/coverage.json).
+Generated definitions are regenerated from Rust, never patched by hand. The audit
+and fresh replay use the same pinned Lean kernel; replay is not a second kernel
+implementation. See [proof status](docs/proof-status.md) and the
+[trust boundary](docs/trust-boundary.md).
+
+## Performance charts
+
+Matched measurements on **Apple M5, Rust 1.88.0**, one thread, optimization level 3,
+overflow checks enabled and no LTO. Fifteen rotating repetitions compare canonical
+valid inputs. Values are mean thread CPU nanoseconds per value; lower is faster.
+The chart includes approximate 95% intervals.
+
+![Encoder timing for one-byte, short mixed, full-width and large full-width workloads, comparing bited, its previous implementation, leb128 and integer-encoding.](docs/articles/assets/encode-comparison.png)
+
+| Encode workload | bited (ns/value) | Previous (ns/value) | Paired change in time |
+|---|---:|---:|---|
+| One-byte | 1.086 | 1.059 | +2.7% |
+| Short 80/15/5 | 1.326 | 1.304 | Inconclusive |
+| Full-width u64 | 2.657 | 5.593 | −52.5% |
+| Large full-width traversal | 3.754 | 6.281 | −40.2% |
+
+The short mixture is 80% one-byte, 15% two-byte and 5% full-width values.
+These are encoder measurements: `leb128` was faster at full-width decoding in
+the same experiment. Results do not establish rankings on other CPUs or WASM.
+
+![Weighted encoder time versus the share of one-byte values, including a zoom around the crossover at approximately 99.08 percent.](docs/articles/assets/weighted-crossover.png)
+
+The **99.08%** crossover weights measured time for one-byte values and the
+full-width workload, using unrounded means. It is a two-population model, not
+a threshold for arbitrary two- through ten-byte mixtures. Shortest base-128
+length is proved; runtime speed is a separate measured objective.
+
+See the [article](docs/articles/bited.md) for uncertainty, decoder comparisons and
+workload interpretation, and [raw results](verification/performance/results.json)
+for samples and provenance. Regenerate the charts with `scripts/article-charts.py`.
 
 ## Reproduce verification and artifacts
 
@@ -95,8 +160,13 @@ short-input/code-size tradeoffs.
 
 ## Installation and examples
 
-After registry publication, add `bited = "0.1"` to your Cargo dependencies.
-For the prepared source checkout, use a path dependency on this directory.
+Add the published package to your project:
+
+```sh
+cargo add bited@0.1.0
+```
+
+For a local source checkout, use a path dependency on this directory.
 
 ```sh
 cargo run --example buffer
