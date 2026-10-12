@@ -33,10 +33,12 @@ impl Encoded32 {
     }
 }
 
+#[inline]
 pub const fn encoded_len_u32(value: u32) -> usize {
     encoded_len_u64(value as u64)
 }
 
+#[inline]
 pub fn encode_u32(value: u32) -> Encoded32 {
     let encoded = encode_u64(value as u64);
     let bytes = [
@@ -52,6 +54,7 @@ pub fn encode_u32(value: u32) -> Encoded32 {
     }
 }
 
+#[inline]
 pub fn encode_u32_into(value: u32, out: &mut [u8]) -> Result<usize, EncodeError> {
     encode_u64_into(value as u64, out)
 }
@@ -74,6 +77,7 @@ impl Encoded64 {
 }
 
 /// Exact shortest length in the base-128 format, including one byte for zero.
+#[inline]
 pub const fn encoded_len_u64(mut value: u64) -> usize {
     let mut len = 1;
     while value >= 128 {
@@ -84,6 +88,7 @@ pub const fn encoded_len_u64(mut value: u64) -> usize {
 }
 
 /// Encode into fixed storage without allocation.
+#[inline]
 pub fn encode_u64(mut value: u64) -> Encoded64 {
     let mut bytes = [0u8; 10];
     let mut i = 0;
@@ -98,6 +103,7 @@ pub fn encode_u64(mut value: u64) -> Encoded64 {
 
 /// Write exactly the canonical prefix, preserving the output suffix.
 /// Insufficient capacity preserves every byte of `out`.
+#[inline]
 pub fn encode_u64_into(mut value: u64, out: &mut [u8]) -> Result<usize, EncodeError> {
     let required = encoded_len_u64(value);
     let available = out.len();

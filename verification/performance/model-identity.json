@@ -1,0 +1,5 @@
+{
+  "status": "generated Lean definitions unchanged; only Rust source-line doc comments differ",
+  "baseline_commit": "a39937d4fcc5c13904bdfa680e921ee0ad57d446",
+  "normalized_generated_funs_sha256": "cbad130552d904b11f731ca0bbe026ce0487da35d7c1694dfb23225f2fa6bca4"
+}

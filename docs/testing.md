@@ -30,3 +30,9 @@ RISC-V no_std compilation, allocation instrumentation, fuzzing and benchmarks.
 Calling-thread allocation tracking avoids unrelated test-thread activity; its
 recorded count must remain zero. The kernel's unsafe-code prohibition is separate
 from the test harness's safe delegation to the system allocator.
+
+A separate pinned comparison harness checks byte/value/consumption agreement
+against `integer-encoding 4.1.0`, `leb128 0.2.5` and the previous verified source
+on shared canonical u64 datasets, before timing. Its native signed-wrapper, u32
+and incremental performance coverage is intentionally separate from the full API
+conformance suite. See [encoder optimization](optimization.md).

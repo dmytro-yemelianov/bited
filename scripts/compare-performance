@@ -1,0 +1,78 @@
+#!/usr/bin/env python3
+"""Matched public-API comparison and macOS sampling; independent of release evidence."""
+import datetime
+import hashlib
+import json
+import os
+from pathlib import Path
+import platform
+import subprocess
+
+ROOT = Path(__file__).resolve().parent.parent
+PACKAGE = ROOT / 'verification/performance'
+REPORTS = ROOT / 'verification/reports'
+REPORTS.mkdir(exist_ok=True)
+for key in ['RUSTFLAGS', 'CARGO_ENCODED_RUSTFLAGS', 'CARGO_PROFILE_RELEASE_OPT_LEVEL',
+            'CARGO_PROFILE_RELEASE_LTO', 'CARGO_PROFILE_RELEASE_OVERFLOW_CHECKS']:
+    if os.environ.get(key):
+        raise SystemExit(f'Unset {key} for matched compiler settings')
+
+def run(command):
+    return subprocess.check_output(command, cwd=ROOT, text=True)
+
+def sha(path):
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+load_before = os.getloadavg()
+report = json.loads(run(['cargo', 'run', '--manifest-path', str(PACKAGE/'Cargo.toml'),
+                         '--release', '--locked', '--offline']))
+report['timestamp_utc'] = datetime.datetime.now(datetime.timezone.utc).isoformat()
+report['host'] = platform.platform()
+report['host_load_average_before'] = load_before
+report['host_load_average_after_timing'] = os.getloadavg()
+report['cpu'] = run(['sysctl', '-n', 'machdep.cpu.brand_string']).strip()
+report['rustc'] = run(['rustc', '-Vv']).strip()
+report['git_commit'] = run(['git', 'rev-parse', 'HEAD']).strip()
+report['working_tree_dirty'] = bool(run(['git', 'status', '--porcelain']).strip())
+report['flags'] = {'opt_level': 3, 'overflow_checks': True, 'lto': False,
+                   'target_cpu': 'compiler default', 'debug_info': 1, 'threads': 1}
+inputs = [PACKAGE/'Cargo.toml', PACKAGE/'Cargo.lock', PACKAGE/'src/main.rs',
+          ROOT/'Cargo.toml', ROOT/'scripts/compare-performance', *sorted((ROOT/'src').glob('*.rs')), PACKAGE/'baseline/Cargo.toml', PACKAGE/'baseline/provenance.json', *sorted((PACKAGE/'baseline/src').glob('*.rs'))]
+report['source_sha256'] = {str(p.relative_to(ROOT)): sha(p) for p in inputs}
+binary = PACKAGE/'target/release/varint-comparison'
+report['binary_sha256'] = sha(binary)
+report['baseline_provenance'] = json.loads((PACKAGE/'baseline/provenance.json').read_text())
+for name, digest in report['baseline_provenance']['source_sha256'].items():
+    if sha(PACKAGE/'baseline'/name) != digest:
+        raise SystemExit(f'Baseline source drift: {name}')
+assembly = REPORTS/'comparison-disassembly.txt'
+assembly.write_text(run(['xcrun', 'llvm-objdump', '--disassemble', '--demangle', str(binary)]))
+report['disassembly_sha256'] = sha(assembly)
+profiles=[]
+for implementation in ['verified', 'previous', 'leb128', 'integer']:
+    for operation, dataset in [('encode', 'full-width'), ('decode', 'full-width'), ('decode', 'short-80-15-5')]:
+        name=f'profile-{implementation}-{operation}-{dataset}'
+        log=REPORTS/(name+'.log')
+        sample=REPORTS/(name+'.sample.txt')
+        with log.open('w') as stream:
+            process=subprocess.Popen([str(binary), 'profile', implementation, operation, dataset],
+                                     cwd=ROOT, stdout=stream, stderr=stream)
+            try:
+                # sample waits for target if needed; symbols retained with debug=1.
+                result=subprocess.run(['/usr/bin/sample',str(process.pid),'4','1','-file',str(sample)],
+                                      cwd=ROOT, capture_output=True, text=True, timeout=20)
+                profiles.append({'implementation':implementation,'operation':operation,'dataset':dataset,
+                    'return_code':result.returncode,'log':str(log.relative_to(ROOT)),
+                    'report':str(sample.relative_to(ROOT)),'sha256':sha(sample) if sample.exists() else None,
+                    'tool_output':result.stdout+result.stderr})
+            finally:
+                if process.poll() is None:
+                    process.terminate()
+                process.wait(timeout=5)
+        print(f'Collected {name}', flush=True)
+if any(p['return_code'] != 0 or p['sha256'] is None for p in profiles):
+    raise SystemExit('Sampling failed; inspect profile logs; no success report written')
+report['profiles']=profiles
+report['profiling_scope']='macOS sample at 1 ms for 4 s; statistical stacks, not hardware counters; timed benchmark runs finished before profiling'
+(REPORTS/'comparison.json').write_text(json.dumps(report,indent=2)+'\n')
+print('Wrote verification/reports/comparison.json',flush=True)

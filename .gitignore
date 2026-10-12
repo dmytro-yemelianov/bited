@@ -9,3 +9,4 @@ __pycache__/
 /fuzz/target/
 /fuzz/corpus/
 /fuzz/artifacts/
+/verification/performance/target/
