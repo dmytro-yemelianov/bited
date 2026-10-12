@@ -78,13 +78,12 @@ impl Encoded64 {
 
 /// Exact shortest length in the base-128 format, including one byte for zero.
 #[inline]
-pub const fn encoded_len_u64(mut value: u64) -> usize {
-    let mut len = 1;
-    while value >= 128 {
-        value >>= 7;
-        len += 1;
+pub const fn encoded_len_u64(value: u64) -> usize {
+    if value < 128 {
+        1
+    } else {
+        ((70 - value.leading_zeros()) / 7) as usize // 64-bit length, rounded up by six.
     }
-    len
 }
 
 /// Encode into fixed storage without allocation.

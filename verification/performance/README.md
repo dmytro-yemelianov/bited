@@ -8,7 +8,7 @@ runtime dependencies stay unchanged. Raw output is written to
 `verification/reports/comparison.json`; statistical stack samples and disassembly
 are stored beside it. The root `scripts/verify` command separately rebuilds release evidence for the
 current source snapshot. Prior measurement snapshots are kept as
-`results-before-inline.json` and `RESULTS-before-inline.md`.
+`results-before-inline.json`, `RESULTS-before-inline.md`, and `after-clz-results.json` / `after-clz-RESULTS.md`.
 
 Compare `verified-varint` (proposed name `bited`), `leb128 = 0.2.5` and
 `integer-encoding = 4.1.0`, plus the prior verified source compiled as
@@ -65,13 +65,15 @@ library continues to forbid unsafe code.
 Unsigned length/encoder entry points retain `#[inline]` for cross-crate
 optimization. Length preflight now uses `leading_zeros` and fixed arithmetic,
 with a one-byte fast case, rather than shifting in a loop. The atomic short-buffer
-contract, encoding loop and error behavior are preserved. The regenerated Lean
+contract, encoding loop and error behavior are preserved. Buffers with at least
+ten bytes now delegate through a bounded ten-byte view, exposing capacity to the
+compiler. Lean proves reconstruction of the full caller buffer and its suffix. The regenerated Lean
 length function has a new proof connecting the exact Aeneas leading-zero primitive
 to Nat logarithms/bit size and the independent shortest encoder. The release
 workflow checks all dependent proofs and archived-source correspondence.
 
-The matched `Previous` fixture now records the immediately preceding inlined
-source at commit b0f071d2b1d4727394020c7c43489b10f3f3a06e. Earlier results and the
+The matched `Previous` fixture now records the immediately preceding fixed-word preflight
+source at commit 0fdaadf304e6e53ad38942b2ca820c14b8ab771d. Earlier results and the
 inlining-only model identity record are explicitly historical snapshots. Their
 source identities describe those runs, rather than the current fixture.
 
@@ -80,9 +82,15 @@ source identities describe those runs, rather than the current fixture.
 `./scripts/profile-encoder` measures and samples a separate `explain` binary.
 See PROFILING.md for the instruction analysis, known/opaque capacity controls,
 atomic-preflight peer adapter, and explicitly unverified count-return prototype.
-These are profiling-only controls; production Rust and Lean source remain the
-verified release snapshot. Both timers, all conditions and samples are recorded.
+The recorded PROFILING.md study is historical and predates capacity specialization.
+Its exact source is available at commit 13d3f92; both timers, all conditions and
+samples are recorded. Running the controls on current sources produces a new study.
 
 ## Dynamic-capacity follow-up
 
-[CAPACITY.md](CAPACITY.md) compares three benchmark-only specializations of buffers with at least ten bytes, including short-input tradeoffs and three repeated matched runs. Run `./scripts/profile-capacity` from the repository root. These candidates are not shipped or Lean-verified; the production release remains unchanged.
+[CAPACITY.md](CAPACITY.md) records the historical experiment at commit c650da9,
+including short-input tradeoffs and three matched runs. Its FastRequired strategy
+is now incorporated into production with Lean correspondence. Other clones remain
+benchmark controls. The current production comparison is in RESULTS.md. To reproduce
+the historical capacity measurements, use that commit; a run on current sources
+compares different inputs to the compiler and must be interpreted as a new study.

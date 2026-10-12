@@ -103,7 +103,18 @@ pub fn encode_u64(mut value: u64) -> Encoded64 {
 /// Write exactly the canonical prefix, preserving the output suffix.
 /// Insufficient capacity preserves every byte of `out`.
 #[inline]
-pub fn encode_u64_into(mut value: u64, out: &mut [u8]) -> Result<usize, EncodeError> {
+pub fn encode_u64_into(value: u64, out: &mut [u8]) -> Result<usize, EncodeError> {
+    if out.len() >= 10 {
+        encode_u64_into_checked(value, &mut out[..10])
+    } else {
+        encode_u64_into_checked(value, out)
+    }
+}
+
+// A bounded subview lets the compiler specialize emission for full-capacity buffers.
+// Both branches retain the same checked, atomic output contract.
+#[inline]
+fn encode_u64_into_checked(mut value: u64, out: &mut [u8]) -> Result<usize, EncodeError> {
     let required = encoded_len_u64(value);
     let available = out.len();
     if available < required {

@@ -82,3 +82,8 @@ cache entries. These are local release artifacts; registry upload is a separate 
 [benchmarks](docs/benchmarks.md) describe distributions, uncertainty and target resources.
 The encoder's shortest base-128 representation is proved. Runtime speed is measured
 separately; no fastest-implementation claim is made.
+
+The caller-buffer encoder specializes buffers with at least ten bytes through a
+bounded view. Its full buffer contract is covered by Lean correspondence. See
+[encoder optimization](docs/optimization.md) for matched speed measurements and
+short-input/code-size tradeoffs.

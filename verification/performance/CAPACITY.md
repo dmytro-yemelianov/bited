@@ -1,5 +1,7 @@
 # Dynamic-capacity specialization experiment
 
+Historical measurement snapshot from commit `c650da9`, before production capacity specialization. The FastRequired capacity strategy has since been incorporated with Lean correspondence; see [current production measurements](RESULTS.md). Statements below describe the recorded experiment, not the current production implementation.
+
 This supplements the frozen verified release; it does not change production Rust or Lean. The candidates are benchmark-only and have finite differential validation, not new Rust-to-Lean correspondence proofs.
 
 ## Candidates

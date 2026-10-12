@@ -1,4 +1,38 @@
-# Fixed-word length preflight and encoder optimization
+# Bounded-capacity encoder specialization
+
+The public caller-buffer encoder checks whether capacity is at least ten bytes.
+If so it delegates to the same checked emitter through `&mut out[..10]`; otherwise
+it delegates with the original slice. This exposes the maximum wire length to LLVM
+without changing the API, returned length, exact short-buffer errors, atomic failure
+or suffix preservation. The emitter still returns its precomputed required length.
+Unsigned u32 and signed caller-buffer adapters retain the shared implementation.
+
+The extracted Rust model now includes this dispatch and mutable-subview back function.
+Lean proves that the ten-byte path always has sufficient capacity, emitted bytes equal
+the independent canonical encoder, and reconstruction preserves every caller byte
+beyond the emitted prefix, including bytes beyond the ten-byte view. Existing checked
+emitter proofs apply to the shorter path. All public correspondence claims retain
+their original contract.
+
+Matched production-library measurements versus release source `0fdaadf` show a
+50.0% reduction for full-width u64 encoding (approximate interval 46.2%–53.8%) and
+39.2% for large traversal (35.2%–43.3%). The short-mixture result is inconclusive
+(−2.2%, interval −10.1% to +5.7%). See [current comparison](../verification/performance/RESULTS.md)
+for CPU/wall samples, peers, provenance and limitations.
+
+The historical capacity study's weighted model placed the one-byte/full-width
+break-even point around 99% one-byte inputs: an approximately 2.883 ns saving on a
+full-width value compensated roughly 99 one-byte penalties of 0.029 ns each.
+That model depends on the measured paths and input distribution; actual mixture
+measurements remain authoritative because branch prediction and code layout vary.
+The substantial long-input gain is adopted with the short-input tradeoff explicit.
+
+Library object code grows by 512 bytes on aarch64, 661 on WASI and 688 on RISC-V.
+Static library call-path observations remain unchanged; hardware speed on WASI and
+RISC-V has not been measured. Compiler correctness and hardware timing remain
+outside the source-level Lean correspondence boundary.
+
+# Earlier fixed-word length preflight measurements
 
 The inlined unsigned length function now returns one byte immediately for values
 below 128. Otherwise it computes `(70 - value.leading_zeros()) / 7`: the bit length

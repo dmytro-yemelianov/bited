@@ -51,7 +51,7 @@ if not production or any(sha(ROOT/name) != digest for name,digest in production.
     raise SystemExit('Production inputs differ from frozen verified release; review study scope')
 report['production_source_matches_release_commit'] = release['source_commit']
 report['production_inputs_sha256'] = production
-report['decision_scope'] = 'Supplementary experiment only; candidates are not shipped or Lean-verified'
+report['decision_scope'] = 'Supplementary experiment; local clones are controls. Production now includes the FastRequired strategy with Lean correspondence.'
 report['binary_sha256'] = sha(binary)
 disassembly = REPORTS/'capacity-disassembly.txt'
 disassembly.write_text(run(['xcrun','llvm-objdump','--disassemble','--demangle',str(binary)]))

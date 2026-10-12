@@ -68,13 +68,13 @@ theorem encoded_len_u64_minimal (value : U64) :
   exact Spec.encode_length_minimal value.val bs hr
 
 /-- Insufficient capacity returns exact counts and preserves every byte. -/
-theorem encode_u64_into_short (value : U64) (out : Slice U8)
+theorem encode_u64_into_checked_short (value : U64) (out : Slice U8)
     (hshort : out.length < (Reference.encode value.val).length) :
-    Generated.encode.encode_u64_into value out ⦃ result =>
+    Generated.encode.encode_u64_into_checked value out ⦃ result =>
       ∃ err, result = (.Err err, out) ∧
         err.required.val = (Reference.encode value.val).length ∧
         err.available.val = out.length ⦄ := by
-  unfold Generated.encode.encode_u64_into
+  unfold Generated.encode.encode_u64_into_checked
   step*
 
 /-- The caller's suffix is a frame: even out-of-range optional reads agree. -/
@@ -94,11 +94,11 @@ theorem suffixFrame_set (start : Nat) (out original : Slice U8) (i : Usize) (b :
     exact hframe j hj
 
 /-- Safety, arithmetic progress and suffix preservation for every write step. -/
-theorem encode_u64_into_body_frame (value : U64) (out original : Slice U8)
+theorem encode_u64_into_checked_body_frame (value : U64) (out original : Slice U8)
     (i : Usize) (required : Nat) (hr : required ≤ original.length) (_hb : required ≤ 10)
     (hinv : i.val + (Reference.encode value.val).length = required)
     (hf : suffixFrame required out original) :
-    Generated.encode.encode_u64_into_loop.body value out i ⦃ r =>
+    Generated.encode.encode_u64_into_checked_loop.body value out i ⦃ r =>
       match r with
       | .cont (next, out', nextI) =>
         nextI.val + (Reference.encode next.val).length = required ∧
@@ -109,7 +109,7 @@ theorem encode_u64_into_body_frame (value : U64) (out original : Slice U8)
   have hp := Spec.encode_length_pos value.val
   have hi : i.val < required := by omega
   have hlen := hf.1
-  unfold Generated.encode.encode_u64_into_loop.body
+  unfold Generated.encode.encode_u64_into_checked_loop.body
   step*
   · have hx : 128 ≤ value.val := by scalar_tac
     have hv : value1.val = value.val / 128 := by
@@ -127,21 +127,21 @@ theorem encode_u64_into_body_frame (value : U64) (out original : Slice U8)
     rw [Spec.encode_length_small value.val hx] at hinv
     exact ⟨hx, by omega, hf⟩
 
-theorem encode_u64_into_loop_frame (value : U64) (out original : Slice U8)
+theorem encode_u64_into_checked_loop_frame (value : U64) (out original : Slice U8)
     (i : Usize) (required : Nat) (hr : required ≤ original.length) (hb : required ≤ 10)
     (hinv : i.val + (Reference.encode value.val).length = required)
     (hf : suffixFrame required out original) :
-    Generated.encode.encode_u64_into_loop value out i ⦃ result =>
+    Generated.encode.encode_u64_into_checked_loop value out i ⦃ result =>
       result.1.val < 128 ∧ result.2.2.val + 1 = required ∧
       suffixFrame required result.2.1 original ⦄ := by
-  unfold Generated.encode.encode_u64_into_loop
+  unfold Generated.encode.encode_u64_into_checked_loop
   apply loop.spec_decr_nat
     (fun (state : U64 × Slice U8 × Usize) => state.1.val)
     (fun state => state.2.2.val + (Reference.encode state.1.val).length = required ∧
       suffixFrame required state.2.1 original)
   · rintro ⟨current, currentOut, currentI⟩ ⟨hinv', hf'⟩
     apply WP.spec_mono
-      (encode_u64_into_body_frame current currentOut original currentI required hr hb hinv' hf')
+      (encode_u64_into_checked_body_frame current currentOut original currentI required hr hb hinv' hf')
     intro r h
     cases r with
     | done result => exact h
@@ -149,13 +149,13 @@ theorem encode_u64_into_loop_frame (value : U64) (out original : Slice U8)
   · exact ⟨hinv, hf⟩
 
 /-- On sufficient capacity the public encoder is total and preserves the suffix. -/
-theorem encode_u64_into_success_frame (value : U64) (out : Slice U8)
+theorem encode_u64_into_checked_success_frame (value : U64) (out : Slice U8)
     (hcapacity : (Reference.encode value.val).length ≤ out.length) :
-    Generated.encode.encode_u64_into value out ⦃ result =>
+    Generated.encode.encode_u64_into_checked value out ⦃ result =>
       ∃ len out', result = (.Ok len, out') ∧
         len.val = (Reference.encode value.val).length ∧
         suffixFrame len.val out' out ⦄ := by
-  unfold Generated.encode.encode_u64_into
+  unfold Generated.encode.encode_u64_into_checked
   apply WP.spec_bind (encoded_len_u64_refines value)
   intro required hrequired
   have hc : ¬out.len < required := by
@@ -164,7 +164,7 @@ theorem encode_u64_into_success_frame (value : U64) (out : Slice U8)
     simp only [Slice.len_val] at h
     omega
   simp only [hc, ↓reduceIte]
-  apply WP.spec_bind (encode_u64_into_loop_frame value out out 0#usize required.val
+  apply WP.spec_bind (encode_u64_into_checked_loop_frame value out out 0#usize required.val
     (by omega) hrequired.2.2 (by simp [hrequired.1]) (by simp [suffixFrame]))
   rintro ⟨last, out', i⟩ ⟨hlast, hi, hf⟩
   step*
@@ -176,8 +176,8 @@ theorem encode_u64_into_success_frame (value : U64) (out : Slice U8)
 
 /-- Totality and frame behavior of the public mutable-slice API for every buffer.
     Emitted-byte correctness is proved separately in EncodeContent. -/
-theorem encode_u64_into_total_frame (value : U64) (out : Slice U8) :
-    Generated.encode.encode_u64_into value out ⦃ result =>
+theorem encode_u64_into_checked_total_frame (value : U64) (out : Slice U8) :
+    Generated.encode.encode_u64_into_checked value out ⦃ result =>
       match result.1 with
       | .Err err => result.2 = out ∧
         err.required.val = (Reference.encode value.val).length ∧
@@ -185,11 +185,11 @@ theorem encode_u64_into_total_frame (value : U64) (out : Slice U8) :
       | .Ok len => len.val = (Reference.encode value.val).length ∧
         suffixFrame len.val result.2 out ⦄ := by
   by_cases hc : (Reference.encode value.val).length ≤ out.length
-  · apply WP.spec_mono (encode_u64_into_success_frame value out hc)
+  · apply WP.spec_mono (encode_u64_into_checked_success_frame value out hc)
     intro result hr
     rcases hr with ⟨len, out', rfl, hlen, hf⟩
     exact ⟨hlen, hf⟩
-  · apply WP.spec_mono (encode_u64_into_short value out (by omega))
+  · apply WP.spec_mono (encode_u64_into_checked_short value out (by omega))
     intro result hr
     rcases hr with ⟨err, rfl, hreq, havail⟩
     exact ⟨rfl, hreq, havail⟩

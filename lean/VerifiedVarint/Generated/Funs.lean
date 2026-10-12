@@ -141,11 +141,10 @@ def api.encode_i64 (value : Std.I64) : Result encode.Encoded64 := do
   let i ← zigzag.zigzag_i64_to_u64 value
   encode.encode_u64 i
 
-/-- [verified_varint::encode::encode_u64_into]: loop body 0:
-    Source: 'src/encode.rs', lines 116:4-120:5
-    Visibility: public -/
+/-- [verified_varint::encode::encode_u64_into_checked]: loop body 0:
+    Source: 'src/encode.rs', lines 127:4-131:5 -/
 @[rust_loop_body]
-def encode.encode_u64_into_loop.body
+def encode.encode_u64_into_checked_loop.body
   (value : Std.U64) (out : Slice Std.U8) (i : Std.Usize) :
   Result (ControlFlow (Std.U64 × (Slice Std.U8) × Std.Usize) (Std.U64 ×
     (Slice Std.U8) × Std.Usize))
@@ -161,22 +160,21 @@ def encode.encode_u64_into_loop.body
     ok (cont (value1, s, i4))
   else ok (done (value, out, i))
 
-/-- [verified_varint::encode::encode_u64_into]: loop 0:
-    Source: 'src/encode.rs', lines 116:4-120:5
-    Visibility: public -/
+/-- [verified_varint::encode::encode_u64_into_checked]: loop 0:
+    Source: 'src/encode.rs', lines 127:4-131:5 -/
 @[rust_loop]
-def encode.encode_u64_into_loop
+def encode.encode_u64_into_checked_loop
   (value : Std.U64) (out : Slice Std.U8) (i : Std.Usize) :
   Result (Std.U64 × (Slice Std.U8) × Std.Usize)
   := do
   loop
-    (fun (value1, out1, i1) => encode.encode_u64_into_loop.body value1 out1 i1)
+    (fun (value1, out1, i1) => encode.encode_u64_into_checked_loop.body value1
+      out1 i1)
     (value, out, i)
 
-/-- [verified_varint::encode::encode_u64_into]:
-    Source: 'src/encode.rs', lines 106:0-123:1
-    Visibility: public -/
-def encode.encode_u64_into
+/-- [verified_varint::encode::encode_u64_into_checked]:
+    Source: 'src/encode.rs', lines 117:0-134:1 -/
+def encode.encode_u64_into_checked
   (value : Std.U64) (out : Slice Std.U8) :
   Result ((core.result.Result Std.Usize encode.EncodeError) × (Slice Std.U8))
   := do
@@ -185,10 +183,30 @@ def encode.encode_u64_into
   if available < required
   then ok (core.result.Result.Err { required, available }, out)
   else
-    let (value1, out1, i) ← encode.encode_u64_into_loop value out 0#usize
+    let (value1, out1, i) ←
+      encode.encode_u64_into_checked_loop value out 0#usize
     let i1 ← lift (UScalar.cast .U8 value1)
     let out2 ← Slice.update out1 i i1
     ok (core.result.Result.Ok required, out2)
+
+/-- [verified_varint::encode::encode_u64_into]:
+    Source: 'src/encode.rs', lines 106:0-112:1
+    Visibility: public -/
+def encode.encode_u64_into
+  (value : Std.U64) (out : Slice Std.U8) :
+  Result ((core.result.Result Std.Usize encode.EncodeError) × (Slice Std.U8))
+  := do
+  let i := Slice.len out
+  if i >= 10#usize
+  then
+    let (s, index_mut_back) ←
+      core.slice.index.Slice.index_mut
+        (core.slice.index.SliceIndexRangeToUsizeSlice Std.U8) out
+        { «end» := 10#usize }
+    let (r, s1) ← encode.encode_u64_into_checked value s
+    let out1 := index_mut_back s1
+    ok (r, out1)
+  else encode.encode_u64_into_checked value out
 
 /-- [verified_varint::encode::encode_u32_into]:
     Source: 'src/encode.rs', lines 58:0-60:1

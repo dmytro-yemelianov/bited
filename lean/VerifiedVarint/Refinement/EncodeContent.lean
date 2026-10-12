@@ -41,11 +41,11 @@ theorem output_prefix_set (out : Slice U8) (i : Usize) (b : U8) (hi : i.val < ou
   rw [List.take_set, List.set_eq_of_length_le (by simp)]
 
 /-- Byte-content progress for the actual extracted mutable-slice loop. -/
-theorem encode_u64_into_body_content (value : U64) (out : Slice U8) (i : Usize)
+theorem encode_u64_into_checked_body_content (value : U64) (out : Slice U8) (i : Usize)
     (expected : List Nat) (required : Nat) (hcap : required ≤ out.length) (_hb : required ≤ 10)
     (hlen : i.val + (Reference.encode value.val).length = required)
     (hcontent : (out.val.take i.val).map UScalar.val ++ referenceBytes value.val = expected) :
-    Generated.encode.encode_u64_into_loop.body value out i ⦃ r =>
+    Generated.encode.encode_u64_into_checked_loop.body value out i ⦃ r =>
       match r with
       | .cont (next, out', nextI) =>
         required ≤ out'.length ∧
@@ -58,7 +58,7 @@ theorem encode_u64_into_body_content (value : U64) (out : Slice U8) (i : Usize)
         (out'.val.take lastI.val).map UScalar.val ++ referenceBytes last.val = expected ⦄ := by
   have hp := Spec.encode_length_pos value.val
   have hi : i.val < out.length := by omega
-  unfold Generated.encode.encode_u64_into_loop.body
+  unfold Generated.encode.encode_u64_into_checked_loop.body
   step*
   · have hx : 128 ≤ value.val := by scalar_tac
     have hv : value1.val = value.val / 128 := by
@@ -83,22 +83,22 @@ theorem encode_u64_into_body_content (value : U64) (out : Slice U8) (i : Usize)
     rw [Spec.encode_length_small value.val hx] at hlen
     exact ⟨hx, hi, by omega, hcontent⟩
 
-theorem encode_u64_into_loop_content (value : U64) (out : Slice U8) (i : Usize)
+theorem encode_u64_into_checked_loop_content (value : U64) (out : Slice U8) (i : Usize)
     (expected : List Nat) (required : Nat) (hcap : required ≤ out.length) (hb : required ≤ 10)
     (hlen : i.val + (Reference.encode value.val).length = required)
     (hcontent : (out.val.take i.val).map UScalar.val ++ referenceBytes value.val = expected) :
-    Generated.encode.encode_u64_into_loop value out i ⦃ result =>
+    Generated.encode.encode_u64_into_checked_loop value out i ⦃ result =>
       result.1.val < 128 ∧ result.2.2.val < result.2.1.length ∧
       result.2.2.val + 1 = required ∧
       (result.2.1.val.take result.2.2.val).map UScalar.val ++ referenceBytes result.1.val = expected ⦄ := by
-  unfold Generated.encode.encode_u64_into_loop
+  unfold Generated.encode.encode_u64_into_checked_loop
   apply loop.spec_decr_nat
     (fun (state : U64 × Slice U8 × Usize) => state.1.val)
     (fun state => required ≤ state.2.1.length ∧
       state.2.2.val + (Reference.encode state.1.val).length = required ∧
       (state.2.1.val.take state.2.2.val).map UScalar.val ++ referenceBytes state.1.val = expected)
   · rintro ⟨current, currentOut, currentI⟩ ⟨hcap', hlen', hcontent'⟩
-    apply WP.spec_mono (encode_u64_into_body_content current currentOut currentI expected required
+    apply WP.spec_mono (encode_u64_into_checked_body_content current currentOut currentI expected required
       hcap' hb hlen' hcontent')
     intro r h
     cases r with
@@ -107,13 +107,13 @@ theorem encode_u64_into_loop_content (value : U64) (out : Slice U8) (i : Usize)
   · exact ⟨hcap, hlen, hcontent⟩
 
 /-- The successful public buffer prefix equals the independent mathematical encoder. -/
-theorem encode_u64_into_success_content (value : U64) (out : Slice U8)
+theorem encode_u64_into_checked_success_content (value : U64) (out : Slice U8)
     (hcapacity : (Reference.encode value.val).length ≤ out.length) :
-    Generated.encode.encode_u64_into value out ⦃ result =>
+    Generated.encode.encode_u64_into_checked value out ⦃ result =>
       ∃ len out', result = (.Ok len, out') ∧
         len.val = (Reference.encode value.val).length ∧
         (out'.val.take len.val).map UScalar.val = referenceBytes value.val ⦄ := by
-  unfold Generated.encode.encode_u64_into
+  unfold Generated.encode.encode_u64_into_checked
   apply WP.spec_bind (encoded_len_u64_refines value)
   intro required hrequired
   have hc : ¬out.len < required := by
@@ -122,7 +122,7 @@ theorem encode_u64_into_success_content (value : U64) (out : Slice U8)
     simp only [Slice.len_val] at h
     omega
   simp only [hc, ↓reduceIte]
-  apply WP.spec_bind (encode_u64_into_loop_content value out 0#usize (referenceBytes value.val)
+  apply WP.spec_bind (encode_u64_into_checked_loop_content value out 0#usize (referenceBytes value.val)
     required.val (by omega) hrequired.2.2 (by simp [hrequired.1]) (by simp))
   rintro ⟨last, out', i⟩ ⟨hlast, hbound, hi, hcontent⟩
   dsimp at hlast hbound hi hcontent
@@ -145,15 +145,15 @@ theorem output_bytes_eq_reference (out : Slice U8) (len : Nat) (value : Nat)
   simpa only [List.map_map, Function.comp_def, specByte, referenceBytes] using h
 
 /-- All properties of the successful public mutable-slice encoder in one theorem. -/
-theorem encode_u64_into_success_refines (value : U64) (out : Slice U8)
+theorem encode_u64_into_checked_success_refines (value : U64) (out : Slice U8)
     (hcapacity : (Reference.encode value.val).length ≤ out.length) :
-    Generated.encode.encode_u64_into value out ⦃ result =>
+    Generated.encode.encode_u64_into_checked value out ⦃ result =>
       ∃ len out', result = (.Ok len, out') ∧
         len.val = (Reference.encode value.val).length ∧
         (out'.val.take len.val).map specByte = Reference.encode value.val ∧
         suffixFrame len.val out' out ⦄ := by
-  apply WP.spec_mono (WP.spec_and (encode_u64_into_success_frame value out hcapacity)
-    (encode_u64_into_success_content value out hcapacity))
+  apply WP.spec_mono (WP.spec_and (encode_u64_into_checked_success_frame value out hcapacity)
+    (encode_u64_into_checked_success_content value out hcapacity))
   intro result h
   rcases h.1 with ⟨len, out', he, hlen, hf⟩
   rcases h.2 with ⟨len', out'', he', hlen', hcontent⟩
@@ -169,6 +169,56 @@ theorem encode_u64_into_success_refines (value : U64) (out : Slice U8)
   exact hcontent
 
 /-- Complete value/byte/length/error/frame correspondence for all caller buffers. -/
+theorem encode_u64_into_checked_refines (value : U64) (out : Slice U8) :
+    Generated.encode.encode_u64_into_checked value out ⦃ result =>
+      match result.1 with
+      | .Err err => result.2 = out ∧
+        err.required.val = (Reference.encode value.val).length ∧
+        err.available.val = out.length ∧ out.length < err.required.val
+      | .Ok len => len.val = (Reference.encode value.val).length ∧
+        (result.2.val.take len.val).map specByte = Reference.encode value.val ∧
+        suffixFrame len.val result.2 out ⦄ := by
+  by_cases hc : (Reference.encode value.val).length ≤ out.length
+  · apply WP.spec_mono (encode_u64_into_checked_success_refines value out hc)
+    intro result hr
+    rcases hr with ⟨len, out', rfl, hlen, hbytes, hf⟩
+    exact ⟨hlen, hbytes, hf⟩
+  · apply WP.spec_mono (encode_u64_into_checked_short value out (by omega))
+    intro result hr
+    rcases hr with ⟨err, rfl, hreq, havail⟩
+    exact ⟨rfl, hreq, havail, by omega⟩
+
+/-- Reconstructing a bounded mutable prefix preserves all bytes after emission. -/
+theorem bounded_prefix_frame (out sub updated reconstructed : Slice U8) (n cap : Nat)
+    (hsub : sub.val = out.val.take cap) (hlen : sub.length = cap)
+    (hcap : cap ≤ out.length) (_hn : n ≤ cap)
+    (hf : suffixFrame n updated sub)
+    (hback : reconstructed.val = out.val.setSlice! 0 updated.val) :
+    suffixFrame n reconstructed out := by
+  have hu : updated.val.length = cap := hf.1.trans hlen
+  change cap ≤ out.val.length at hcap
+  constructor
+  · change reconstructed.val.length = out.val.length
+    rw [hback, List.length_setSlice!]
+  · intro j hj
+    rw [hback]
+    by_cases hc : j < cap
+    · rw [List.setSlice!_getElem?_middle out.val updated.val 0 j (by omega)]
+      simp only [Nat.sub_zero]
+      rw [hf.2 j hj, hsub]
+      simp [hc]
+    · exact List.setSlice!_getElem?_suffix out.val updated.val 0 j (by omega)
+
+theorem bounded_prefix_content (out updated reconstructed : Slice U8) (n : Nat)
+    (hn : n ≤ updated.length) (hcap : updated.length ≤ out.length)
+    (hback : reconstructed.val = out.val.setSlice! 0 updated.val) :
+    reconstructed.val.take n = updated.val.take n := by
+  rw [hback]
+  simp only [List.setSlice!, List.take_zero, Nat.sub_zero, List.nil_append,
+    Nat.min_eq_left hcap, List.take_length, Nat.zero_add]
+  exact List.take_append_of_le_length hn
+
+/-- The dynamic-capacity dispatch refines the same complete public contract. -/
 theorem encode_u64_into_refines (value : U64) (out : Slice U8) :
     Generated.encode.encode_u64_into value out ⦃ result =>
       match result.1 with
@@ -178,15 +228,23 @@ theorem encode_u64_into_refines (value : U64) (out : Slice U8) :
       | .Ok len => len.val = (Reference.encode value.val).length ∧
         (result.2.val.take len.val).map specByte = Reference.encode value.val ∧
         suffixFrame len.val result.2 out ⦄ := by
-  by_cases hc : (Reference.encode value.val).length ≤ out.length
-  · apply WP.spec_mono (encode_u64_into_success_refines value out hc)
-    intro result hr
-    rcases hr with ⟨len, out', rfl, hlen, hbytes, hf⟩
-    exact ⟨hlen, hbytes, hf⟩
-  · apply WP.spec_mono (encode_u64_into_short value out (by omega))
-    intro result hr
-    rcases hr with ⟨err, rfl, hreq, havail⟩
-    exact ⟨rfl, hreq, havail, by omega⟩
+  unfold Generated.encode.encode_u64_into
+  dsimp only
+  split <;> rename_i hcap
+  · have hc : 10 ≤ out.length := by scalar_tac
+    step
+    have hb := (encode_length_u64_bounds value).2
+    apply WP.spec_bind (encode_u64_into_checked_success_refines value s (by omega))
+    rintro _ ⟨len, updated, rfl, hlen, hbytes, hf⟩
+    step*
+    refine ⟨hlen, ?_, ?_⟩
+    · have hp := bounded_prefix_content out updated (index_mut_back updated) len.val
+        (by have hh := hf.1; omega) (by have hh := hf.1; omega) (s_post2 updated)
+      rw [hp]
+      exact hbytes
+    · apply bounded_prefix_frame out s updated (index_mut_back updated) len.val 10
+        (by simpa [List.slice] using s_post) s_post1 hc (by omega) hf (s_post2 updated)
+  · exact encode_u64_into_checked_refines value out
 
 /-- Successful Rust output represents the input canonically and has minimal length;
     errors have the exact capacity contract. This covers the mutable-slice API. -/

@@ -19,7 +19,9 @@ is charged separately: u64 initializes ten bytes; u32 uses that core and copies 
 initialized bytes, so its storage-write allowance is `L+15`, with five copy reads.
 The fixed-array profiles bound payload transitions by 5/10 and storage writes by 20.
 Caller-buffer emission has a fixed-word leading-zero/arithmetic length preflight
-and a bounded emission pass, writes only
+and a bounded emission pass. A fixed capacity dispatch exposes a ten-byte subview
+when available; the borrow and its reconstruction add no byte-buffer reads/writes
+in Rust. Existing conservative fixed header/word allowances cover this dispatch. It writes only
 L bytes on success and zero bytes on insufficient capacity. Signed wrappers add fixed
 ZigZag/cast work. The internal u32 widening reuses the u64 core without changing wire
 values. ZigZag performs a fixed number of scalar operations for each width.
