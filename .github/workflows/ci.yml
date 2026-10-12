@@ -8,15 +8,27 @@ on:
 permissions:
   contents: read
 
+env:
+  # Keep Rust state outside checkout and isolated from other raps-ci runners.
+  CARGO_HOME: ${{ github.workspace }}/../.cargo-home
+  RUSTUP_HOME: ${{ github.workspace }}/../.rustup-home
+
+concurrency:
+  group: portable-rust-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   rust:
-    runs-on: ubuntu-24.04
+    runs-on: [self-hosted, Linux, X64]
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
       - name: Install pinned Rust toolchain
-        run: |
-          rustup toolchain install 1.88.0 --profile minimal --component rustfmt --component clippy
-          rustup target add --toolchain 1.88.0 wasm32-wasip1 riscv32imac-unknown-none-elf
+        uses: dtolnay/rust-toolchain@631a55b12751854ce901bb631d5902ceb48146f7 # stable
+        with:
+          toolchain: 1.88.0
+          components: rustfmt, clippy
+          targets: wasm32-wasip1, riscv32imac-unknown-none-elf
       - name: Fetch locked dependencies
         run: cargo fetch --locked
       - name: Format and lint

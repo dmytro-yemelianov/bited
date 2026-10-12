@@ -54,6 +54,17 @@ Cargo versions are immutable; publication is a separate explicit action. See the
 
 ## Compatibility and CI
 
+The portable workflow runs on the repository-scoped `bited-ci-x64` self-hosted
+runner on `raps-ci`, using the `self-hosted`, `Linux`, and `X64` labels. Rust 1.88.0
+is installed by a commit-pinned action. Cargo and rustup state live beside the
+checkout, isolated from other runner instances. Jobs have a 20-minute timeout;
+a newer run on the same ref cancels the previous one.
+
+The host runs `/home/runner/bited-runner` under the persistent user service
+`bited-runner.service`. Inspect it with `systemctl --user status bited-runner`
+and `journalctl --user -u bited-runner`; user lingering keeps it running after
+SSH logout and across host reboots. Runner credentials remain on the host.
+
 During 0.x development, an incompatible API, decoding-policy, error-precedence or
 consumption-contract change requires a minor version increment. Patch releases keep
 those contracts. Performance changes retain source correspondence and explicitly
