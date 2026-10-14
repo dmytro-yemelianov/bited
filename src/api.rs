@@ -26,6 +26,7 @@ pub fn encode_i64_into(value: i64, out: &mut [u8]) -> Result<usize, EncodeError>
     encode_u64_into(zigzag_i64_to_u64(value), out)
 }
 /// Decode one ZigZag i32 prefix under the selected policy.
+#[inline]
 pub fn decode_i32(input: &[u8], policy: DecodePolicy) -> Result<Decoded<i32>, DecodeError> {
     match decode_u32(input, policy) {
         Ok(d) => Ok(Decoded {
@@ -37,6 +38,7 @@ pub fn decode_i32(input: &[u8], policy: DecodePolicy) -> Result<Decoded<i32>, De
     }
 }
 /// Decode one ZigZag i64 prefix under the selected policy.
+#[inline]
 pub fn decode_i64(input: &[u8], policy: DecodePolicy) -> Result<Decoded<i64>, DecodeError> {
     match decode_u64(input, policy) {
         Ok(d) => Ok(Decoded {
@@ -48,6 +50,7 @@ pub fn decode_i64(input: &[u8], policy: DecodePolicy) -> Result<Decoded<i64>, De
     }
 }
 
+#[inline]
 fn exact<T>(
     result: Result<Decoded<T>, DecodeError>,
     length: usize,
@@ -67,18 +70,22 @@ fn exact<T>(
     }
 }
 /// Decode one unsigned u32 and reject any trailing bytes.
+#[inline]
 pub fn decode_u32_exact(input: &[u8], policy: DecodePolicy) -> Result<Decoded<u32>, DecodeError> {
     exact(decode_u32(input, policy), input.len())
 }
 /// Decode one unsigned u64 and reject any trailing bytes.
+#[inline]
 pub fn decode_u64_exact(input: &[u8], policy: DecodePolicy) -> Result<Decoded<u64>, DecodeError> {
     exact(decode_u64(input, policy), input.len())
 }
 /// Decode one ZigZag i32 and reject any trailing bytes.
+#[inline]
 pub fn decode_i32_exact(input: &[u8], policy: DecodePolicy) -> Result<Decoded<i32>, DecodeError> {
     exact(decode_i32(input, policy), input.len())
 }
 /// Decode one ZigZag i64 and reject any trailing bytes.
+#[inline]
 pub fn decode_i64_exact(input: &[u8], policy: DecodePolicy) -> Result<Decoded<i64>, DecodeError> {
     exact(decode_i64(input, policy), input.len())
 }

@@ -46,7 +46,40 @@ pub struct DecodeError {
 ///
 /// Processes at most ten bytes. An invalid tenth payload is rejected before
 /// shifting it; no eleventh byte is needed to detect overflow or excessive length.
+#[inline]
 pub fn decode_u64(input: &[u8], policy: DecodePolicy) -> Result<Decoded<u64>, DecodeError> {
+    // Inline only one- and two-byte successes, computed exactly as the scan's
+    // first iterations do; every other input, including every error, is scanned.
+    let len = input.len();
+    if len != 0 {
+        let b0 = input[0];
+        let p0 = b0 & 0x7f;
+        if b0 & 0x80 == 0 {
+            return Ok(Decoded {
+                value: p0 as u64,
+                consumed: 1,
+                canonical: true,
+            });
+        }
+        if len != 1 {
+            let b1 = input[1];
+            let p1 = b1 & 0x7f;
+            if b1 & 0x80 == 0 && (p1 != 0 || policy == DecodePolicy::BoundedNonCanonical) {
+                return Ok(Decoded {
+                    value: (p0 as u64) | ((p1 as u64) << 7usize),
+                    consumed: 2,
+                    canonical: p1 != 0,
+                });
+            }
+        }
+    }
+    decode_u64_scan(input, policy)
+}
+
+// The complete prefix decoder, kept out of line so callers inline only the fast path.
+#[cold]
+#[inline(never)]
+fn decode_u64_scan(input: &[u8], policy: DecodePolicy) -> Result<Decoded<u64>, DecodeError> {
     let mut acc = 0u64;
     let mut i = 0usize;
     while i < 10 {

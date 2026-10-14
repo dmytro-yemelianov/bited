@@ -19,7 +19,7 @@ set_option maxRecDepth 2048
 namespace Bited.Generated
 
 /-- [bited::zigzag::zigzag_i64_to_u64]:
-    Source: 'src/zigzag.rs', lines 3:0-5:1
+    Source: 'src/zigzag.rs', lines 4:0-6:1
     Visibility: public -/
 def zigzag.zigzag_i64_to_u64 (n : Std.I64) : Result Std.U64 := do
   let i ← lift (IScalar.hcast .U64 n)
@@ -29,7 +29,7 @@ def zigzag.zigzag_i64_to_u64 (n : Std.I64) : Result Std.U64 := do
   ok (i1 ^^^ i3)
 
 /-- [bited::zigzag::zigzag_i32_to_u32]:
-    Source: 'src/zigzag.rs', lines 12:0-14:1
+    Source: 'src/zigzag.rs', lines 15:0-17:1
     Visibility: public -/
 def zigzag.zigzag_i32_to_u32 (n : Std.I32) : Result Std.U32 := do
   let i ← lift (IScalar.cast .I64 n)
@@ -239,7 +239,7 @@ def api.encode_i64_into
   encode.encode_u64_into i out
 
 /-- [bited::zigzag::zigzag_u64_to_i64]:
-    Source: 'src/zigzag.rs', lines 8:0-10:1
+    Source: 'src/zigzag.rs', lines 10:0-12:1
     Visibility: public -/
 def zigzag.zigzag_u64_to_i64 (u : Std.U64) : Result Std.I64 := do
   let i ← u >>> 1#i32
@@ -250,7 +250,7 @@ def zigzag.zigzag_u64_to_i64 (u : Std.U64) : Result Std.I64 := do
   ok (i1 ^^^ i4)
 
 /-- [bited::zigzag::zigzag_u32_to_i32]:
-    Source: 'src/zigzag.rs', lines 17:0-19:1
+    Source: 'src/zigzag.rs', lines 21:0-23:1
     Visibility: public -/
 def zigzag.zigzag_u32_to_i32 (u : Std.U32) : Result Std.I32 := do
   let i ← lift (UScalar.cast .U64 u)
@@ -269,7 +269,7 @@ def decode.DecodePolicy.Insts.CoreCmpPartialEqDecodePolicy.eq
   ok (self1 = other1)
 
 /-- [bited::decode::transition]:
-    Source: 'src/decode.rs', lines 102:0-135:1 -/
+    Source: 'src/decode.rs', lines 135:0-168:1 -/
 def decode.transition
   (acc : Std.U64) (count : Std.Usize) (byte : Std.U8)
   (policy : decode.DecodePolicy) (limit : Std.Usize) (last_max : Std.U8) :
@@ -340,7 +340,7 @@ def decode.transition
       else ok (core.result.Result.Ok (next, ¬ (i != 0#u8), canonical))
 
 /-- [bited::decode::decode_u32]: loop body 0:
-    Source: 'src/decode.rs', lines 141:4-167:1
+    Source: 'src/decode.rs', lines 174:4-200:1
     Visibility: public -/
 @[rust_loop_body]
 def decode.decode_u32_loop.body
@@ -375,7 +375,7 @@ def decode.decode_u32_loop.body
       { kind := decode.DecodeErrorKind.TooLong, consumed := i }))
 
 /-- [bited::decode::decode_u32]: loop 0:
-    Source: 'src/decode.rs', lines 141:4-167:1
+    Source: 'src/decode.rs', lines 174:4-200:1
     Visibility: public -/
 @[rust_loop]
 def decode.decode_u32_loop
@@ -388,7 +388,7 @@ def decode.decode_u32_loop
     (acc, i)
 
 /-- [bited::decode::decode_u32]:
-    Source: 'src/decode.rs', lines 138:0-167:1
+    Source: 'src/decode.rs', lines 171:0-200:1
     Visibility: public -/
 @[reducible]
 def decode.decode_u32
@@ -398,7 +398,7 @@ def decode.decode_u32
   decode.decode_u32_loop input policy 0#u64 0#usize
 
 /-- [bited::api::decode_i32]:
-    Source: 'src/api.rs', lines 29:0-38:1
+    Source: 'src/api.rs', lines 30:0-39:1
     Visibility: public -/
 def api.decode_i32
   (input : Slice Std.U8) (policy : decode.DecodePolicy) :
@@ -412,11 +412,10 @@ def api.decode_i32
       { value := i, consumed := d.consumed, canonical := d.canonical })
   | core.result.Result.Err e => ok (core.result.Result.Err e)
 
-/-- [bited::decode::decode_u64]: loop body 0:
-    Source: 'src/decode.rs', lines 52:4-98:1
-    Visibility: public -/
+/-- [bited::decode::decode_u64_scan]: loop body 0:
+    Source: 'src/decode.rs', lines 85:4-131:1 -/
 @[rust_loop_body]
-def decode.decode_u64_loop.body
+def decode.decode_u64_scan_loop.body
   (input : Slice Std.U8) (policy : decode.DecodePolicy) (acc : Std.U64)
   (i : Std.Usize) :
   Result (ControlFlow (Std.U64 × Std.Usize) (core.result.Result
@@ -513,31 +512,80 @@ def decode.decode_u64_loop.body
     ok (done (core.result.Result.Err
       { kind := decode.DecodeErrorKind.TooLong, consumed := i }))
 
-/-- [bited::decode::decode_u64]: loop 0:
-    Source: 'src/decode.rs', lines 52:4-98:1
-    Visibility: public -/
+/-- [bited::decode::decode_u64_scan]: loop 0:
+    Source: 'src/decode.rs', lines 85:4-131:1 -/
 @[rust_loop]
-def decode.decode_u64_loop
+def decode.decode_u64_scan_loop
   (input : Slice Std.U8) (policy : decode.DecodePolicy) (acc : Std.U64)
   (i : Std.Usize) :
   Result (core.result.Result (decode.Decoded Std.U64) decode.DecodeError)
   := do
   loop
-    (fun (acc1, i1) => decode.decode_u64_loop.body input policy acc1 i1)
+    (fun (acc1, i1) => decode.decode_u64_scan_loop.body input policy acc1 i1)
     (acc, i)
 
-/-- [bited::decode::decode_u64]:
-    Source: 'src/decode.rs', lines 49:0-98:1
-    Visibility: public -/
+/-- [bited::decode::decode_u64_scan]:
+    Source: 'src/decode.rs', lines 82:0-131:1 -/
 @[reducible]
+def decode.decode_u64_scan
+  (input : Slice Std.U8) (policy : decode.DecodePolicy) :
+  Result (core.result.Result (decode.Decoded Std.U64) decode.DecodeError)
+  := do
+  decode.decode_u64_scan_loop input policy 0#u64 0#usize
+
+/-- [bited::decode::decode_u64]:
+    Source: 'src/decode.rs', lines 50:0-77:1
+    Visibility: public -/
 def decode.decode_u64
   (input : Slice Std.U8) (policy : decode.DecodePolicy) :
   Result (core.result.Result (decode.Decoded Std.U64) decode.DecodeError)
   := do
-  decode.decode_u64_loop input policy 0#u64 0#usize
+  let len := Slice.len input
+  if len != 0#usize
+  then
+    let b0 ← Slice.index_usize input 0#usize
+    let p0 ← lift (b0 &&& 127#u8)
+    let i ← lift (b0 &&& 128#u8)
+    if i = 0#u8
+    then
+      let i1 ← lift (UScalar.cast .U64 p0)
+      ok (core.result.Result.Ok
+        { value := i1, consumed := 1#usize, canonical := true })
+    else
+      if len != 1#usize
+      then
+        let b1 ← Slice.index_usize input 1#usize
+        let p1 ← lift (b1 &&& 127#u8)
+        let i1 ← lift (b1 &&& 128#u8)
+        if i1 = 0#u8
+        then
+          if p1 != 0#u8
+          then
+            let i2 ← lift (UScalar.cast .U64 p0)
+            let i3 ← lift (UScalar.cast .U64 p1)
+            let i4 ← i3 <<< 7#usize
+            let i5 ← lift (i2 ||| i4)
+            ok (core.result.Result.Ok
+              { value := i5, consumed := 2#usize, canonical := (p1 != 0#u8) })
+          else
+            let b ←
+              decode.DecodePolicy.Insts.CoreCmpPartialEqDecodePolicy.eq policy
+                decode.DecodePolicy.BoundedNonCanonical
+            if b
+            then
+              let i2 ← lift (UScalar.cast .U64 p0)
+              let i3 ← lift (UScalar.cast .U64 p1)
+              let i4 ← i3 <<< 7#usize
+              let i5 ← lift (i2 ||| i4)
+              ok (core.result.Result.Ok
+                { value := i5, consumed := 2#usize, canonical := (p1 != 0#u8) })
+            else decode.decode_u64_scan input policy
+        else decode.decode_u64_scan input policy
+      else decode.decode_u64_scan input policy
+  else decode.decode_u64_scan input policy
 
 /-- [bited::api::decode_i64]:
-    Source: 'src/api.rs', lines 40:0-49:1
+    Source: 'src/api.rs', lines 42:0-51:1
     Visibility: public -/
 def api.decode_i64
   (input : Slice Std.U8) (policy : decode.DecodePolicy) :
@@ -552,7 +600,7 @@ def api.decode_i64
   | core.result.Result.Err e => ok (core.result.Result.Err e)
 
 /-- [bited::api::exact]:
-    Source: 'src/api.rs', lines 51:0-68:1 -/
+    Source: 'src/api.rs', lines 54:0-71:1 -/
 def api.exact
   {T : Type}
   (result : core.result.Result (decode.Decoded T) decode.DecodeError)
@@ -570,7 +618,7 @@ def api.exact
   | core.result.Result.Err _ => ok result
 
 /-- [bited::api::decode_u32_exact]:
-    Source: 'src/api.rs', lines 70:0-72:1
+    Source: 'src/api.rs', lines 74:0-76:1
     Visibility: public -/
 def api.decode_u32_exact
   (input : Slice Std.U8) (policy : decode.DecodePolicy) :
@@ -581,7 +629,7 @@ def api.decode_u32_exact
   api.exact r i
 
 /-- [bited::api::decode_u64_exact]:
-    Source: 'src/api.rs', lines 74:0-76:1
+    Source: 'src/api.rs', lines 79:0-81:1
     Visibility: public -/
 def api.decode_u64_exact
   (input : Slice Std.U8) (policy : decode.DecodePolicy) :
@@ -592,7 +640,7 @@ def api.decode_u64_exact
   api.exact r i
 
 /-- [bited::api::decode_i32_exact]:
-    Source: 'src/api.rs', lines 78:0-80:1
+    Source: 'src/api.rs', lines 84:0-86:1
     Visibility: public -/
 def api.decode_i32_exact
   (input : Slice Std.U8) (policy : decode.DecodePolicy) :
@@ -603,7 +651,7 @@ def api.decode_i32_exact
   api.exact r i
 
 /-- [bited::api::decode_i64_exact]:
-    Source: 'src/api.rs', lines 82:0-84:1
+    Source: 'src/api.rs', lines 89:0-91:1
     Visibility: public -/
 def api.decode_i64_exact
   (input : Slice Std.U8) (policy : decode.DecodePolicy) :
