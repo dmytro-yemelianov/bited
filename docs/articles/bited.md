@@ -145,6 +145,6 @@ Version 0.1.0 is published on [crates.io](https://crates.io/crates/bited/0.1.0),
 
 Portable Rust checks now pass on the repository-scoped `bited-ci-x64` runner on `raps-ci`. Full formal release verification remains a separate pinned local workflow.
 
-Readers can inspect the [specification](../specification.md), [conformance vectors](../../conformance/vectors.json), [proof status](../proof-status.md), [trust boundary](../trust-boundary.md), and [raw benchmark results](../../verification/performance/results.json). Run `scripts/compare-performance` for the comparison and `scripts/verify` for the strict gate using the documented toolchain. Charts are regenerated from the recorded JSON by `scripts/article-charts.py`; raw timing metadata records the source hashes and the dirty working tree used at measurement time.
+Readers can inspect the [specification](../specification.md), [conformance vectors](../../conformance/vectors.json), [proof status](../proof-status.md), [trust boundary](../trust-boundary.md), and [raw benchmark results](../../verification/performance/results-bounded-capacity.json). Run `scripts/compare-performance` for the comparison and `scripts/verify` for the strict gate using the documented toolchain. Charts are regenerated from the recorded JSON by `scripts/article-charts.py`; raw timing metadata records the source hashes and the dirty working tree used at measurement time.
 
 The [public article](https://yemelianov.dev/?doc=bited) also appears as a project detail inside the site's WASM portfolio.

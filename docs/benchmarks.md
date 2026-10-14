@@ -1,6 +1,6 @@
 # Scalar baseline benchmarks
 
-Run `./scripts/benchmark` or the complete `./scripts/verify` workflow. The complete raw samples and metadata are recorded in `verification/reports/benchmark.json`; release sidecars bind that report by digest. Measurements characterize the checked scalar API, with encoder inlining and fixed-word length preflight and bounded-capacity specialization enabled and no speed-optimality claim.
+Run `./scripts/benchmark` or the complete `./scripts/verify` workflow. The complete raw samples and metadata are recorded in `verification/reports/benchmark.json`; release sidecars bind that report by digest. Measurements characterize the checked scalar API, with encoder inlining, fixed-word length preflight, bounded-capacity specialization and the inline decoder fast path enabled and no speed-optimality claim.
 
 The baseline was measured on Apple M5, rustc 1.88.0 (6b00bc388 2025-06-23), one thread, opt-level 3, overflow checks enabled, no LTO/features and the compiler default target CPU. Source and benchmark hashes are recorded. Dataset generation and allocation are outside timed regions; `black_box` protects inputs/results. Public buffer/prefix/exact checks remain in the measured path.
 
@@ -10,11 +10,11 @@ Workloads separately cover every encoded length, full-width values, an 80% one-b
 
 | Target | Object code section bytes | Decoder state bytes | Largest observed library static call path |
 |---|---:|---:|---:|
-| aarch64-apple-darwin | 4596 | 48 | 64 bytes |
-| wasm32-wasip1 | 5541 | 32 | 16 bytes |
-| riscv32imac-unknown-none-elf | 4644 | 32 | 32 bytes |
+| aarch64-apple-darwin | 3852 | 48 | 16 bytes |
+| wasm32-wasip1 | 4585 | 32 | 16 bytes |
+| riscv32imac-unknown-none-elf | 4014 | 32 | 16 bytes |
 
-These resource figures come from the pinned compiler: `llvm-size`, an LLVM-IR layout probe and emitted assembly. Archive size includes metadata and is reported separately. Static call paths exclude caller/OS/runtime, panic paths, Wasm operand stack and final-link changes. They are observations, not formal compiler stack bounds. The calling-thread allocator test must observe zero allocations on host and WASI.
+These resource figures come from the pinned compiler: `llvm-size`, an LLVM-IR layout probe and emitted assembly. Archive size includes metadata and is reported separately. Static call paths exclude caller/OS/runtime, panic paths, Wasm operand stack and final-link changes. They are observations, not formal compiler stack bounds. The calling-thread allocator test must observe zero allocations on host and WASI. Library object size no longer reflects the inlined `decode_u64` fast path, which now lives in callers; only its out-of-line scan remains in the library.
 
 The report also provides values/second and encoded bytes/second for every dataset. Abstract transition/access/operation charges are defined in [resources.md](resources.md). Minimal encoded length is a Lean theorem; neither that theorem nor these timings establish fastest runtime.
 

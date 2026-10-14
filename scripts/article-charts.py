@@ -13,7 +13,7 @@ import numpy as np
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "docs/articles/assets"
 OUT.mkdir(parents=True, exist_ok=True)
-report = json.loads((ROOT / "verification/performance/results.json").read_text())
+report = json.loads((ROOT / "verification/performance/results-bounded-capacity.json").read_text())
 
 
 def portable_svg(path):

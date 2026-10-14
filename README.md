@@ -104,8 +104,10 @@ a threshold for arbitrary two- through ten-byte mixtures. Shortest base-128
 length is proved; runtime speed is a separate measured objective.
 
 See the [article](docs/articles/bited.md) for uncertainty, decoder comparisons and
-workload interpretation, and [raw results](verification/performance/results.json)
+workload interpretation, and [raw results](verification/performance/results-bounded-capacity.json)
 for samples and provenance. Regenerate the charts with `scripts/article-charts.py`.
+The later inline decoder fast path is measured separately in
+[the decoder comparison](verification/performance/RESULTS.md).
 
 ## Reproduce verification and artifacts
 

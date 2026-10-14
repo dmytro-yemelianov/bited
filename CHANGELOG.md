@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased
+
+- `decode_u64` inlines one- and two-byte successes and keeps the verified scan
+  out of line; results are unchanged for every input and policy, proved in Lean
+  (`decode_u64_eq_scan`). Decode wrappers and ZigZag mappings are `#[inline]`.
+  On the recorded Apple M5 comparison, short-weighted decoding uses about 81% less CPU time per value;
+  see `verification/performance/RESULTS.md` for every dataset and its interval.
+
 ## 0.1.0 — first release candidate
 
 - Allocation-free unsigned 32/64-bit base-128 encoding and signed ZigZag mappings.
