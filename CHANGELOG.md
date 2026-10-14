@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.1.1 — inline decoder fast path
 
 - `decode_u64` inlines one- and two-byte successes and keeps the verified scan
   out of line; results are unchanged for every input and policy, proved in Lean
