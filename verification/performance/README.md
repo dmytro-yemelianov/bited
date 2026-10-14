@@ -8,7 +8,8 @@ runtime dependencies stay unchanged. Raw output is written to
 `verification/reports/comparison.json`; statistical stack samples and disassembly
 are stored beside it. The root `scripts/verify` command separately rebuilds release evidence for the
 current source snapshot. Prior measurement snapshots are kept as
-`results-before-inline.json`, `RESULTS-before-inline.md`, and `after-clz-results.json` / `after-clz-RESULTS.md`.
+`results-before-inline.json`, `RESULTS-before-inline.md`, `after-clz-results.json` / `after-clz-RESULTS.md`,
+and `results-bounded-capacity.json` / `RESULTS-bounded-capacity.md`.
 
 Compare `bited`, `leb128 = 0.2.5` and
 `integer-encoding = 4.1.0`, plus the prior verified source compiled as
@@ -30,7 +31,8 @@ controlled cold-cache test or cross-platform ranking is claimed.
 
 The timed comparison covers the shared u64 wire format, each length 1–10,
 full-width, alternating lengths, 80/15/5 short-biased values, ZigZag values near
-zero and a large sequential full-width traversal. ZigZag mapping happens outside
+zero, random lengths 1–10 and 1–3, a large sequential full-width traversal and a
+large random-length traversal. ZigZag mapping happens outside
 timing for all participants: this is not a native signed-wrapper timing.
 The benchmark asserts byte equality and value/consumption equality for every
 participant and value before timing. Existing full API conformance and Lean

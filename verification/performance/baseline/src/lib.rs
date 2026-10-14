@@ -1,10 +1,24 @@
-//! Deterministic base-128 varints with explicit decoding policy.
+//! Allocation-free base-128 varints and ZigZag with explicit decoding policy.
+//!
+//! Prefix decoders report the consumed byte count; exact decoders also reject a
+//! trailing suffix. Caller-buffer encoders leave the complete buffer unchanged
+//! when capacity is insufficient. The library is `no_std` and forbids unsafe code.
+//!
+//! ```
+//! use bited::{decode_i64_exact, encode_i64_into, DecodePolicy};
+//!
+//! let mut buffer = [0u8; 10];
+//! let used = encode_i64_into(-150, &mut buffer).unwrap();
+//! let decoded = decode_i64_exact(&buffer[..used], DecodePolicy::Canonical).unwrap();
+//! assert_eq!(decoded.value, -150);
+//! ```
 //!
 //! This implements the scalar API of VVZ-SPEC-0.1.0. Source-level proofs
 //! and the covered extraction configuration are inventoried separately in
 //! `verification/coverage.json`.
 #![no_std]
 #![forbid(unsafe_code)]
+#![warn(missing_docs)]
 
 mod api;
 mod decode;

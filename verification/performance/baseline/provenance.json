@@ -1,11 +1,11 @@
 {
-  "commit": "0fdaadf304e6e53ad38942b2ca820c14b8ab771d",
+  "commit": "5f27413dc1d7da1c7e56078a6eefd7d917894c7e",
   "source_sha256": {
-    "src/api.rs": "580a6b120f284281f0a9d6fa9efd9ddf96c2f42fa9e1ccf420f8cb4cd59ab7bc",
-    "src/decode.rs": "61f8ab1d118c153a76465a24859b7e8a41362f5c5aa4d2ad0c08738197011b71",
-    "src/encode.rs": "550ecf99a95c83a88e7b36912efc701f0cbc22f798eeea068ad456ad1ee6167a",
-    "src/lib.rs": "172ce73919eebf8ecf6f357e358bba360471e978da301d1b2f9bb924bb369a08",
-    "src/stream.rs": "0f12ad521079a300b49e5192a7797a4eb6f91327626e5b2fa2d0b3193d646529",
+    "src/api.rs": "ed32cca2252787e167c197412dedd432714a9e0ee0c80aa8c6c48149689b9dbd",
+    "src/decode.rs": "fdef469f1131ba804774ba23b863623a73382d0f31af131f77c7f1b687ba82c7",
+    "src/encode.rs": "00aae6b36bf4d77bafde9fa2de31b52fa4477c5fa1cfbe6d9976051e0f4ce9fb",
+    "src/lib.rs": "bc6114115f74fc62ee8d26af2041bd99f691563c34291710134a5a2429c31a72",
+    "src/stream.rs": "cbdf524a6f0680afa913ee7bf75c45cf4c197350343424d54145751937faec31",
     "src/zigzag.rs": "ee19568ab3d8e3545e9c2c9cbaa4ddf47aa8f007f0c48eab9ef7eb8ef9d7dfd4"
   }
 }

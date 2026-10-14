@@ -3,32 +3,42 @@
 pub enum DecodePolicy {
     /// Reject redundant high zero groups.
     Canonical,
-    /// Accept redundant zero groups within the ten-byte width limit.
+    /// Accept redundant zero groups within the five-byte u32 or ten-byte u64 limit.
     BoundedNonCanonical,
 }
 
 /// A successful decode and its logical input consumption.
 #[derive(Copy, Clone, Debug, Eq, PartialEq)]
 pub struct Decoded<T> {
+    /// Decoded integer value.
     pub value: T,
+    /// Bytes incorporated, including the decisive byte on malformed input.
     pub consumed: usize,
+    /// Whether the input used the shortest representation.
     pub canonical: bool,
 }
 
 /// Failure classification, with overflow preceding excessive length.
 #[derive(Copy, Clone, Debug, Eq, PartialEq)]
 pub enum DecodeErrorKind {
+    /// Input ended before a terminating byte.
     Truncated,
+    /// Payload cannot fit the selected integer width.
     Overflow,
+    /// A continuation bit exceeds the selected width limit.
     TooLong,
+    /// A redundant representation was rejected by canonical policy.
     NonCanonical,
+    /// Exact decoding found bytes after the first complete value.
     TrailingBytes,
 }
 
 /// Consumption includes the decisive byte on malformed input.
 #[derive(Copy, Clone, Debug, Eq, PartialEq)]
 pub struct DecodeError {
+    /// Failure classification.
     pub kind: DecodeErrorKind,
+    /// Bytes incorporated, including the decisive byte on malformed input.
     pub consumed: usize,
 }
 

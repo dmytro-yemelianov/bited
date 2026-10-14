@@ -12,6 +12,11 @@ fn random(s: &mut u64) -> u64 {
     *s ^= *s << 17;
     *s
 }
+fn of_length(s: &mut u64, length: u32) -> u64 {
+    let low = if length == 1 { 0 } else { 1u64 << (7 * (length - 1)) };
+    let high = if length == 10 { u64::MAX } else { (1u64 << (7 * length)) - 1 };
+    low + random(s) % (high - low + 1)
+}
 #[derive(Clone, Copy, Debug)]
 enum Implementation {
     Verified,
@@ -162,6 +167,33 @@ fn main() {
     datasets.push((
         "large-full-width".into(),
         (0..2_097_152).map(|_| random(&mut s)).collect(),
+    ));
+    datasets.push((
+        "random-length-1-10".into(),
+        (0..N)
+            .map(|_| {
+                let length = (random(&mut s) % 10 + 1) as u32;
+                of_length(&mut s, length)
+            })
+            .collect(),
+    ));
+    datasets.push((
+        "random-length-1-3".into(),
+        (0..N)
+            .map(|_| {
+                let length = (random(&mut s) % 3 + 1) as u32;
+                of_length(&mut s, length)
+            })
+            .collect(),
+    ));
+    datasets.push((
+        "large-random-length".into(),
+        (0..2_097_152)
+            .map(|_| {
+                let length = (random(&mut s) % 10 + 1) as u32;
+                of_length(&mut s, length)
+            })
+            .collect(),
     ));
     let args: Vec<_> = std::env::args().collect();
     if args.get(1).map(String::as_str) == Some("profile") {

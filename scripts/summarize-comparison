@@ -1,0 +1,30 @@
+#!/usr/bin/env python3
+"""Paired Verified/Previous thread-CPU ratios from comparison.json and the adoption rule."""
+from collections import defaultdict
+import json
+from pathlib import Path
+import statistics
+
+ROOT = Path(__file__).resolve().parent.parent
+report = json.loads((ROOT / 'verification/reports/comparison.json').read_text())
+rows = defaultdict(dict)
+for r in report['results']:
+    rows[(r['dataset'], r['operation'])][r['implementation']] = r['thread_cpu_ns_per_value_samples']
+T = 2.145  # t(14), two-sided 95%
+failures = []
+print('| Dataset | Operation | Previous ns | Verified ns | Paired change | Approx. 95% interval |')
+print('|---|---|---:|---:|---:|---:|')
+for (dataset, operation), s in rows.items():
+    ratios = [v / p for v, p in zip(s['Verified'], s['Previous'], strict=True)]
+    mean = statistics.mean(ratios)
+    half = T * statistics.stdev(ratios) / len(ratios) ** 0.5
+    low, high = (mean - half - 1) * 100, (mean + half - 1) * 100
+    print(f"| {dataset} | {operation} | {statistics.mean(s['Previous']):.3f} | "
+          f"{statistics.mean(s['Verified']):.3f} | {(mean - 1) * 100:+.1f}% | {low:+.1f}% to {high:+.1f}% |")
+    if low > 5.0:
+        failures.append(f'{dataset} {operation} regresses: {low:+.1f}% to {high:+.1f}%')
+    if (dataset, operation) == ('short-80-15-5', 'decode') and high > -50.0:
+        failures.append(f'short-80-15-5 decode gain below 50%: {low:+.1f}% to {high:+.1f}%')
+if failures:
+    raise SystemExit('ADOPTION RULE FAILED:\n' + '\n'.join(failures))
+print('\nADOPTION RULE PASSED')

@@ -2,11 +2,16 @@
 use crate::decode::transition;
 use crate::{DecodeError, DecodeErrorKind, DecodePolicy, Decoded};
 
+/// Result of feeding a byte to an incremental decoder.
 #[derive(Copy, Clone, Debug, Eq, PartialEq)]
 pub enum Step<T> {
+    /// The byte was consumed; another byte is required.
     NeedMore,
+    /// The byte completed a value; reset before starting another.
     Done(Decoded<T>),
+    /// The byte produced a terminal error; reset before reuse.
     Error(DecodeError),
+    /// The decoder is already terminal; this byte was not consumed.
     Closed,
 }
 
@@ -72,39 +77,48 @@ impl State {
 }
 
 #[derive(Copy, Clone, Debug, Eq, PartialEq)]
+/// Fixed-size incremental u64 decoder, sealed after completion or error.
 pub struct DecoderU64 {
     state: State,
 }
 impl DecoderU64 {
+    /// Start an empty decoder under the selected policy.
     pub fn new(policy: DecodePolicy) -> Self {
         Self {
             state: State::new(policy),
         }
     }
+    /// Consume one byte unless already sealed; report progress or a terminal result.
     pub fn push(&mut self, byte: u8) -> Step<u64> {
         self.state.push(byte, 10, 1)
     }
+    /// Seal an incomplete session as truncated, or return the stored terminal result.
     pub fn finish(&mut self) -> Result<Decoded<u64>, DecodeError> {
         self.state.finish()
     }
+    /// Start a fresh session under the selected policy.
     pub fn reset(&mut self, policy: DecodePolicy) {
         self.state = State::new(policy);
     }
+    /// Number of bytes incorporated in the current session.
     pub fn bytes_seen(&self) -> usize {
         self.state.count
     }
 }
 
 #[derive(Copy, Clone, Debug, Eq, PartialEq)]
+/// Fixed-size incremental u32 decoder, sealed after completion or error.
 pub struct DecoderU32 {
     state: State,
 }
 impl DecoderU32 {
+    /// Start an empty decoder under the selected policy.
     pub fn new(policy: DecodePolicy) -> Self {
         Self {
             state: State::new(policy),
         }
     }
+    /// Consume one byte unless already sealed; report progress or a terminal result.
     pub fn push(&mut self, byte: u8) -> Step<u32> {
         match self.state.push(byte, 5, 15) {
             Step::NeedMore => Step::NeedMore,
@@ -117,6 +131,7 @@ impl DecoderU32 {
             }),
         }
     }
+    /// Seal an incomplete session as truncated, or return the stored terminal result.
     pub fn finish(&mut self) -> Result<Decoded<u32>, DecodeError> {
         match self.state.finish() {
             Err(e) => Err(e),
@@ -127,9 +142,11 @@ impl DecoderU32 {
             }),
         }
     }
+    /// Start a fresh session under the selected policy.
     pub fn reset(&mut self, policy: DecodePolicy) {
         self.state = State::new(policy);
     }
+    /// Number of bytes incorporated in the current session.
     pub fn bytes_seen(&self) -> usize {
         self.state.count
     }

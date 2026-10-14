@@ -23,6 +23,8 @@ def run(command):
 def sha(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
+subprocess.run([str(ROOT / 'scripts/check-decoder-inlining')], cwd=ROOT, check=True)
+
 load_before = os.getloadavg()
 report = json.loads(run(['cargo', 'run', '--manifest-path', str(PACKAGE/'Cargo.toml'),
                          '--release', '--locked', '--offline']))

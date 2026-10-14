@@ -17,7 +17,7 @@ their original contract.
 Matched production-library measurements versus release source `0fdaadf` show a
 52.5% reduction for full-width u64 encoding (approximate interval 51.9%–53.1%) and
 40.2% for large traversal (38.7%–41.6%). The short-mixture result is inconclusive
-(−1.8%, interval −6.6% to +2.9%). See [current comparison](../verification/performance/RESULTS.md)
+(−1.8%, interval −6.6% to +2.9%). See [current comparison](../verification/performance/RESULTS-bounded-capacity.md)
 for CPU/wall samples, peers, provenance and limitations.
 
 The historical capacity study's weighted model placed the one-byte/full-width
