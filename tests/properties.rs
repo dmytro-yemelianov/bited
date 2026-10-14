@@ -91,6 +91,74 @@ fn exhaustive_zero_one_two_byte_inputs() {
 }
 
 #[test]
+fn two_byte_heads_ignore_every_suffix() {
+    let suffixes: [&[u8]; 5] = [&[], &[0x00], &[0x80], &[0xff, 0x01], &[0x80; 9]];
+    for a in 0..=255u8 {
+        for b in 0..=255u8 {
+            for suffix in suffixes {
+                let mut input = vec![a, b];
+                input.extend_from_slice(suffix);
+                compare(&input);
+            }
+        }
+    }
+}
+
+#[test]
+fn fast_path_edge_contracts() {
+    use DecodePolicy::{BoundedNonCanonical, Canonical};
+    let err = |kind, consumed| Err(DecodeError { kind, consumed });
+    let ok = |value, consumed, canonical| {
+        Ok(Decoded {
+            value,
+            consumed,
+            canonical,
+        })
+    };
+    assert_eq!(
+        decode_u64(&[], Canonical),
+        err(DecodeErrorKind::Truncated, 0)
+    );
+    assert_eq!(
+        decode_u64(&[0x80], Canonical),
+        err(DecodeErrorKind::Truncated, 1)
+    );
+    assert_eq!(
+        decode_u64(&[0x80, 0x00], Canonical),
+        err(DecodeErrorKind::NonCanonical, 2)
+    );
+    assert_eq!(
+        decode_u64(&[0x80, 0x00], BoundedNonCanonical),
+        ok(0, 2, false)
+    );
+    assert_eq!(decode_u64(&[0x05, 0xff, 0xff], Canonical), ok(5, 1, true));
+    assert_eq!(
+        decode_u64(&[0xff, 0x7f, 0x80], Canonical),
+        ok(16383, 2, true)
+    );
+    assert_eq!(
+        decode_u64_exact(&[0x01, 0x00], Canonical),
+        err(DecodeErrorKind::TrailingBytes, 1)
+    );
+    assert_eq!(
+        decode_i64(&[0x03], Canonical),
+        Ok(Decoded {
+            value: -2,
+            consumed: 1,
+            canonical: true
+        })
+    );
+    assert_eq!(
+        decode_i64(&[0x80, 0x01], Canonical),
+        Ok(Decoded {
+            value: 64,
+            consumed: 2,
+            canonical: true
+        })
+    );
+}
+
+#[test]
 fn boundaries_and_deterministic_random_inputs() {
     let mut seed = 0x2bd7_659c_4613_a805u64;
     for _ in 0..10_000 {
