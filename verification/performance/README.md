@@ -74,8 +74,11 @@ length function has a new proof connecting the exact Aeneas leading-zero primiti
 to Nat logarithms/bit size and the independent shortest encoder. The release
 workflow checks all dependent proofs and archived-source correspondence.
 
-The matched `Previous` fixture now records the immediately preceding fixed-word preflight
-source at commit 0fdaadf304e6e53ad38942b2ca820c14b8ab771d. Earlier results and the
+The matched `Previous` fixture now records the pre-fast-path decoder source at commit
+5f27413dc1d7da1c7e56078a6eefd7d917894c7e; the earlier fixed-word preflight fixture
+`0fdaadf` belongs to `results-bounded-capacity.json`. Before timing,
+`scripts/compare-performance` runs `scripts/check-decoder-inlining`, which builds the
+`inline-probe` binary and fails if the public u64 decoder is called out of line. Earlier results and the
 inlining-only model identity record are explicitly historical snapshots. Their
 source identities describe those runs, rather than the current fixture.
 

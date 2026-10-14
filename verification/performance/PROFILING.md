@@ -1,6 +1,6 @@
 # Encoder profiling: assembly and controlled comparisons
 
-Historical measurement snapshot from commit `13d3f92`, before production capacity specialization. The FastRequired capacity strategy has since been incorporated with Lean correspondence; see [current production measurements](RESULTS.md). Statements below describe the recorded experiment, not the current production implementation.
+Historical measurement snapshot from commit `13d3f92`, before production capacity specialization. The FastRequired capacity strategy has since been incorporated with Lean correspondence; see [production capacity measurements](RESULTS-bounded-capacity.md). Statements below describe the recorded experiment, not the current production implementation.
 
 Run: 2026-10-12T09:02:37.300502+00:00; Apple M5; rustc 1.88.0 (6b00bc388 2025-06-23).
 

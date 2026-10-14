@@ -11,8 +11,11 @@ as the decoder. Its erased outcome is proved equal to `decodeAux`; its input rea
 are exactly the incorporated-byte count. The actual Rust decoder-body refinements
 prove one checked input-byte access and count increment per byte transition; whole
 outcome correspondence connects those counts to the trace. They are bounded by 5 or
-10 regardless of the supplied suffix length. Prefix charges are `64*reads+16` word
-operations and `12*reads+8` state accesses; exact adds one length comparison.
+10 regardless of the supplied suffix length. The inline u64 fast path in front of the
+scan reads at most bytes 0 and 1 before returning or delegating; those reads fall
+outside this per-transition accounting, and a delegated decode re-reads them. Prefix
+charges are `64*reads+16` word operations and `12*reads+8` state accesses; exact adds
+one length comparison.
 
 Canonical emission writes exactly L payload bytes. Fixed-array storage initialization
 is charged separately: u64 initializes ten bytes; u32 uses that core and copies five

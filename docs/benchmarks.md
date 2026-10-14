@@ -14,7 +14,7 @@ Workloads separately cover every encoded length, full-width values, an 80% one-b
 | wasm32-wasip1 | 4585 | 32 | 16 bytes |
 | riscv32imac-unknown-none-elf | 4014 | 32 | 16 bytes |
 
-These resource figures come from the pinned compiler: `llvm-size`, an LLVM-IR layout probe and emitted assembly. Archive size includes metadata and is reported separately. Static call paths exclude caller/OS/runtime, panic paths, Wasm operand stack and final-link changes. They are observations, not formal compiler stack bounds. The calling-thread allocator test must observe zero allocations on host and WASI. Library object size no longer reflects the inlined `decode_u64` fast path, which now lives in callers; only its out-of-line scan remains in the library.
+These resource figures come from the pinned compiler: `llvm-size`, an LLVM-IR layout probe and emitted assembly. Archive size includes metadata and is reported separately. Static call paths exclude caller/OS/runtime, panic paths, Wasm operand stack and final-link changes. They are observations, not formal compiler stack bounds. The calling-thread allocator test must observe zero allocations on host and WASI. Library object size no longer reflects the inlined `decode_u64` fast path, which now lives in callers; only its out-of-line scan remains in the library. For the same reason the smaller call-path figures reflect inlined decode entry points now running in caller frames, not reduced stack use.
 
 The report also provides values/second and encoded bytes/second for every dataset. Abstract transition/access/operation charges are defined in [resources.md](resources.md). Minimal encoded length is a Lean theorem; neither that theorem nor these timings establish fastest runtime.
 
