@@ -1,0 +1,24 @@
+#!/usr/bin/env python3
+"""Fail unless public decode_u64 inlines into a downstream loop (aarch64 macOS codegen gate)."""
+import re
+import subprocess
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
+PACKAGE = ROOT / 'verification/performance'
+subprocess.run(['cargo', 'build', '--manifest-path', str(PACKAGE / 'Cargo.toml'), '--release',
+                '--locked', '--offline', '--bin', 'inline-probe'], cwd=ROOT, check=True)
+binary = PACKAGE / 'target/release/inline-probe'
+symbols = [line.split()[-1] for line in subprocess.check_output(['nm', str(binary)], text=True).splitlines()
+           if '16probe_decode_u64' in line]
+if len(symbols) != 1:
+    raise SystemExit(f'FAIL: expected exactly one probe symbol, found {symbols}')
+assembly = subprocess.check_output(['xcrun', 'llvm-objdump', '-d', '--no-show-raw-insn',
+                                    f'--disassemble-symbols={symbols[0]}', str(binary)], text=True)
+calls = sorted(set(re.findall(r'\bbl\s+\S+\s+<([^>]+)>', assembly)))
+print('calls from probe:', calls)
+if any('5bited6decode10decode_u6417h' in c for c in calls):
+    raise SystemExit('FAIL: public bited::decode_u64 is called out of line')
+if not any('5bited6decode15decode_u64_scan17h' in c for c in calls):
+    raise SystemExit('FAIL: probe never reaches decode_u64_scan; probe optimized away or scan renamed')
+print('PASS: decode_u64 fast path inlined; decode_u64_scan stays out of line')
