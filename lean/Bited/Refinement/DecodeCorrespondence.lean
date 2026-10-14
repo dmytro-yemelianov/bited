@@ -26,7 +26,7 @@ def referenceStep (policy : Reference.Policy) (count available acc byte : Nat) :
 theorem decode_u64_body_refines (input : Slice U8) (policy : Generated.decode.DecodePolicy)
     (acc : U64) (i : Usize) (hi : i.val ≤ 10) (hlen : i.val ≤ input.length)
     (ha : acc.val < 2 ^ (7 * i.val)) :
-    Generated.decode.decode_u64_loop.body input policy acc i ⦃ r =>
+    Generated.decode.decode_u64_scan_loop.body input policy acc i ⦃ r =>
       referenceFlow r = referenceStep (referencePolicy policy) i.val input.length acc.val
         input.val[i.val]!.val ⦄ := by
   apply WP.spec_mono (WP.spec_and (decode_u64_body_decision input policy acc i hi hlen)
@@ -100,7 +100,8 @@ theorem decode_u64_refines (input : Slice U8) (policy : Generated.decode.DecodeP
     Generated.decode.decode_u64 input policy ⦃ r =>
       referenceOutcome r = Reference.decode 64 (referencePolicy policy)
         (input.val.map specByte) ⦄ := by
-  unfold Generated.decode.decode_u64 Generated.decode.decode_u64_loop
+  rw [decode_u64_eq_scan]
+  unfold Generated.decode.decode_u64_scan Generated.decode.decode_u64_scan_loop
   apply loop.spec_decr_nat
     (fun (state : U64 × Usize) => 10 - state.2.val)
     (fun state => state.2.val ≤ 10 ∧ state.2.val ≤ input.length ∧

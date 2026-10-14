@@ -1,4 +1,5 @@
 import Bited.Generated.Funs
+import Bited.Refinement.DecodeFastPath
 
 namespace Bited.Refinement
 open Aeneas Aeneas.Std Aeneas.Std.Result Aeneas.Std.ControlFlow
@@ -17,11 +18,11 @@ theorem decode_policy_eq_spec (p q : Generated.decode.DecodePolicy) :
 /-- Safety of every scalar byte transition, including malformed input. -/
 theorem decode_u64_body_total (input : Slice U8) (policy : Generated.decode.DecodePolicy)
     (acc : U64) (i : Usize) (hi : i.val ≤ 10) (hlen : i.val ≤ input.length) :
-    Generated.decode.decode_u64_loop.body input policy acc i ⦃ r =>
+    Generated.decode.decode_u64_scan_loop.body input policy acc i ⦃ r =>
       match r with
       | .cont (_, next) => next.val ≤ 10 ∧ next.val ≤ input.length ∧ next.val = i.val + 1
       | .done result => consumed result ≤ 10 ∧ consumed result ≤ input.length ⦄ := by
-  unfold Generated.decode.decode_u64_loop.body
+  unfold Generated.decode.decode_u64_scan_loop.body
   cases policy <;> simp only [Generated.decode.DecodePolicy.Insts.CoreCmpPartialEqDecodePolicy.eq]
   all_goals step*
   all_goals try
@@ -40,7 +41,8 @@ theorem decode_u64_body_total (input : Slice U8) (policy : Generated.decode.Deco
 theorem decode_u64_total (input : Slice U8) (policy : Generated.decode.DecodePolicy) :
     Generated.decode.decode_u64 input policy
       ⦃ r => consumed r ≤ 10 ∧ consumed r ≤ input.length ⦄ := by
-  unfold Generated.decode.decode_u64 Generated.decode.decode_u64_loop
+  rw [decode_u64_eq_scan]
+  unfold Generated.decode.decode_u64_scan Generated.decode.decode_u64_scan_loop
   apply loop.spec_decr_nat
     (fun (state : U64 × Usize) => 10 - state.2.val)
     (fun state => state.2.val ≤ 10 ∧ state.2.val ≤ input.length)
@@ -59,9 +61,9 @@ theorem decode_u64_total (input : Slice U8) (policy : Generated.decode.DecodePol
 theorem decode_u64_last_overflow (input : Slice U8) (policy : Generated.decode.DecodePolicy)
     (acc : U64) (hlen : 10 ≤ input.length)
     (hp : input.val[9].val &&& 127 > 1) :
-    Generated.decode.decode_u64_loop.body input policy acc 9#usize
+    Generated.decode.decode_u64_scan_loop.body input policy acc 9#usize
       ⦃ r => r = .done (.Err ⟨.Overflow, 10#usize⟩) ⦄ := by
-  unfold Generated.decode.decode_u64_loop.body
+  unfold Generated.decode.decode_u64_scan_loop.body
   step*
   congr 3
   scalar_tac

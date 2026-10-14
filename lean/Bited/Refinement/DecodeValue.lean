@@ -39,7 +39,8 @@ theorem decode_u64_value (input : Slice U8) (policy : Generated.decode.DecodePol
       match r with
       | .Ok d => d.value.val = wirePrefix input d.consumed.val
       | .Err _ => True ⦄ := by
-  unfold Generated.decode.decode_u64 Generated.decode.decode_u64_loop
+  rw [decode_u64_eq_scan]
+  unfold Generated.decode.decode_u64_scan Generated.decode.decode_u64_scan_loop
   apply loop.spec_decr_nat
     (fun (state : U64 × Usize) => 10 - state.2.val)
     (fun state => state.2.val ≤ 10 ∧ state.2.val ≤ input.length ∧

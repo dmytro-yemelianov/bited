@@ -57,7 +57,7 @@ set_option maxHeartbeats 1500000 in
 theorem decode_u64_body_value (input : Slice U8) (policy : Generated.decode.DecodePolicy)
     (acc : U64) (i : Usize) (hi : i.val ≤ 10) (hlen : i.val ≤ input.length)
     (ha : acc.val < 2 ^ (7 * i.val)) :
-    Generated.decode.decode_u64_loop.body input policy acc i ⦃ r =>
+    Generated.decode.decode_u64_scan_loop.body input policy acc i ⦃ r =>
       match r with
       | .cont (next, j) =>
         j.val = i.val + 1 ∧
@@ -68,7 +68,7 @@ theorem decode_u64_body_value (input : Slice U8) (policy : Generated.decode.Deco
         d.value.val = acc.val + input.val[i.val]!.val % 128 * 2 ^ (7 * i.val) ∧
         d.value.val < 2 ^ (7 * d.consumed.val)
       | .done (.Err _) => True ⦄ := by
-  unfold Generated.decode.decode_u64_loop.body
+  unfold Generated.decode.decode_u64_scan_loop.body
   cases policy <;> simp only [Generated.decode.DecodePolicy.Insts.CoreCmpPartialEqDecodePolicy.eq]
   all_goals step*
   all_goals try

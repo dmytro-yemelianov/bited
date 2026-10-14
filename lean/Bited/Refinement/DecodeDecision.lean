@@ -61,10 +61,10 @@ set_option maxHeartbeats 2000000 in
     failures, consumption, precedence and the canonical flag. -/
 theorem decode_u64_body_decision (input : Slice U8) (policy : Generated.decode.DecodePolicy)
     (acc : U64) (i : Usize) (hi : i.val ≤ 10) (hlen : i.val ≤ input.length) :
-    Generated.decode.decode_u64_loop.body input policy acc i ⦃ r =>
+    Generated.decode.decode_u64_scan_loop.body input policy acc i ⦃ r =>
       decodeDecision r = referenceDecision (referencePolicy policy) i.val input.length
         input.val[i.val]!.val ⦄ := by
-  unfold Generated.decode.decode_u64_loop.body
+  unfold Generated.decode.decode_u64_scan_loop.body
   cases policy <;> simp only [Generated.decode.DecodePolicy.Insts.CoreCmpPartialEqDecodePolicy.eq]
   all_goals step*
   all_goals try
