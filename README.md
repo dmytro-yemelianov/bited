@@ -1,6 +1,6 @@
 # bited
 
-Rust Varint + ZigZag with a companion Lean 4 proof package. [Version 0.1.0](https://github.com/dmytro-yemelianov/bited/releases/tag/v0.1.0) is published on [crates.io](https://crates.io/crates/bited/0.1.0).
+Rust Varint + ZigZag with a companion Lean 4 proof package. [Version 0.1.1](https://github.com/dmytro-yemelianov/bited/releases/tag/v0.1.1) is published on [crates.io](https://crates.io/crates/bited/0.1.1).
 
 One small `no_std` Rust library for 32/64-bit base-128 varints and ZigZag,
 with a corresponding Lean 4 proof package. It has zero runtime dependencies,
@@ -165,7 +165,7 @@ short-input/code-size tradeoffs.
 Add the published package to your project:
 
 ```sh
-cargo add bited@0.1.0
+cargo add bited@0.1.1
 ```
 
 For a local source checkout, use a path dependency on this directory.
@@ -178,5 +178,5 @@ cargo run --example deltas
 
 Every public Rust item has API documentation. Generate it locally with
 `cargo doc --no-deps --open`. See [usage](docs/using.md),
-[changelog](CHANGELOG.md), [release notes](docs/releases/0.1.0.md) and
+[changelog](CHANGELOG.md), [release notes](docs/releases/0.1.1.md) and
 [release workflow](docs/releasing.md). Rust and Lean versions ship together.
